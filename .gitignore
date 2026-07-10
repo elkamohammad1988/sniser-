@@ -1,0 +1,40 @@
+# Dependencies
+node_modules/
+.pnp.*
+.yarn/
+
+# Builds
+dist/
+build/
+.vercel/
+.next/
+.cache/
+
+# Runtime data — sqlite db, uploaded files, mail outbox (never commit)
+data/
+**/data/
+uploads/
+outbox/
+
+# Env files (never commit secrets)
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor / OS
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# TypeScript build info
+*.tsbuildinfo

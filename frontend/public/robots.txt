@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+
+# Sitemap is served as a static asset.
+# After deploying, replace the host below with your production domain.
+Sitemap: https://sniser.example.com/sitemap.xml

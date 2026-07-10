@@ -1,0 +1,70 @@
+{
+  "common": {
+    "signUp": "إنشاء حساب",
+    "logIn": "تسجيل الدخول",
+    "logOut": "تسجيل الخروج",
+    "advertise": "أعلن معنا",
+    "exploreContent": "استكشف المحتوى",
+    "browseCatalog": "تصفّح الكتالوج",
+    "comingSoon": "قريباً",
+    "loading": "جارٍ التحميل…"
+  },
+  "nav": {
+    "video": "فيديو",
+    "audio": "صوت",
+    "original": "أصلي",
+    "resale": "إعادة البيع",
+    "library": "المكتبة",
+    "wallet": "المحفظة",
+    "account": "الحساب",
+    "studio": "الاستوديو",
+    "sellYourWork": "بِع أعمالك"
+  },
+  "footer": {
+    "tagline": "تقدّم Sniser حلاً مبتكراً لحماية إبداع الفنانين باستخدام تقنية البلوكشين.",
+    "rights": "جميع الحقوق محفوظة.",
+    "product": {
+      "title": "المنتج",
+      "browse": "تصفّح الكتالوج",
+      "viewer": "كيف تشاهد المحتوى",
+      "forArtists": "للفنانين",
+      "faq": "الأسئلة الشائعة"
+    },
+    "company": {
+      "title": "الشركة",
+      "about": "من نحن",
+      "contact": "اتصل بنا",
+      "press": "الملف الصحفي (قريباً)",
+      "terms": "شروط الخدمة",
+      "privacy": "سياسة الخصوصية"
+    }
+  },
+  "a11y": {
+    "skipToContent": "تخطَّ إلى المحتوى",
+    "openMenu": "افتح القائمة",
+    "closeMenu": "أغلق القائمة",
+    "primaryNav": "التنقّل الرئيسي",
+    "navigationMenu": "قائمة التنقّل",
+    "socialLinks": "روابط التواصل الاجتماعي",
+    "sniserHome": "الصفحة الرئيسية لـ Sniser",
+    "backToTop": "العودة إلى الأعلى"
+  },
+  "language": {
+    "label": "اللغة",
+    "select": "اختر اللغة"
+  },
+  "userMenu": {
+    "label": "قائمة الحساب",
+    "myLibrary": "مكتبتي",
+    "wallet": "المحفظة",
+    "account": "الحساب",
+    "artistStudio": "استوديو الفنان",
+    "becomeArtist": "كن فناناً",
+    "admin": "الإدارة",
+    "signOut": "تسجيل الخروج"
+  },
+  "toast": {
+    "signedOutTitle": "تم تسجيل الخروج",
+    "signedOutBody": "نراك قريباً."
+  }
+}

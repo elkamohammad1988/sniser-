@@ -1,0 +1,70 @@
+{
+  "common": {
+    "signUp": "S'inscrire",
+    "logIn": "Se connecter",
+    "logOut": "Se déconnecter",
+    "advertise": "Annoncer",
+    "exploreContent": "Explorer le contenu",
+    "browseCatalog": "Parcourir le catalogue",
+    "comingSoon": "Bientôt disponible",
+    "loading": "Chargement…"
+  },
+  "nav": {
+    "video": "Vidéo",
+    "audio": "Audio",
+    "original": "Original",
+    "resale": "Revente",
+    "library": "Bibliothèque",
+    "wallet": "Portefeuille",
+    "account": "Compte",
+    "studio": "Studio",
+    "sellYourWork": "Vendez vos œuvres"
+  },
+  "footer": {
+    "tagline": "Sniser propose une solution innovante pour protéger la créativité des artistes grâce à la technologie blockchain.",
+    "rights": "Tous droits réservés.",
+    "product": {
+      "title": "Produit",
+      "browse": "Parcourir le catalogue",
+      "viewer": "Comment consulter le contenu",
+      "forArtists": "Pour les artistes",
+      "faq": "FAQ"
+    },
+    "company": {
+      "title": "Entreprise",
+      "about": "À propos",
+      "contact": "Contact",
+      "press": "Kit presse (bientôt)",
+      "terms": "Conditions d'utilisation",
+      "privacy": "Politique de confidentialité"
+    }
+  },
+  "a11y": {
+    "skipToContent": "Aller au contenu",
+    "openMenu": "Ouvrir le menu",
+    "closeMenu": "Fermer le menu",
+    "primaryNav": "Navigation principale",
+    "navigationMenu": "Menu de navigation",
+    "socialLinks": "Liens sociaux",
+    "sniserHome": "Accueil Sniser",
+    "backToTop": "Retour en haut"
+  },
+  "language": {
+    "label": "Langue",
+    "select": "Choisir la langue"
+  },
+  "userMenu": {
+    "label": "Menu du compte",
+    "myLibrary": "Ma bibliothèque",
+    "wallet": "Portefeuille",
+    "account": "Compte",
+    "artistStudio": "Studio artiste",
+    "becomeArtist": "Devenir artiste",
+    "admin": "Administration",
+    "signOut": "Se déconnecter"
+  },
+  "toast": {
+    "signedOutTitle": "Déconnecté",
+    "signedOutBody": "À bientôt."
+  }
+}

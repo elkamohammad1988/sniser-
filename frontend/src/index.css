@@ -1,0 +1,211 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    @apply bg-bg text-white font-sans antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1, "ss01" 1;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-extrabold tracking-tight;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    @apply bg-brand-green/40 text-white;
+  }
+
+  /* Custom scrollbar — subtle on dark surfaces */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 9999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.18);
+  }
+
+  /* Respect reduced motion globally */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  /* Legacy alias — new code should use the Container component. */
+  .container-app {
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .link-underline {
+    @apply relative;
+  }
+  .link-underline::after {
+    content: "";
+    @apply absolute left-0 -bottom-1 h-px w-0 bg-brand-green transition-all duration-300 ease-out-soft;
+  }
+  .link-underline:hover::after,
+  .link-underline[data-active="true"]::after {
+    @apply w-full;
+  }
+
+  .shimmer-bg {
+    background-image: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.02) 0%,
+      rgba(255, 255, 255, 0.08) 50%,
+      rgba(255, 255, 255, 0.02) 100%
+    );
+    background-size: 200% 100%;
+    @apply animate-shimmer;
+  }
+
+  .card-hover {
+    @apply transition-all duration-300 ease-out-soft hover:-translate-y-1;
+  }
+
+  /* Top-lit hairline border (Linear/Vercel signature). Sits above the surface,
+     never intercepts pointer events. Radius is inherited from the parent. */
+  .gradient-border {
+    position: relative;
+  }
+  .gradient-border::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.22),
+      rgba(255, 255, 255, 0.04) 38%,
+      rgba(255, 255, 255, 0) 70%
+    );
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+  /* Green-tinted variant for accent surfaces / CTAs. */
+  .gradient-border-green::before {
+    background: linear-gradient(
+      160deg,
+      rgba(166, 232, 77, 0.55),
+      rgba(166, 232, 77, 0.08) 45%,
+      rgba(255, 255, 255, 0) 75%
+    );
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .text-pretty {
+    text-wrap: pretty;
+  }
+
+  /* Headings that fade toward their descenders — subtle premium depth on dark. */
+  .text-fade-white {
+    background-image: linear-gradient(
+      180deg,
+      #ffffff 30%,
+      rgba(255, 255, 255, 0.62) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  /* Ink gradient for dark type on the green hero — reads richer than flat black. */
+  .text-fade-ink {
+    background-image: linear-gradient(180deg, #12140e 20%, #1c1f24 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Cursor-tracked spotlight layer. The parent sets --spot-x / --spot-y. */
+  .spotlight {
+    background: radial-gradient(
+      var(--spot-size, 340px) circle at var(--spot-x, 50%) var(--spot-y, 50%),
+      rgba(166, 232, 77, 0.14),
+      transparent 62%
+    );
+  }
+
+  /* Blueprint grid — pair with a radial mask so it dissolves at the edges. */
+  .texture-grid {
+    background-image: linear-gradient(
+        to right,
+        rgba(255, 255, 255, 0.045) 1px,
+        transparent 1px
+      ),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+  .texture-grid-ink {
+    background-image: linear-gradient(
+        to right,
+        rgba(20, 26, 12, 0.08) 1px,
+        transparent 1px
+      ),
+      linear-gradient(to bottom, rgba(20, 26, 12, 0.08) 1px, transparent 1px);
+    background-size: 54px 54px;
+  }
+  .mask-radial-fade {
+    -webkit-mask-image: radial-gradient(
+      ellipse 75% 75% at 50% 45%,
+      #000 45%,
+      transparent 78%
+    );
+    mask-image: radial-gradient(
+      ellipse 75% 75% at 50% 45%,
+      #000 45%,
+      transparent 78%
+    );
+  }
+
+  /* Film grain — an SVG turbulence tile, blended softly over a surface. */
+  .texture-grain {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 200px 200px;
+  }
+}

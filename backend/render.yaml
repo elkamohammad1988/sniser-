@@ -1,0 +1,51 @@
+# Render Blueprint — deploy with one click from a connected GitHub repo.
+# https://render.com/docs/blueprint-spec
+services:
+  - type: web
+    name: sniser-api
+    runtime: node
+    plan: free
+    region: oregon
+    rootDir: backend
+    # Install dev deps (needed for tsc), build, then prune to a slim runtime image.
+    buildCommand: npm ci --include=dev && npm run build && npm prune --omit=dev
+    startCommand: npm run start:prod
+    healthCheckPath: /healthz
+    autoDeploy: true
+    # NOTE: Render's free plan has an ephemeral filesystem, so the SQLite
+    # database at DATABASE_PATH is reset on every deploy/restart. Attach a
+    # persistent disk (paid plan) or point at an external DB for durable data.
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: LOG_LEVEL
+        value: info
+      - key: API_PREFIX
+        value: /api
+      - key: BODY_LIMIT
+        value: 1mb
+      - key: RATE_LIMIT_WINDOW_MS
+        value: 900000
+      - key: RATE_LIMIT_MAX
+        value: 300
+      # Access + refresh secrets are BOTH required in production (boot fails
+      # without them). Render generates strong random values on first deploy.
+      - key: JWT_ACCESS_SECRET
+        generateValue: true
+      - key: JWT_REFRESH_SECRET
+        generateValue: true
+      - key: JWT_ACCESS_TTL
+        value: 15m
+      # Do NOT auto-seed demo accounts (public passwords) in production.
+      - key: DB_AUTO_SEED
+        value: false
+      - key: CORS_ORIGIN
+        sync: false # set per-environment (e.g. https://your-app.vercel.app)
+      - key: APP_URL
+        sync: false # public SPA URL, used to build links in emails
+      - key: ADMIN_EMAIL
+        sync: false # bootstrap admin email
+      - key: ADMIN_PASSWORD
+        generateValue: true # strong random admin password on first deploy

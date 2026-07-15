@@ -7,10 +7,10 @@
     "node": ">=20.0.0"
   },
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -p tsconfig.json --noEmit && vite build",
+    "dev": "node init && vite",
+    "build": "node init && tsc -p tsconfig.json --noEmit && vite build",
     "preview": "vite preview --port 4173 --host",
-    "start": "vite preview --port 4173 --host",
+    "start": "node init && vite preview --port 4173 --host",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",

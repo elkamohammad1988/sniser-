@@ -69,14 +69,14 @@ export default function AuthModal({ open, onClose, initialMode = "login" }: Prop
   // Complexity rules (length/uppercase/number) apply only when *creating* one,
   // otherwise valid users whose password predates the rules can't sign in.
   const checkPassword = (value: string): string | null =>
-    mode === "signup" ? validatePassword(value) : validateRequired(value, "Password");
+    mode === "signup" ? validatePassword(value) : validateRequired(value, t("fields.password"));
 
   const validate = (): boolean => {
     const next: Errors = {
       email: validateEmail(email),
       password: checkPassword(password),
     };
-    if (mode === "signup") next.name = validateRequired(name, "Name");
+    if (mode === "signup") next.name = validateRequired(name, t("fields.name"));
     setErrors(next);
     return !next.name && !next.email && !next.password;
   };
@@ -176,7 +176,7 @@ export default function AuthModal({ open, onClose, initialMode = "login" }: Prop
             placeholder="Alex Carter"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            onBlur={() => setErrors((p) => ({ ...p, name: validateRequired(name, "Name") }))}
+            onBlur={() => setErrors((p) => ({ ...p, name: validateRequired(name, t("fields.name")) }))}
             error={errors.name}
             required
           />

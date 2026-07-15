@@ -48,10 +48,10 @@ export default function AdvertiseModal({ open, onClose }: Props) {
 
   const validate = (): boolean => {
     const next: Errors = {
-      brand: validateRequired(brand, "Brand"),
+      brand: validateRequired(brand, t("fields.brand")),
       email: validateEmail(email),
       budget: budget ? null : t("advertiseModal.budgetRequired"),
-      message: validateMin(message, 20, "Message"),
+      message: validateMin(message, 20, t("fields.message")),
     };
     setErrors(next);
     return !next.brand && !next.email && !next.budget && !next.message;
@@ -84,7 +84,7 @@ export default function AdvertiseModal({ open, onClose }: Props) {
           label={t("advertiseModal.brandLabel")}
           value={brand}
           onChange={(e) => setBrand(e.target.value)}
-          onBlur={() => setErrors((p) => ({ ...p, brand: validateRequired(brand, "Brand") }))}
+          onBlur={() => setErrors((p) => ({ ...p, brand: validateRequired(brand, t("fields.brand")) }))}
           error={errors.brand}
           placeholder="Acme Records"
           required
@@ -136,7 +136,7 @@ export default function AdvertiseModal({ open, onClose }: Props) {
           label={t("advertiseModal.campaignLabel")}
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          onBlur={() => setErrors((p) => ({ ...p, message: validateMin(message, 20, "Message") }))}
+          onBlur={() => setErrors((p) => ({ ...p, message: validateMin(message, 20, t("fields.message")) }))}
           error={errors.message}
           placeholder={t("advertiseModal.campaignPlaceholder")}
           hint={t("advertiseModal.campaignHint")}

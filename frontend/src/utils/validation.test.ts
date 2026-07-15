@@ -1,5 +1,21 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, beforeAll } from "vitest";
+import i18n from "../i18n";
+import en from "../locales/en.json";
 import { validateEmail, validateRequired, validateMin, validatePassword } from "./validation";
+
+// The validators resolve their user-facing messages through i18n. Initialise
+// the instance with the English bundle so the assertions below check the real
+// rendered copy (in the app the active locale drives the language instead).
+beforeAll(async () => {
+  if (!i18n.isInitialized) {
+    await i18n.init({
+      lng: "en",
+      fallbackLng: "en",
+      resources: { en: { translation: en } },
+      interpolation: { escapeValue: false },
+    });
+  }
+});
 
 describe("validateEmail", () => {
   it("rejects empty and malformed addresses", () => {

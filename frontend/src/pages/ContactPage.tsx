@@ -56,9 +56,9 @@ export default function ContactPage() {
 
   const validate = () => {
     const next: Errors = {
-      name: validateRequired(name, "Name"),
+      name: validateRequired(name, t("fields.name")),
       email: validateEmail(email),
-      message: validateMin(message, 20, "Message"),
+      message: validateMin(message, 20, t("fields.message")),
     };
     setErrors(next);
     return !next.name && !next.email && !next.message;
@@ -160,7 +160,7 @@ export default function ContactPage() {
                   label={t("contact.form.name")}
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  onBlur={() => setErrors((p) => ({ ...p, name: validateRequired(name, "Name") }))}
+                  onBlur={() => setErrors((p) => ({ ...p, name: validateRequired(name, t("fields.name")) }))}
                   error={errors.name}
                   autoComplete="name"
                   placeholder="Alex Carter"
@@ -182,7 +182,7 @@ export default function ContactPage() {
                   label={t("contact.form.message")}
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  onBlur={() => setErrors((p) => ({ ...p, message: validateMin(message, 20, "Message") }))}
+                  onBlur={() => setErrors((p) => ({ ...p, message: validateMin(message, 20, t("fields.message")) }))}
                   error={errors.message}
                   placeholder={t("contact.form.messagePlaceholder")}
                   hint={t("contact.form.messageHint")}

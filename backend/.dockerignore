@@ -1,0 +1,18 @@
+# Build context hygiene — keep the image small and reproducible.
+node_modules
+dist
+data
+*.tsbuildinfo
+
+# Secrets / local env (the image gets config at runtime)
+.env
+.env.*
+!.env.example
+
+# Not needed to build or run the image
+tests
+.git
+.gitignore
+Dockerfile
+.dockerignore
+npm-debug.log*

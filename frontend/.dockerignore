@@ -1,0 +1,15 @@
+# Build context hygiene
+node_modules
+dist
+*.tsbuildinfo
+
+# Secrets / local env (VITE_API_URL is passed as a build arg)
+.env
+.env.*
+!.env.example
+
+# Not needed to build the image
+.git
+.gitignore
+Dockerfile
+.dockerignore

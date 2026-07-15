@@ -11,6 +11,8 @@
     "build": "tsc -p tsconfig.json",
     "start": "node dist/server.js",
     "start:prod": "node dist/server.js",
+    "migrate": "node dist/db/migrateCli.js",
+    "migrate:dev": "tsx src/db/migrateCli.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "tsx --test \"tests/**/*.test.ts\"",
     "test:watch": "tsx --test --watch \"tests/**/*.test.ts\"",

@@ -3,6 +3,8 @@ import { env } from "../../../config/env";
 import { uuid } from "../../../utils/ids";
 import { nowIso } from "../../../utils/datetime";
 import { toUnits, feeCents, formatMoney } from "../../../utils/money";
+import { signMediaToken } from "../../../utils/mediaToken";
+import { mediaKindForFile, type MediaKind } from "../../../utils/media";
 import { ApiError } from "../../../utils/ApiError";
 import { logger } from "../../../utils/logger";
 import { getOrCreateWallet, debit, credit } from "../../../services/wallet";
@@ -244,8 +246,11 @@ export function listLibrary(userId: string): PurchaseDto[] {
 export interface AccessGrant {
   contentId: string;
   title: string;
+  /** Short-lived, token-gated streaming URL (not the raw file path). */
   mediaUrl: string | null;
   category: string;
+  /** How the player should render the media: "video" | "audio" | "download". */
+  kind: MediaKind;
 }
 
 export function getAccess(userId: string, contentId: string): AccessGrant {
@@ -265,10 +270,23 @@ export function getAccess(userId: string, contentId: string): AccessGrant {
 
   db.prepare("UPDATE content SET plays = plays + 1 WHERE id = ?").run(contentId);
 
+  // Ownership is proven here, so mint a short-lived token and hand back a
+  // streaming URL instead of the raw file path. `kind` is derived from the
+  // stored file so the player renders correctly even though the URL carries no
+  // extension.
+  let mediaUrl: string | null = null;
+  let kind: MediaKind = "download";
+  if (content.media_url) {
+    const token = signMediaToken(content.id, userId);
+    mediaUrl = `/media/${content.id}?token=${encodeURIComponent(token)}`;
+    kind = mediaKindForFile(content.media_url);
+  }
+
   return {
     contentId: content.id,
     title: content.title,
-    mediaUrl: content.media_url,
+    mediaUrl,
     category: content.category,
+    kind,
   };
 }

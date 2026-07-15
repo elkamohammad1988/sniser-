@@ -222,9 +222,11 @@ export default function Navbar() {
               strokeWidth={2}
               strokeLinecap="round"
               aria-hidden="true"
+              initial={false}
               animate={open ? "open" : "closed"}
             >
               <m.path
+                d="M4 7h16"
                 variants={{ closed: { d: "M4 7h16" }, open: { d: "M6 6l12 12" } }}
                 transition={{ duration: 0.25 }}
               />
@@ -234,6 +236,7 @@ export default function Navbar() {
                 transition={{ duration: 0.15 }}
               />
               <m.path
+                d="M4 17h16"
                 variants={{ closed: { d: "M4 17h16" }, open: { d: "M18 6 6 18" } }}
                 transition={{ duration: 0.25 }}
               />

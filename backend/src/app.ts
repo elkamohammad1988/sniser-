@@ -18,6 +18,7 @@ import { notFound } from "./middleware/notFound";
 import { errorHandler } from "./middleware/errorHandler";
 
 import v1 from "./api/v1";
+import mediaRouter from "./api/media";
 
 export function createApp(): Application {
   const app = express();
@@ -109,6 +110,13 @@ export function createApp(): Application {
   // 9. Static uploads (covers/avatars). Served with a long cache and a
   //    cross-origin resource policy so the SPA on another origin can load them.
   fs.mkdirSync(env.uploadDir, { recursive: true });
+  // Exclusive drop media is NEVER served statically — it is paid, ownership-
+  // gated content. It streams only through the token-checked /media route
+  // below. This guard (registered before the static handler) closes the public
+  // `/uploads/media/*` hole; covers and avatars stay public.
+  app.use("/uploads/media", (_req: Request, res: Response) => {
+    res.status(404).json({ success: false, error: { code: "NOT_FOUND", message: "Not found" } });
+  });
   app.use(
     "/uploads",
     express.static(env.uploadDir, {
@@ -120,6 +128,10 @@ export function createApp(): Application {
       },
     })
   );
+
+  // 9b. Token-gated media streaming (Range-capable). Outside the /api prefix so
+  //     seek-heavy playback isn't throttled by the API rate limiter.
+  app.use("/media", mediaRouter);
 
   // 10. Rate limiting — applied only to versioned API routes.
   app.use(env.API_PREFIX, apiLimiter);

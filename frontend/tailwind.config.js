@@ -108,6 +108,10 @@ export default {
           "0%": { transform: "scale(1.04)" },
           "100%": { transform: "scale(1.16)" },
         },
+        equalize: {
+          "0%, 100%": { transform: "scaleY(0.3)" },
+          "50%": { transform: "scaleY(1)" },
+        },
       },
       animation: {
         "fade-up": "fade-up 0.65s cubic-bezier(0.22, 1, 0.36, 1) both",
@@ -122,6 +126,7 @@ export default {
         aurora: "aurora 18s ease-in-out infinite",
         "spin-slow": "spin-slow 26s linear infinite",
         "ken-burns": "ken-burns 20s ease-in-out infinite alternate",
+        equalize: "equalize 1s ease-in-out infinite",
       },
     },
   },

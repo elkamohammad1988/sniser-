@@ -13,9 +13,15 @@ interface Props {
   /** Optional subhead under the title. */
   description?: string;
   /** Visual sizing. */
-  size?: "sm" | "md" | "lg";
+  size?: "sm" | "md" | "lg" | "xl";
   /** Hide the close button (rare — keep enabled for usability). */
   hideClose?: boolean;
+  /**
+   * Wrap children in the default padded panel body with the title/description
+   * header. Set `false` for edge-to-edge content (e.g. a media player) that
+   * manages its own layout; the panel then clips children to its rounded corners.
+   */
+  padded?: boolean;
   children: ReactNode;
 }
 
@@ -23,6 +29,7 @@ const SIZES: Record<NonNullable<Props["size"]>, string> = {
   sm: "max-w-sm",
   md: "max-w-md",
   lg: "max-w-lg",
+  xl: "max-w-4xl",
 };
 
 /**
@@ -39,6 +46,7 @@ export default function Modal({
   description,
   size = "md",
   hideClose,
+  padded = true,
   children,
 }: Props) {
   useLockBodyScroll(open);
@@ -129,6 +137,7 @@ export default function Modal({
             transition={{ duration: 0.25, ease: EASE_SOFT }}
             className={cn(
               "relative w-full rounded-2xl bg-bg-card text-white ring-1 ring-white/10 shadow-card",
+              !padded && "overflow-hidden",
               SIZES[size]
             )}
           >
@@ -144,21 +153,25 @@ export default function Modal({
               </IconButton>
             )}
 
-            <div className="p-6 sm:p-7">
-              {title && (
-                <h2 id={titleId} className="text-xl font-extrabold tracking-tight text-white pr-8">
-                  {title}
-                </h2>
-              )}
-              {description && (
-                <p id={descId} className="mt-1.5 text-sm text-white/60 text-pretty pr-8">
-                  {description}
-                </p>
-              )}
-              <div className={cn(title || description ? "mt-5" : undefined)}>
-                {children}
+            {padded ? (
+              <div className="p-6 sm:p-7">
+                {title && (
+                  <h2 id={titleId} className="text-xl font-extrabold tracking-tight text-white pr-8">
+                    {title}
+                  </h2>
+                )}
+                {description && (
+                  <p id={descId} className="mt-1.5 text-sm text-white/60 text-pretty pr-8">
+                    {description}
+                  </p>
+                )}
+                <div className={cn(title || description ? "mt-5" : undefined)}>
+                  {children}
+                </div>
               </div>
-            </div>
+            ) : (
+              children
+            )}
           </m.div>
         </m.div>
       )}

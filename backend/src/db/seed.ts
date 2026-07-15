@@ -1,3 +1,5 @@
+import fs from "node:fs";
+import path from "node:path";
 import { getDb, transaction } from "./index";
 import { env } from "../config/env";
 import { uuid, slugify, walletAddress } from "../utils/ids";
@@ -66,6 +68,58 @@ const RESALE: { content: string; price: number }[] = [
   { content: "a-002", price: 7 },
   { content: "a-003", price: 10 },
 ];
+
+interface SampleMedia {
+  video: string | null;
+  audio: string | null;
+}
+
+/**
+ * Copy the version-controlled sample media into the served uploads dir so the
+ * seeded catalog is immediately playable (video + audio) out of the box. The
+ * source files live under `backend/assets/samples` (tracked in git); the served
+ * `data/uploads` tree is runtime-only (gitignored), so they're provisioned here
+ * on first seed. Best-effort — a missing source just leaves that kind of drop
+ * without a preview file (the player degrades gracefully to a "coming soon"
+ * state), it never fails the seed.
+ */
+function provisionSampleMedia(): SampleMedia {
+  const srcDir = path.join(__dirname, "..", "..", "assets", "samples");
+  const destDir = path.join(env.uploadDir, "media");
+  fs.mkdirSync(destDir, { recursive: true });
+
+  const provision = (file: string): string | null => {
+    const src = path.join(srcDir, file);
+    if (!fs.existsSync(src)) {
+      logger.warn({ file }, "sample media not found; seeded drops will have no preview");
+      return null;
+    }
+    try {
+      fs.copyFileSync(src, path.join(destDir, file));
+      return `/uploads/media/${file}`;
+    } catch (err) {
+      logger.warn({ err, file }, "failed to provision sample media");
+      return null;
+    }
+  };
+
+  return {
+    video: provision("preview-video.mp4"),
+    audio: provision("preview-audio.mp3"),
+  };
+}
+
+/**
+ * Pick the preview file for a seeded drop. Video drops preview as video; audio
+ * drops as audio; an "original" drop previews as audio when it has a runtime
+ * (voicenotes/demos) and has none when it's a zero-length artifact (e.g. a
+ * signed lyric sheet), which the player surfaces as a download-only item.
+ */
+function mediaUrlFor(item: SeedContent, media: SampleMedia): string | null {
+  if (item.category === "video") return media.video;
+  if (item.category === "audio") return media.audio;
+  return item.durationSec > 0 ? media.audio : null;
+}
 
 async function createUser(opts: {
   email: string;
@@ -155,13 +209,17 @@ export async function seedDatabase(force = false): Promise<{ seeded: boolean }> 
     artistProfileId.set(artist.handle, profileId);
   }
 
+  // Provision the playable sample files before opening the write transaction
+  // (filesystem work stays out of the DB transaction).
+  const sampleMedia = provisionSampleMedia();
+
   // Content + tags + resale, all in one transaction for consistency.
   const contentIdByKey = new Map<string, string>();
   transaction(() => {
     const insertContent = db.prepare(
       `INSERT INTO content (id, artist_id, title, slug, category, description, price_cents, currency,
          cover_url, media_url, duration_sec, supply, status, plays, released_at, created_at, updated_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, 'USDC', NULL, NULL, ?, ?, 'published', ?, ?, ?, ?)`
+       VALUES (?, ?, ?, ?, ?, ?, ?, 'USDC', NULL, ?, ?, ?, 'published', ?, ?, ?, ?)`
     );
     const insertTag = db.prepare("INSERT OR IGNORE INTO tags (name) VALUES (?)");
     const findTag = db.prepare("SELECT id FROM tags WHERE name = ?");
@@ -184,6 +242,7 @@ export async function seedDatabase(force = false): Promise<{ seeded: boolean }> 
         item.category,
         `${item.title} by ${ARTISTS.find((a) => a.handle === item.artist)!.displayName}.`,
         toCents(item.price),
+        mediaUrlFor(item, sampleMedia),
         item.durationSec,
         item.supply ?? null,
         item.plays,

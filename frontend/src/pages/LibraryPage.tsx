@@ -5,6 +5,7 @@ import SectionHeading from "../components/shared/SectionHeading";
 import Button from "../components/shared/Button";
 import Spinner from "../components/shared/Spinner";
 import Modal from "../components/shared/Modal";
+import MediaPlayer from "../components/shared/MediaPlayer";
 import { useToast } from "../components/shared/ToastProvider";
 import { usePageMeta } from "../hooks/usePageMeta";
 import { endpoints } from "../lib/api/endpoints";
@@ -26,6 +27,10 @@ export default function LibraryPage() {
   const [listing, setListing] = useState<PurchaseItem | null>(null);
   const [price, setPrice] = useState("");
   const [busy, setBusy] = useState<string | null>(null);
+  // The drop being streamed. Kept set while the player animates closed so the
+  // exit transition isn't cut short; `playerOpen` drives visibility.
+  const [playing, setPlaying] = useState<PurchaseItem | null>(null);
+  const [playerOpen, setPlayerOpen] = useState(false);
 
   const load = () => {
     setStatus("loading");
@@ -42,20 +47,9 @@ export default function LibraryPage() {
     load();
   }, []);
 
-  const play = async (item: PurchaseItem) => {
-    setBusy(item.id);
-    try {
-      const { access } = await endpoints.purchases.access(item.contentId);
-      if (access.mediaUrl) {
-        window.open(assetUrl(access.mediaUrl) ?? access.mediaUrl, "_blank", "noopener");
-      } else {
-        toast.info("Playback ready", "The artist hasn't attached a media file to this drop yet.");
-      }
-    } catch (err) {
-      toast.error("Couldn't open", err instanceof ApiClientError ? err.message : "Please try again.");
-    } finally {
-      setBusy(null);
-    }
+  const openPlayer = (item: PurchaseItem) => {
+    setPlaying(item);
+    setPlayerOpen(true);
   };
 
   const openList = (item: PurchaseItem) => {
@@ -97,6 +91,40 @@ export default function LibraryPage() {
       setBusy(null);
     }
   };
+
+  // Resolve the player's item against the live list so its footer stays in sync
+  // after a resale/unlist (the captured `playing` object would otherwise be stale).
+  const livePlaying = playing ? items.find((i) => i.id === playing.id) ?? playing : null;
+  const playerActions = livePlaying
+    ? livePlaying.status === "listed" && livePlaying.listing
+      ? (
+          <>
+            <span className="text-xs font-medium text-amber-300">
+              Listed · ${livePlaying.listing.price.toFixed(2)}
+            </span>
+            <Button
+              variant="outline"
+              size="sm"
+              disabled={busy === livePlaying.id}
+              onClick={() => cancelListing(livePlaying)}
+            >
+              Unlist
+            </Button>
+          </>
+        )
+      : (
+          <Button
+            variant="primary"
+            size="sm"
+            onClick={() => {
+              setPlayerOpen(false);
+              openList(livePlaying);
+            }}
+          >
+            Resell
+          </Button>
+        )
+    : null;
 
   return (
     <>
@@ -149,7 +177,7 @@ export default function LibraryPage() {
                 key={item.id}
                 item={item}
                 busy={busy === item.id}
-                onPlay={() => play(item)}
+                onPlay={() => openPlayer(item)}
                 onList={() => openList(item)}
                 onCancel={() => cancelListing(item)}
               />
@@ -193,6 +221,17 @@ export default function LibraryPage() {
           </div>
         </form>
       </Modal>
+
+      <MediaPlayer
+        open={playerOpen}
+        onClose={() => setPlayerOpen(false)}
+        contentId={playing?.contentId ?? ""}
+        title={playing?.title ?? ""}
+        artist={playing?.artist ?? ""}
+        coverUrl={playing?.coverUrl}
+        category={playing?.category}
+        actions={playerActions}
+      />
     </>
   );
 }
@@ -238,8 +277,18 @@ function LibraryCard({ item, busy, onPlay, onList, onCancel }: CardProps) {
         )}
 
         <div className="mt-4 flex gap-2">
-          <Button variant="primary" size="sm" fullWidth onClick={onPlay} isLoading={busy} loadingText="Opening…">
-            Open
+          <Button
+            variant="primary"
+            size="sm"
+            fullWidth
+            onClick={onPlay}
+            leftIcon={
+              <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="currentColor" aria-hidden="true">
+                <path d="M8 5v14l11-7z" />
+              </svg>
+            }
+          >
+            Play
           </Button>
           {isListed ? (
             <Button variant="outline" size="sm" onClick={onCancel} disabled={busy}>

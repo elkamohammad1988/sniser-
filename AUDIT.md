@@ -183,6 +183,44 @@ defects were found and fixed (each with a regression test in
    so the purge job could still fire in the first seconds after a stop. **Fix:** the
    kickoff handle is tracked and cleared.
 
+## Feature & security pass — in-app media player + gated streaming (2026-07-14)
+
+Purchased drops now stream **inside** the platform instead of `window.open`-ing the
+raw file into a new browser tab — and, more importantly, exclusive media is no longer
+publicly downloadable.
+
+### Feature
+- **`MediaPlayer`** (`frontend/src/components/shared/MediaPlayer.tsx`) — a branded,
+  focus-trapped modal that plays video in a framed player, audio on a "now playing"
+  stage (cover art + equalizer), and serves non-streamable originals as a guarded
+  download. Loading / error-with-retry / "no preview yet" states included.
+- `Modal` gained an `xl` size and an edge-to-edge (`padded={false}`) mode; the Library
+  "Open" action became a real in-app **Play** (with Resell/Unlist in the player footer).
+- The seeded catalog is playable out of the box: version-controlled sample media
+  (`backend/assets/samples/`) is provisioned into the uploads dir on seed and wired to
+  each drop's `media_url`.
+
+### Security — exclusive content is now actually exclusive
+Previously `/uploads/media/*` was served statically (public, `immutable`, 7-day cache):
+anyone with the URL could download paid content and reshare it.
+
+1. **Public media path closed** — `/uploads/media/*` now 404s; covers/avatars stay public.
+2. **Token-gated streaming** — ownership is checked once at `/purchases/:id/access`, which
+   mints a short-lived (20 min) HMAC token bound to `(contentId, userId)` and returns a
+   `/media/:id?token=…` URL — never the raw path. The streaming route verifies the token
+   (timing-safe, contentId-bound), reads from a path strictly contained in
+   `<uploadDir>/media`, supports HTTP **Range** (seeking), and marks responses
+   `private, no-store`. Mounted outside `/api` so seek-heavy playback isn't rate-limited.
+3. Covered by **9 new backend tests** (owner streams; 206 Range incl. suffix + 416
+   out-of-bounds; missing/tampered/cross-content token → 401; non-owner → 403; raw path
+   blocked) and verified live in a real browser (video + audio playback and seeking through
+   the signed URL). Also fixed a pre-existing `<path d="undefined">` console warning from the
+   mobile-menu icon's variant-only `d`.
+
+_This is app-level protection (short-lived, scoped URLs + no public path), not DRM — a
+determined owner can still capture what they can already play. Full protection would need
+encrypted/DRM delivery (documented as a future step)._
+
 ## Remaining tech debt (documented, non-blocking)
 
 | Item | Severity | Recommendation |

@@ -122,9 +122,15 @@ export const endpoints = {
     create: (contentId: string) =>
       api.post<{ purchase: PurchaseItem; balance: number }>("/purchases", { contentId }),
     access: (contentId: string) =>
-      api.get<{ access: { contentId: string; title: string; mediaUrl: string | null; category: string } }>(
-        `/purchases/${contentId}/access`
-      ),
+      api.get<{
+        access: {
+          contentId: string;
+          title: string;
+          mediaUrl: string | null;
+          category: string;
+          kind: "video" | "audio" | "download";
+        };
+      }>(`/purchases/${contentId}/access`),
   },
 
   resale: {

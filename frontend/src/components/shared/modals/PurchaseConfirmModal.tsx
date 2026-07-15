@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Trans, useTranslation } from "react-i18next";
 import Modal from "../Modal";
 import Button from "../Button";
 import Spinner from "../Spinner";
@@ -22,6 +23,7 @@ type Stage = "review" | "processing" | "success";
 const PLATFORM_FEE_RATE = 0.025; // 2.5% — mirrors PLATFORM_FEE_BPS on the server
 
 export default function PurchaseConfirmModal({ open, onClose, item }: Props) {
+  const { t } = useTranslation();
   const toast = useToast();
   const navigate = useNavigate();
   const modal = useModal();
@@ -54,20 +56,20 @@ export default function PurchaseConfirmModal({ open, onClose, item }: Props) {
       }
       await refreshWallet();
       setStage("success");
-      toast.success("Access pass secured", `${item.title} is now in your library.`);
+      toast.success(t("purchaseModal.toast.securedTitle"), t("purchaseModal.toast.securedBody", { title: item.title }));
     } catch (err) {
       setStage("review");
       const apiErr = err instanceof ApiClientError ? err : null;
       const code = apiErr?.details && typeof apiErr.details === "object" ? (apiErr.details as { code?: string }).code : undefined;
       if (code === "INSUFFICIENT_FUNDS" || (apiErr?.status === 400 && /balance/i.test(apiErr.message))) {
-        toast.error("Not enough balance", "Top up your wallet and try again.");
+        toast.error(t("purchaseModal.toast.insufficientTitle"), t("purchaseModal.toast.insufficientBody"));
         onClose();
         modal.openWallet();
       } else if (apiErr?.status === 409) {
-        toast.info("Already yours", "This pass is already in your library.");
+        toast.info(t("purchaseModal.toast.alreadyTitle"), t("purchaseModal.toast.alreadyBody"));
         onClose();
       } else {
-        toast.error("Purchase failed", apiErr?.message ?? "Please try again.");
+        toast.error(t("purchaseModal.toast.failedTitle"), apiErr?.message ?? t("purchaseModal.toast.tryAgain"));
       }
     }
   };
@@ -85,30 +87,30 @@ export default function PurchaseConfirmModal({ open, onClose, item }: Props) {
       hideClose={stage === "processing"}
       title={
         stage === "success"
-          ? "Access pass added"
+          ? t("purchaseModal.title.success")
           : stage === "processing"
-            ? "Processing payment"
-            : "Confirm purchase"
+            ? t("purchaseModal.title.processing")
+            : t("purchaseModal.title.review")
       }
       description={
         stage === "success"
-          ? "It lives in your wallet — stream anywhere you sign in."
+          ? t("purchaseModal.desc.success")
           : stage === "processing"
-            ? "Settling the transaction. This only takes a moment."
-            : "Review the details, then confirm to secure your access pass."
+            ? t("purchaseModal.desc.processing")
+            : t("purchaseModal.desc.review")
       }
       size="md"
     >
       <div className="flex items-center gap-3 rounded-xl bg-bg-soft/60 p-3 ring-1 ring-white/10">
         <div className="grid h-12 w-12 shrink-0 place-items-center rounded-lg bg-brand-green/15 text-brand-green text-xs font-bold uppercase tracking-widestPlus">
-          {CATEGORY_LABEL[item.category].slice(0, 3)}
+          {t(CATEGORY_LABEL[item.category]).slice(0, 3)}
         </div>
         <div className="flex-1 min-w-0">
           <p className="truncate text-sm font-semibold text-white">{item.title}</p>
           <p className="truncate text-xs text-white/55">{item.artist}</p>
         </div>
         <div className="shrink-0 text-right">
-          <p className="text-[10px] uppercase tracking-widestPlus text-white/40">Price</p>
+          <p className="text-[10px] uppercase tracking-widestPlus text-white/40">{t("purchaseModal.price")}</p>
           <p className="text-sm font-bold text-white">${item.price.toFixed(2)}</p>
         </div>
       </div>
@@ -116,19 +118,19 @@ export default function PurchaseConfirmModal({ open, onClose, item }: Props) {
       {stage === "review" && (
         <>
           <dl className="mt-4 space-y-2 text-sm">
-            <Row label="Item" value={`$${item.price.toFixed(2)}`} />
-            {!isResale && <Row label="Network fee (2.5%)" value={`$${fee.toFixed(2)}`} subtle />}
+            <Row label={t("purchaseModal.rowItem")} value={`$${item.price.toFixed(2)}`} />
+            {!isResale && <Row label={t("purchaseModal.rowFee")} value={`$${fee.toFixed(2)}`} subtle />}
             <div className="my-2 h-px bg-white/10" />
-            <Row label="Total" value={`$${total.toFixed(2)}`} bold />
+            <Row label={t("purchaseModal.rowTotal")} value={`$${total.toFixed(2)}`} bold />
           </dl>
 
           <dl className="mt-5 grid grid-cols-2 gap-3 text-xs">
             <div className="rounded-lg bg-bg-soft/60 p-3 ring-1 ring-white/10">
-              <dt className="text-white/45">Signed in as</dt>
+              <dt className="text-white/45">{t("purchaseModal.signedInAs")}</dt>
               <dd className="mt-1 font-semibold text-white truncate">{user?.email ?? "—"}</dd>
             </div>
             <div className="rounded-lg bg-bg-soft/60 p-3 ring-1 ring-white/10">
-              <dt className="text-white/45">Wallet balance</dt>
+              <dt className="text-white/45">{t("purchaseModal.walletBalance")}</dt>
               <dd className={`mt-1 font-semibold truncate ${insufficient ? "text-red-400" : "text-white"}`}>
                 {wallet ? `${wallet.balance.toFixed(2)} ${wallet.currency}` : "—"}
               </dd>
@@ -137,13 +139,13 @@ export default function PurchaseConfirmModal({ open, onClose, item }: Props) {
 
           {insufficient && (
             <p className="mt-3 text-xs text-red-400">
-              Your balance is too low for this purchase.
+              {t("purchaseModal.balanceTooLow")}
             </p>
           )}
 
           <div className="mt-5 flex gap-2">
             <Button variant="dark" size="md" fullWidth onClick={onClose}>
-              Cancel
+              {t("purchaseModal.cancel")}
             </Button>
             {insufficient ? (
               <Button
@@ -155,11 +157,11 @@ export default function PurchaseConfirmModal({ open, onClose, item }: Props) {
                   modal.openWallet();
                 }}
               >
-                Top up wallet
+                {t("purchaseModal.topUp")}
               </Button>
             ) : (
               <Button variant="primary" size="md" fullWidth onClick={confirm}>
-                Confirm · ${total.toFixed(2)}
+                {t("purchaseModal.confirmTotal", { total: total.toFixed(2) })}
               </Button>
             )}
           </div>
@@ -169,7 +171,7 @@ export default function PurchaseConfirmModal({ open, onClose, item }: Props) {
       {stage === "processing" && (
         <div className="mt-6 flex flex-col items-center text-center">
           <Spinner size="lg" className="text-brand-green" />
-          <p className="mt-4 text-xs text-white/55">Don't close this window.</p>
+          <p className="mt-4 text-xs text-white/55">{t("purchaseModal.dontClose")}</p>
         </div>
       )}
 
@@ -181,14 +183,16 @@ export default function PurchaseConfirmModal({ open, onClose, item }: Props) {
             </svg>
           </div>
           <p className="text-sm text-white/65">
-            We sent a receipt to <span className="text-white">{user?.email}</span>.
+            <Trans i18nKey="purchaseModal.receipt" values={{ email: user?.email }}>
+              We sent a receipt to <span className="text-white">{"{{email}}"}</span>.
+            </Trans>
           </p>
           <div className="mt-5 flex gap-2">
             <Button variant="dark" size="md" fullWidth onClick={() => { setStage("review"); onClose(); }}>
-              Keep browsing
+              {t("purchaseModal.keepBrowsing")}
             </Button>
             <Button variant="primary" size="md" fullWidth onClick={finish}>
-              Go to library
+              {t("purchaseModal.goToLibrary")}
             </Button>
           </div>
         </div>

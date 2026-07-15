@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { useSession } from "./SessionProvider";
 import { cn } from "../../utils/cn";
 
@@ -8,14 +9,15 @@ import { cn } from "../../utils/cn";
  * wallet is loaded.
  */
 export default function WalletPill({ className }: { className?: string }) {
+  const { t } = useTranslation();
   const { wallet } = useSession();
   if (!wallet) return null;
 
   return (
     <Link
       to="/wallet"
-      aria-label={`Wallet balance ${wallet.balance.toFixed(2)} ${wallet.currency}`}
-      title="Open wallet"
+      aria-label={t("walletPill.balanceLabel", { balance: wallet.balance.toFixed(2), currency: wallet.currency })}
+      title={t("walletPill.openWallet")}
       className={cn(
         "group inline-flex items-center gap-2 rounded-full bg-bg-card ring-1 ring-white/10 px-3 py-1 transition-all duration-150 hover:ring-white/25 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-green",
         className

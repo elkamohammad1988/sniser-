@@ -1,4 +1,5 @@
 import { FormEvent, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import Section from "../components/layout/Section";
 import SectionHeading from "../components/shared/SectionHeading";
 import Button from "../components/shared/Button";
@@ -13,9 +14,10 @@ import type { NotificationItem } from "../lib/api/types";
 import { validatePassword } from "../utils/validation";
 
 export default function AccountPage() {
+  const { t } = useTranslation();
   usePageMeta({
-    title: "Account — Sniser",
-    description: "Manage your Sniser profile, security, and notifications.",
+    title: t("account.meta.title"),
+    description: t("account.meta.description"),
     canonicalPath: "/account",
   });
 
@@ -63,7 +65,7 @@ export default function AccountPage() {
   const saveProfile = async (e: FormEvent) => {
     e.preventDefault();
     if (name.trim().length < 2) {
-      toast.error("Name too short", "Enter at least 2 characters.");
+      toast.error(t("account.toast.nameShortTitle"), t("account.toast.nameShortBody"));
       return;
     }
     setSavingProfile(true);
@@ -74,9 +76,9 @@ export default function AccountPage() {
       const { user: updated } = await endpoints.users.updateProfile(form);
       applyUser({ name: updated.name, avatarUrl: updated.avatarUrl });
       setAvatarFile(null);
-      toast.success("Profile updated");
+      toast.success(t("account.toast.profileUpdated"));
     } catch (err) {
-      toast.error("Couldn't save", err instanceof ApiClientError ? err.message : "Please try again.");
+      toast.error(t("account.toast.saveErrorTitle"), err instanceof ApiClientError ? err.message : t("account.toast.tryAgain"));
     } finally {
       setSavingProfile(false);
     }
@@ -86,9 +88,9 @@ export default function AccountPage() {
     setResending(true);
     try {
       await endpoints.auth.resendVerification();
-      toast.success("Verification sent", "Check your inbox for the confirmation link.");
+      toast.success(t("account.toast.verificationSentTitle"), t("account.toast.verificationSentBody"));
     } catch (err) {
-      toast.error("Couldn't send", err instanceof ApiClientError ? err.message : "Please try again.");
+      toast.error(t("account.toast.sendErrorTitle"), err instanceof ApiClientError ? err.message : t("account.toast.tryAgain"));
     } finally {
       setResending(false);
     }
@@ -107,9 +109,9 @@ export default function AccountPage() {
       await endpoints.auth.changePassword(current, next);
       setCurrent("");
       setNext("");
-      toast.success("Password changed", "Use your new password next time you sign in.");
+      toast.success(t("account.toast.passwordChangedTitle"), t("account.toast.passwordChangedBody"));
     } catch (error) {
-      toast.error("Couldn't change password", error instanceof ApiClientError ? error.message : "Please try again.");
+      toast.error(t("account.toast.passwordErrorTitle"), error instanceof ApiClientError ? error.message : t("account.toast.tryAgain"));
     } finally {
       setSavingPw(false);
     }
@@ -128,11 +130,11 @@ export default function AccountPage() {
   return (
     <>
       <Section tone="dark" spacing="md">
-        <SectionHeading eyebrow="Account" align="left" className="max-w-2xl">
-          Your account
+        <SectionHeading eyebrow={t("account.eyebrow")} align="left" className="max-w-2xl">
+          {t("account.title")}
         </SectionHeading>
         <p className="mt-3 max-w-2xl text-sm sm:text-base text-white/65 text-pretty">
-          Update your profile, secure your account, and review recent activity.
+          {t("account.subtitle")}
         </p>
       </Section>
 
@@ -140,11 +142,11 @@ export default function AccountPage() {
         <div className="grid gap-6 lg:grid-cols-2">
           {/* Profile */}
           <form onSubmit={saveProfile} className="rounded-2xl bg-bg-card p-6 ring-1 ring-white/5">
-            <h2 className="text-sm font-bold uppercase tracking-widestPlus text-white">Profile</h2>
+            <h2 className="text-sm font-bold uppercase tracking-widestPlus text-white">{t("account.profile.title")}</h2>
             <div className="mt-5 flex items-center gap-4">
               <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-full ring-1 ring-white/10">
                 {avatarPreview ? (
-                  <img src={avatarPreview} alt="Avatar preview" className="h-full w-full object-cover" />
+                  <img src={avatarPreview} alt={t("account.profile.avatarAlt")} className="h-full w-full object-cover" />
                 ) : (
                   <span className="grid h-full w-full place-items-center bg-gradient-to-br from-brand-green to-brand-greenDark text-bg text-lg font-extrabold">
                     {initialsFromName(user.name)}
@@ -160,7 +162,7 @@ export default function AccountPage() {
                   onChange={(e) => setAvatarFile(e.target.files?.[0] ?? null)}
                 />
                 <Button type="button" variant="dark" size="sm" onClick={() => fileRef.current?.click()}>
-                  {avatarFile ? "Change photo" : "Upload photo"}
+                  {avatarFile ? t("account.profile.changePhoto") : t("account.profile.uploadPhoto")}
                 </Button>
                 {avatarFile && (
                   <button
@@ -168,25 +170,25 @@ export default function AccountPage() {
                     onClick={() => setAvatarFile(null)}
                     className="ml-2 text-xs text-white/50 hover:text-white"
                   >
-                    Remove
+                    {t("account.profile.remove")}
                   </button>
                 )}
               </div>
             </div>
 
             <div className="mt-5 space-y-4">
-              <TextField label="Full name" value={name} onChange={(e) => setName(e.target.value)} required />
+              <TextField label={t("account.profile.fullName")} value={name} onChange={(e) => setName(e.target.value)} required />
               <div>
-                <label className="mb-1.5 block text-xs font-semibold text-white/75">Email</label>
+                <label className="mb-1.5 block text-xs font-semibold text-white/75">{t("account.profile.email")}</label>
                 <div className="flex items-center gap-2 rounded-lg bg-bg-soft/40 border border-white/10 px-3.5 py-2.5">
                   <span className="flex-1 truncate text-sm text-white/70">{user.email}</span>
                   {user.emailVerified ? (
                     <span className="rounded-full bg-brand-green/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-brand-green">
-                      Verified
+                      {t("account.profile.verified")}
                     </span>
                   ) : (
                     <span className="rounded-full bg-amber-400/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-amber-300">
-                      Unverified
+                      {t("account.profile.unverified")}
                     </span>
                   )}
                 </div>
@@ -197,28 +199,28 @@ export default function AccountPage() {
                     disabled={resending}
                     className="mt-2 text-xs font-semibold text-white/60 underline-offset-2 hover:text-brand-green hover:underline disabled:opacity-60"
                   >
-                    {resending ? "Sending…" : "Resend verification email"}
+                    {resending ? t("account.profile.sending") : t("account.profile.resendVerification")}
                   </button>
                 )}
               </div>
             </div>
 
             <div className="mt-5">
-              <Button type="submit" variant="primary" size="md" isLoading={savingProfile} loadingText="Saving…">
-                Save changes
+              <Button type="submit" variant="primary" size="md" isLoading={savingProfile} loadingText={t("account.profile.saving")}>
+                {t("account.profile.saveChanges")}
               </Button>
             </div>
           </form>
 
           {/* Security */}
           <form onSubmit={changePassword} className="rounded-2xl bg-bg-card p-6 ring-1 ring-white/5">
-            <h2 className="text-sm font-bold uppercase tracking-widestPlus text-white">Security</h2>
+            <h2 className="text-sm font-bold uppercase tracking-widestPlus text-white">{t("account.security.title")}</h2>
             <p className="mt-2 text-xs text-white/55">
-              Changing your password signs you out of other devices.
+              {t("account.security.note")}
             </p>
             <div className="mt-5 space-y-4">
               <TextField
-                label="Current password"
+                label={t("account.security.currentPassword")}
                 type="password"
                 autoComplete="current-password"
                 value={current}
@@ -226,20 +228,20 @@ export default function AccountPage() {
                 required
               />
               <TextField
-                label="New password"
+                label={t("account.security.newPassword")}
                 type="password"
                 autoComplete="new-password"
                 value={next}
                 onChange={(e) => setNext(e.target.value)}
                 onBlur={() => setPwError(validatePassword(next))}
                 error={pwError}
-                hint="At least 8 chars, one uppercase, one number."
+                hint={t("account.security.passwordHint")}
                 required
               />
             </div>
             <div className="mt-5">
-              <Button type="submit" variant="primary" size="md" isLoading={savingPw} loadingText="Updating…">
-                Update password
+              <Button type="submit" variant="primary" size="md" isLoading={savingPw} loadingText={t("account.security.updating")}>
+                {t("account.security.updatePassword")}
               </Button>
             </div>
           </form>
@@ -249,7 +251,7 @@ export default function AccountPage() {
         <div className="mt-6 rounded-2xl bg-bg-card p-6 ring-1 ring-white/5">
           <div className="flex items-center justify-between">
             <h2 className="text-sm font-bold uppercase tracking-widestPlus text-white">
-              Notifications {unread > 0 && <span className="ml-1 text-brand-green">({unread})</span>}
+              {t("account.notifications.title")} {unread > 0 && <span className="ml-1 text-brand-green">({unread})</span>}
             </h2>
             {unread > 0 && (
               <button
@@ -257,14 +259,14 @@ export default function AccountPage() {
                 onClick={markAllRead}
                 className="text-xs font-semibold text-white/55 hover:text-brand-green focus-visible:outline-none focus-visible:text-brand-green"
               >
-                Mark all read
+                {t("account.notifications.markAllRead")}
               </button>
             )}
           </div>
 
           <div className="mt-4">
             {notifications.length === 0 ? (
-              <p className="py-8 text-center text-sm text-white/50">You're all caught up.</p>
+              <p className="py-8 text-center text-sm text-white/50">{t("account.notifications.empty")}</p>
             ) : (
               <ul className="divide-y divide-white/5">
                 {notifications.map((n) => (

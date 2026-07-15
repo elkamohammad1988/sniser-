@@ -6,7 +6,9 @@ import {
   useRef,
   useState,
 } from "react";
+import { useTranslation } from "react-i18next";
 import { m } from "framer-motion";
+import i18n from "../i18n";
 import Section from "../components/layout/Section";
 import SectionHeading from "../components/shared/SectionHeading";
 import Button from "../components/shared/Button";
@@ -29,16 +31,16 @@ type PendingAction = { id: string; action: "status" | "delete" };
 
 const HANDLE_RE = /^[a-z0-9_.]{3,30}$/;
 
-const CATEGORIES: { value: ReleaseCategory; label: string }[] = [
-  { value: "audio", label: "Audio" },
-  { value: "video", label: "Video" },
-  { value: "original", label: "Original (1-of-1)" },
+const CATEGORIES: { value: ReleaseCategory; labelKey: string }[] = [
+  { value: "audio", labelKey: "studio.category.audio" },
+  { value: "video", labelKey: "studio.category.video" },
+  { value: "original", labelKey: "studio.categoryOption.original" },
 ];
 
 const CATEGORY_LABEL: Record<ReleaseCategory, string> = {
-  audio: "Audio",
-  video: "Video",
-  original: "Original",
+  audio: "studio.category.audio",
+  video: "studio.category.video",
+  original: "studio.category.original",
 };
 
 const CATEGORY_ART: Record<ReleaseCategory, string> = {
@@ -54,7 +56,7 @@ const STATUS_BADGE: Record<string, string> = {
 };
 
 function errMessage(err: unknown): string {
-  return err instanceof ApiClientError ? err.message : "Please try again in a moment.";
+  return err instanceof ApiClientError ? err.message : i18n.t("studio.errFallback");
 }
 
 function capitalize(value: string): string {
@@ -63,9 +65,9 @@ function capitalize(value: string): string {
 
 function validateHandle(value: string): string | null {
   const v = value.trim();
-  if (!v) return "Handle is required.";
+  if (!v) return i18n.t("studio.handle.required");
   if (!HANDLE_RE.test(v))
-    return "3–30 chars: lowercase letters, numbers, dots or underscores.";
+    return i18n.t("studio.handle.invalid");
   return null;
 }
 
@@ -78,10 +80,10 @@ function toPositiveInt(value: string): number | null {
 }
 
 export default function StudioPage() {
+  const { t } = useTranslation();
   usePageMeta({
-    title: "Artist Studio — Sniser",
-    description:
-      "Your Sniser artist studio — track plays and revenue, upload new drops, and publish releases to the marketplace.",
+    title: t("studio.meta.title"),
+    description: t("studio.meta.description"),
     canonicalPath: "/studio",
   });
 
@@ -195,13 +197,13 @@ export default function StudioPage() {
         bio: bio.trim() || undefined,
         location: location.trim() || undefined,
       });
-      toast.success("You're an artist now", "Your studio is ready — create your first drop.");
+      toast.success(t("studio.toast.appliedTitle"), t("studio.toast.appliedBody"));
       setIsArtist(true); // triggers the load effect above
     } catch (err) {
       if (err instanceof ApiClientError && err.status === 409) {
         setApplyErrors((p) => ({ ...p, handle: err.message }));
       }
-      toast.error("Couldn't complete your application", errMessage(err));
+      toast.error(t("studio.toast.applyErrorTitle"), errMessage(err));
     } finally {
       setApplying(false);
     }
@@ -214,7 +216,7 @@ export default function StudioPage() {
       title: validateMin(title, 2, "Title"),
       price:
         price.trim() === "" || Number.isNaN(priceNum) || priceNum < 0
-          ? "Enter a valid price (0 or more)."
+          ? t("studio.priceError")
           : null,
     };
     setReleaseErrors(nextErrors);
@@ -238,14 +240,14 @@ export default function StudioPage() {
       const { release } = await endpoints.artists.createRelease(fd);
       setReleases((prev) => [release, ...prev]);
       toast.success(
-        "Release created",
-        release.status === "published" ? "It's live on the marketplace." : "Saved as a draft."
+        t("studio.toast.releaseCreatedTitle"),
+        release.status === "published" ? t("studio.toast.releaseLive") : t("studio.toast.releaseDraft")
       );
       resetReleaseForm();
       setFormOpen(false);
       void refreshDashboard();
     } catch (err) {
-      toast.error("Couldn't create release", errMessage(err));
+      toast.error(t("studio.toast.createErrorTitle"), errMessage(err));
     } finally {
       setCreating(false);
     }
@@ -256,10 +258,10 @@ export default function StudioPage() {
     try {
       const { release: updated } = await endpoints.artists.setStatus(release.id, status);
       setReleases((prev) => prev.map((r) => (r.id === updated.id ? updated : r)));
-      toast.success(status === "published" ? "Release published" : "Moved to draft");
+      toast.success(status === "published" ? t("studio.toast.publishedTitle") : t("studio.toast.movedToDraft"));
       void refreshDashboard();
     } catch (err) {
-      toast.error("Couldn't update release", errMessage(err));
+      toast.error(t("studio.toast.updateErrorTitle"), errMessage(err));
     } finally {
       setPending(null);
     }
@@ -270,10 +272,10 @@ export default function StudioPage() {
     try {
       await endpoints.artists.deleteRelease(release.id);
       setReleases((prev) => prev.filter((r) => r.id !== release.id));
-      toast.success("Release deleted");
+      toast.success(t("studio.toast.deletedTitle"));
       void refreshDashboard();
     } catch (err) {
-      toast.error("Couldn't delete release", errMessage(err));
+      toast.error(t("studio.toast.deleteErrorTitle"), errMessage(err));
     } finally {
       setPending(null);
     }
@@ -299,13 +301,13 @@ export default function StudioPage() {
           <div className="mx-auto mb-5 grid h-14 w-14 place-items-center rounded-2xl bg-brand-green/15 text-brand-green">
             <StudioIcon />
           </div>
-          <h1 className="text-lg font-bold text-white">Sign in to open your studio</h1>
+          <h1 className="text-lg font-bold text-white">{t("studio.signIn.title")}</h1>
           <p className="mt-1.5 text-sm text-white/60 text-pretty">
-            Log in or create an account to apply as an artist and start releasing on Sniser.
+            {t("studio.signIn.body")}
           </p>
           <div className="mt-6">
             <Button variant="primary" onClick={() => modal.openAuth({ mode: "login" })}>
-              Sign in
+              {t("studio.signIn.cta")}
             </Button>
           </div>
         </div>
@@ -320,12 +322,11 @@ export default function StudioPage() {
     return (
       <>
         <Section tone="dark" spacing="md">
-          <SectionHeading eyebrow="Studio" align="left" className="max-w-2xl">
-            Become a Sniser artist.
+          <SectionHeading eyebrow={t("studio.eyebrow")} align="left" className="max-w-2xl">
+            {t("studio.apply.heading")}
           </SectionHeading>
           <p className="mt-3 max-w-2xl text-sm sm:text-base text-white/65 text-pretty">
-            Claim your handle to unlock the studio — upload drops, price your access passes, and get
-            paid when fans buy or resell.
+            {t("studio.apply.body")}
           </p>
         </Section>
 
@@ -339,12 +340,12 @@ export default function StudioPage() {
             >
               <form noValidate onSubmit={onApply} className="space-y-4">
                 <TextField
-                  label="Artist handle"
+                  label={t("studio.apply.handleLabel")}
                   value={handle}
                   onChange={(e) => setHandle(e.target.value.toLowerCase())}
                   onBlur={() => setApplyErrors((p) => ({ ...p, handle: validateHandle(handle) }))}
                   error={applyErrors.handle}
-                  hint="Your public URL: sniser.com/artist/your-handle"
+                  hint={t("studio.apply.handleHint")}
                   placeholder="nightdrive"
                   autoCapitalize="none"
                   autoCorrect="off"
@@ -353,7 +354,7 @@ export default function StudioPage() {
                   required
                 />
                 <TextField
-                  label="Display name"
+                  label={t("studio.apply.displayNameLabel")}
                   value={displayName}
                   onChange={(e) => setDisplayName(e.target.value)}
                   onBlur={() =>
@@ -368,19 +369,19 @@ export default function StudioPage() {
                   required
                 />
                 <TextField
-                  label="Location"
+                  label={t("studio.apply.locationLabel")}
                   value={location}
                   onChange={(e) => setLocation(e.target.value)}
-                  hint="Optional — where you're based."
+                  hint={t("studio.apply.locationHint")}
                   placeholder="Berlin, DE"
                   autoComplete="off"
                 />
                 <TextArea
-                  label="Bio"
+                  label={t("studio.apply.bioLabel")}
                   value={bio}
                   onChange={(e) => setBio(e.target.value)}
-                  hint="Optional — tell fans what you make."
-                  placeholder="A few sentences about your sound…"
+                  hint={t("studio.apply.bioHint")}
+                  placeholder={t("studio.apply.bioPlaceholder")}
                   rows={4}
                 />
                 <Button
@@ -389,9 +390,9 @@ export default function StudioPage() {
                   size="md"
                   fullWidth
                   isLoading={applying}
-                  loadingText="Submitting…"
+                  loadingText={t("studio.apply.submitting")}
                 >
-                  Open my studio
+                  {t("studio.apply.submit")}
                 </Button>
               </form>
             </m.div>
@@ -399,31 +400,30 @@ export default function StudioPage() {
             <aside className="space-y-4">
               <div className="rounded-2xl bg-bg-card p-6 ring-1 ring-white/5">
                 <h2 className="text-sm font-bold tracking-widestPlus uppercase text-white">
-                  What you get
+                  {t("studio.apply.whatYouGet")}
                 </h2>
                 <ul className="mt-4 space-y-3 text-sm">
                   {[
-                    "Publish video, audio, and one-of-one originals.",
-                    "Set your own price — earn on every primary sale.",
-                    "Keep earning when fans resell their access.",
-                    "Live dashboard for plays, sales, and revenue.",
-                  ].map((benefit) => (
-                    <li key={benefit} className="flex items-start gap-3">
+                    "studio.apply.benefits.publish",
+                    "studio.apply.benefits.price",
+                    "studio.apply.benefits.resell",
+                    "studio.apply.benefits.dashboard",
+                  ].map((benefitKey) => (
+                    <li key={benefitKey} className="flex items-start gap-3">
                       <span className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-lg bg-brand-green/15 text-brand-green">
                         <CheckIcon />
                       </span>
-                      <span className="text-white/70 text-pretty">{benefit}</span>
+                      <span className="text-white/70 text-pretty">{t(benefitKey)}</span>
                     </li>
                   ))}
                 </ul>
               </div>
               <div className="rounded-2xl bg-bg-card p-6 ring-1 ring-white/5">
                 <h2 className="text-sm font-bold tracking-widestPlus uppercase text-white">
-                  Handle rules
+                  {t("studio.apply.handleRulesTitle")}
                 </h2>
                 <p className="mt-3 text-sm text-white/65 leading-relaxed">
-                  3–30 characters, lowercase letters, numbers, dots and underscores only. Your handle
-                  is permanent and shown on every release.
+                  {t("studio.apply.handleRulesBody")}
                 </p>
               </div>
             </aside>
@@ -438,13 +438,13 @@ export default function StudioPage() {
   // -----------------------------------------------------------------------
   const stats = dashboard
     ? [
-        { label: "Releases", value: dashboard.releases.toLocaleString() },
-        { label: "Published", value: dashboard.published.toLocaleString() },
-        { label: "Total plays", value: dashboard.totalPlays.toLocaleString() },
-        { label: "Sales", value: dashboard.sales.toLocaleString() },
-        { label: "Revenue", value: `${dashboard.revenue.toFixed(2)} ${dashboard.currency}` },
+        { label: t("studio.stats.releases"), value: dashboard.releases.toLocaleString() },
+        { label: t("studio.stats.published"), value: dashboard.published.toLocaleString() },
+        { label: t("studio.stats.totalPlays"), value: dashboard.totalPlays.toLocaleString() },
+        { label: t("studio.stats.sales"), value: dashboard.sales.toLocaleString() },
+        { label: t("studio.stats.revenue"), value: `${dashboard.revenue.toFixed(2)} ${dashboard.currency}` },
         {
-          label: "Wallet balance",
+          label: t("studio.stats.walletBalance"),
           value: `${dashboard.walletBalance.toFixed(2)} ${dashboard.currency}`,
         },
       ]
@@ -453,12 +453,13 @@ export default function StudioPage() {
   return (
     <>
       <Section tone="dark" spacing="md">
-        <SectionHeading eyebrow="Studio" align="left" className="max-w-2xl">
-          Artist Studio
+        <SectionHeading eyebrow={t("studio.eyebrow")} align="left" className="max-w-2xl">
+          {t("studio.title")}
         </SectionHeading>
         <p className="mt-3 max-w-2xl text-sm sm:text-base text-white/65 text-pretty">
-          Welcome back{user.name ? `, ${user.name}` : ""} — track your numbers, upload new drops, and
-          publish when you're ready.
+          {user.name
+            ? t("studio.welcomeNamed", { name: user.name })
+            : t("studio.welcome")}
         </p>
       </Section>
 
@@ -498,9 +499,9 @@ export default function StudioPage() {
                 className="flex w-full items-center justify-between gap-3 rounded-2xl p-5 sm:p-6 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-green focus-visible:ring-inset"
               >
                 <div>
-                  <h2 className="text-base font-bold text-white">New release</h2>
+                  <h2 className="text-base font-bold text-white">{t("studio.newRelease.title")}</h2>
                   <p className="mt-0.5 text-sm text-white/55">
-                    Upload a drop, set a price, publish when ready.
+                    {t("studio.newRelease.subtitle")}
                   </p>
                 </div>
                 <span
@@ -522,7 +523,7 @@ export default function StudioPage() {
                   className="space-y-4 border-t border-white/5 p-5 sm:p-6"
                 >
                   <TextField
-                    label="Title"
+                    label={t("studio.form.titleLabel")}
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     onBlur={() =>
@@ -540,7 +541,7 @@ export default function StudioPage() {
                         htmlFor="release-category"
                         className="mb-1.5 block text-xs font-semibold text-white/75"
                       >
-                        Category
+                        {t("studio.form.categoryLabel")}
                       </label>
                       <select
                         id="release-category"
@@ -550,13 +551,13 @@ export default function StudioPage() {
                       >
                         {CATEGORIES.map((c) => (
                           <option key={c.value} value={c.value} className="bg-bg-card">
-                            {c.label}
+                            {t(c.labelKey)}
                           </option>
                         ))}
                       </select>
                     </div>
                     <TextField
-                      label="Price"
+                      label={t("studio.form.priceLabel")}
                       type="number"
                       inputMode="decimal"
                       min="0"
@@ -570,72 +571,72 @@ export default function StudioPage() {
                             price.trim() === "" ||
                             Number.isNaN(Number(price)) ||
                             Number(price) < 0
-                              ? "Enter a valid price (0 or more)."
+                              ? t("studio.priceError")
                               : null,
                         }))
                       }
                       error={releaseErrors.price}
                       placeholder="9.99"
-                      hint="In your wallet currency."
+                      hint={t("studio.form.priceHint")}
                       required
                     />
                   </div>
 
                   <div className="grid gap-4 sm:grid-cols-2">
                     <TextField
-                      label="Duration"
+                      label={t("studio.form.durationLabel")}
                       type="number"
                       inputMode="numeric"
                       min="0"
                       value={duration}
                       onChange={(e) => setDuration(e.target.value)}
                       placeholder="210"
-                      hint="Seconds — optional."
+                      hint={t("studio.form.durationHint")}
                     />
                     <TextField
-                      label="Supply"
+                      label={t("studio.form.supplyLabel")}
                       type="number"
                       inputMode="numeric"
                       min="0"
                       value={supply}
                       onChange={(e) => setSupply(e.target.value)}
                       placeholder="100"
-                      hint="Editions — optional."
+                      hint={t("studio.form.supplyHint")}
                     />
                   </div>
 
                   <TextField
-                    label="Tags"
+                    label={t("studio.form.tagsLabel")}
                     value={tags}
                     onChange={(e) => setTags(e.target.value)}
                     placeholder="live, exclusive, remix"
-                    hint="Comma-separated — optional."
+                    hint={t("studio.form.tagsHint")}
                   />
 
                   <TextArea
-                    label="Description"
+                    label={t("studio.form.descriptionLabel")}
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
-                    placeholder="What's in this drop?"
-                    hint="Optional."
+                    placeholder={t("studio.form.descriptionPlaceholder")}
+                    hint={t("studio.form.optional")}
                     rows={3}
                   />
 
                   <div className="grid gap-4 sm:grid-cols-2">
                     <FileInput
                       id="release-cover"
-                      label="Cover image"
+                      label={t("studio.form.coverLabel")}
                       accept="image/*"
-                      hint="PNG or JPG — optional."
+                      hint={t("studio.form.coverHint")}
                       file={coverFile}
                       inputRef={coverInputRef}
                       onSelect={setCoverFile}
                     />
                     <FileInput
                       id="release-media"
-                      label="Media file"
+                      label={t("studio.form.mediaLabel")}
                       accept="audio/*,video/*"
-                      hint="Audio or video — optional."
+                      hint={t("studio.form.mediaHint")}
                       file={mediaFile}
                       inputRef={mediaInputRef}
                       onSelect={setMediaFile}
@@ -648,9 +649,9 @@ export default function StudioPage() {
                     size="md"
                     fullWidth
                     isLoading={creating}
-                    loadingText="Creating…"
+                    loadingText={t("studio.form.creating")}
                   >
-                    Create release
+                    {t("studio.form.submit")}
                   </Button>
                 </form>
               )}
@@ -660,10 +661,10 @@ export default function StudioPage() {
             <div>
               <div className="flex items-center justify-between gap-3">
                 <h2 className="text-sm font-bold uppercase tracking-widestPlus text-white">
-                  Your releases
+                  {t("studio.releases.title")}
                 </h2>
                 {loadStatus === "success" && releases.length > 0 && (
-                  <span className="text-xs text-white/45 tabular-nums">{releases.length} total</span>
+                  <span className="text-xs text-white/45 tabular-nums">{t("studio.releases.total", { n: releases.length })}</span>
                 )}
               </div>
 
@@ -742,6 +743,7 @@ function ReleaseRow({
   onUnpublish: (release: ArtistRelease) => void;
   onDelete: (release: ArtistRelease) => void;
 }) {
+  const { t } = useTranslation();
   const cover = assetUrl(release.coverUrl);
   const busy = pending?.id === release.id;
   const statusBusy = busy && pending?.action === "status";
@@ -778,10 +780,10 @@ function ReleaseRow({
                 badge
               )}
             >
-              {capitalize(release.status)}
+              {t(`studio.status.${release.status}`, { defaultValue: capitalize(release.status) })}
             </span>
             <span className="text-[10px] font-bold uppercase tracking-widestPlus text-brand-green">
-              {CATEGORY_LABEL[release.category]}
+              {t(CATEGORY_LABEL[release.category])}
             </span>
           </div>
           <h3 className="mt-1 truncate text-base font-bold text-white" title={release.title}>
@@ -789,28 +791,28 @@ function ReleaseRow({
           </h3>
           <dl className="mt-1 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-white/50 tabular-nums">
             <div>
-              <dt className="sr-only">Price</dt>
+              <dt className="sr-only">{t("studio.releaseRow.price")}</dt>
               <dd className="font-semibold text-white/70">
                 {release.price.toFixed(2)} {release.currency}
               </dd>
             </div>
             <div>
-              <dt className="sr-only">Plays</dt>
-              <dd>{release.plays.toLocaleString()} plays</dd>
+              <dt className="sr-only">{t("studio.releaseRow.plays")}</dt>
+              <dd>{t("studio.releaseRow.playsCount", { plays: release.plays.toLocaleString() })}</dd>
             </div>
             <div>
-              <dt className="sr-only">Sales</dt>
-              <dd>{release.sales.toLocaleString()} sales</dd>
+              <dt className="sr-only">{t("studio.releaseRow.sales")}</dt>
+              <dd>{t("studio.releaseRow.salesCount", { sales: release.sales.toLocaleString() })}</dd>
             </div>
           </dl>
           {release.tags.length > 0 && (
             <div className="mt-2 flex flex-wrap gap-1.5">
-              {release.tags.map((t) => (
+              {release.tags.map((tag) => (
                 <span
-                  key={t}
+                  key={tag}
                   className="rounded-full bg-white/5 px-2 py-0.5 text-[10px] font-semibold text-white/65 ring-1 ring-white/10"
                 >
-                  {t}
+                  {tag}
                 </span>
               ))}
             </div>
@@ -824,11 +826,11 @@ function ReleaseRow({
             variant="primary"
             size="sm"
             isLoading={statusBusy}
-            loadingText="Publishing…"
+            loadingText={t("studio.releaseRow.publishing")}
             disabled={busy}
             onClick={() => onPublish(release)}
           >
-            Publish
+            {t("studio.releaseRow.publish")}
           </Button>
         )}
         {release.status === "published" && (
@@ -836,11 +838,11 @@ function ReleaseRow({
             variant="dark"
             size="sm"
             isLoading={statusBusy}
-            loadingText="Updating…"
+            loadingText={t("studio.releaseRow.updating")}
             disabled={busy}
             onClick={() => onUnpublish(release)}
           >
-            Unpublish
+            {t("studio.releaseRow.unpublish")}
           </Button>
         )}
         {release.status === "archived" && (
@@ -848,11 +850,11 @@ function ReleaseRow({
             variant="dark"
             size="sm"
             isLoading={statusBusy}
-            loadingText="Publishing…"
+            loadingText={t("studio.releaseRow.publishing")}
             disabled={busy}
             onClick={() => onPublish(release)}
           >
-            Publish
+            {t("studio.releaseRow.publish")}
           </Button>
         )}
         <button
@@ -863,7 +865,7 @@ function ReleaseRow({
           className="inline-flex items-center justify-center gap-1.5 rounded-md border border-red-500/25 bg-red-500/5 px-3 py-1.5 text-sm font-semibold text-red-300 transition-colors hover:border-red-500/45 hover:bg-red-500/15 disabled:cursor-not-allowed disabled:opacity-60 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
         >
           {deleteBusy ? <Spinner size="sm" /> : <TrashIcon />}
-          Delete
+          {t("studio.releaseRow.delete")}
         </button>
       </div>
     </div>
@@ -904,30 +906,32 @@ function ReleaseSkeletonList() {
 }
 
 function EmptyReleases() {
+  const { t } = useTranslation();
   return (
     <div className="rounded-2xl border border-dashed border-white/10 bg-bg-card/40 p-10 text-center">
       <div className="mx-auto mb-4 grid h-12 w-12 place-items-center rounded-2xl bg-brand-green/15 text-brand-green">
         <MusicIcon />
       </div>
-      <h3 className="text-base font-bold text-white">No releases yet</h3>
+      <h3 className="text-base font-bold text-white">{t("studio.empty.title")}</h3>
       <p className="mt-1.5 text-sm text-white/55 text-pretty">
-        Create your first drop with the form above.
+        {t("studio.empty.body")}
       </p>
     </div>
   );
 }
 
 function ErrorState({ onRetry }: { onRetry: () => void }) {
+  const { t } = useTranslation();
   return (
     <div className="mx-auto max-w-md rounded-2xl bg-bg-card p-10 text-center ring-1 ring-white/5">
       <div className="mx-auto mb-5 grid h-14 w-14 place-items-center rounded-2xl bg-red-500/15 text-red-400">
         <AlertIcon />
       </div>
-      <h3 className="text-lg font-bold text-white">Couldn't load your studio</h3>
-      <p className="mt-1.5 text-sm text-white/60">Something went wrong fetching your dashboard.</p>
+      <h3 className="text-lg font-bold text-white">{t("studio.error.title")}</h3>
+      <p className="mt-1.5 text-sm text-white/60">{t("studio.error.body")}</p>
       <div className="mt-5">
         <Button variant="outline" size="sm" onClick={onRetry}>
-          Retry
+          {t("studio.error.retry")}
         </Button>
       </div>
     </div>

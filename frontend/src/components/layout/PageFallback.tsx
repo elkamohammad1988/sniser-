@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import Container from "./Container";
 
 /**
@@ -6,11 +7,12 @@ import Container from "./Container";
  * green hero, etc.) without flashing the wrong palette during navigation.
  */
 export default function PageFallback() {
+  const { t } = useTranslation();
   return (
     <div
       role="status"
       aria-live="polite"
-      aria-label="Loading page"
+      aria-label={t("pageFallback.loadingPage")}
       className="bg-bg"
     >
       <Container>
@@ -46,7 +48,7 @@ export default function PageFallback() {
           </div>
         </div>
       </Container>
-      <span className="sr-only">Loading…</span>
+      <span className="sr-only">{t("common.loading")}</span>
     </div>
   );
 }

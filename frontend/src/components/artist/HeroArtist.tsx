@@ -1,4 +1,5 @@
 import { m, useTransform } from "framer-motion";
+import { useTranslation, Trans } from "react-i18next";
 import WhatsAppButton from "../shared/WhatsAppButton";
 import Container from "../layout/Container";
 import CountUp from "../shared/CountUp";
@@ -8,9 +9,9 @@ import { EASE_SOFT } from "../../lib/motion/variants";
 import { usePointerParallax } from "../../hooks/usePointerParallax";
 
 const STATS = [
-  { value: 120, suffix: "+", label: "Artists onboarded" },
-  { value: 1.4, decimals: 1, prefix: "$", suffix: "M", label: "Paid to creators" },
-  { value: 98, suffix: "%", label: "Holder satisfaction" },
+  { value: 120, suffix: "+", labelKey: "artist.hero.stats.onboarded" },
+  { value: 1.4, decimals: 1, prefix: "$", suffix: "M", labelKey: "artist.hero.stats.paid" },
+  { value: 98, suffix: "%", labelKey: "artist.hero.stats.satisfaction" },
 ];
 
 // Lighting overlay that turns the flat green fill into a dimensional surface.
@@ -20,6 +21,7 @@ const MESH =
   "radial-gradient(42% 42% at 80% 32%, rgba(255,255,255,0.34), transparent 62%)";
 
 export default function HeroArtist() {
+  const { t } = useTranslation();
   const { x, y, bind } = usePointerParallax();
   const illoX = useTransform(x, (v) => v * 26);
   const illoY = useTransform(y, (v) => v * 26);
@@ -62,19 +64,19 @@ export default function HeroArtist() {
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-green opacity-75" />
                 <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-brand-green" />
               </span>
-              For Artists
+              {t("artist.hero.badge")}
             </span>
 
             <h1 className="mt-6 text-hero font-extrabold text-balance text-fade-ink">
-              Money For
-              <br />
-              Your Music
+              <Trans i18nKey="artist.hero.title">
+                Money For
+                <br />
+                Your Music
+              </Trans>
             </h1>
 
             <p className="mt-6 max-w-md text-pretty text-sm leading-relaxed text-bg/80 sm:text-base">
-              You bring the talent — we bring the booking. Sniser invests real
-              capital into your sound so you can stay in the booth and out of the
-              red. You keep creating. We handle the business. We grow together.
+              {t("artist.hero.body")}
             </p>
 
             <m.div
@@ -88,7 +90,7 @@ export default function HeroArtist() {
                 href="#how-it-works"
                 className="group inline-flex items-center gap-2.5 text-sm font-semibold text-bg/75 transition-colors hover:text-bg focus-visible:outline-none focus-visible:text-bg"
               >
-                See how it works
+                {t("artist.hero.seeHow")}
                 <span className="grid h-7 w-7 place-items-center rounded-full bg-bg/10 ring-1 ring-bg/15 transition-transform duration-300 ease-out-soft group-hover:translate-y-0.5">
                   <svg
                     viewBox="0 0 24 24"
@@ -124,7 +126,7 @@ export default function HeroArtist() {
             <div className="relative gradient-border animate-float rounded-[2rem] bg-white/12 p-3 shadow-frame backdrop-blur-[2px] sm:p-4">
               <Media
                 src="/media/hero-artist.jpg"
-                alt="Recording artist performing on stage under studio lights"
+                alt={t("artist.hero.imageAlt")}
                 aspect="4 / 5"
                 priority
                 kenBurns
@@ -161,7 +163,7 @@ export default function HeroArtist() {
           className="mt-4 grid grid-cols-2 gap-y-6 border-t border-bg/15 pt-8 sm:flex sm:flex-wrap sm:items-center sm:gap-x-12 lg:mt-8"
         >
           {STATS.map((stat, i) => (
-            <div key={stat.label} className="flex items-center gap-12">
+            <div key={stat.labelKey} className="flex items-center gap-12">
               {i > 0 && (
                 <span
                   aria-hidden="true"
@@ -178,7 +180,7 @@ export default function HeroArtist() {
                   />
                 </dd>
                 <dt className="mt-1 text-[11px] font-semibold uppercase tracking-widestPlus text-bg/55">
-                  {stat.label}
+                  {t(stat.labelKey)}
                 </dt>
               </div>
             </div>

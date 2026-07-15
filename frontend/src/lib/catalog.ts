@@ -8,23 +8,24 @@ import type { CatalogItem, CatalogCategory, SortKey } from "./api/types";
 export type { CatalogItem, SortKey };
 export type ContentCategory = CatalogCategory;
 
+// Values are i18n key strings — resolve them with `t(...)` at the render site.
 export const CATEGORY_LABEL: Record<ContentCategory, string> = {
-  video: "Video",
-  audio: "Audio",
-  original: "Original",
-  resale: "Resale",
+  video: "catalog.category.video",
+  audio: "catalog.category.audio",
+  original: "catalog.category.original",
+  resale: "catalog.category.resale",
 };
 
 export const CATEGORY_BLURB: Record<ContentCategory, string> = {
-  video: "Live sets, behind-the-scenes, exclusive sessions.",
-  audio: "EPs, singles, lossless drops you actually own.",
-  original: "Unreleased cuts, voicenotes, lyric sheets — one-of-one.",
-  resale: "Holder-listed access passes — buy from other fans.",
+  video: "catalog.blurb.video",
+  audio: "catalog.blurb.audio",
+  original: "catalog.blurb.original",
+  resale: "catalog.blurb.resale",
 };
 
 export const SORT_LABEL: Record<SortKey, string> = {
-  newest: "Newest",
-  popular: "Most played",
-  "price-asc": "Price: low to high",
-  "price-desc": "Price: high to low",
+  newest: "catalog.sort.newest",
+  popular: "catalog.sort.popular",
+  "price-asc": "catalog.sort.priceAsc",
+  "price-desc": "catalog.sort.priceDesc",
 };

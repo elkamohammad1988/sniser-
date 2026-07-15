@@ -1,4 +1,5 @@
 import { m } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import Section from "../layout/Section";
 import { StaggerContainer, StaggerItem } from "../shared/Stagger";
 import { AmbientGlow } from "../shared/Atmosphere";
@@ -11,31 +12,33 @@ import {
   ChartIcon,
 } from "../shared/Icons";
 
-const STEPS = [
-  { number: 1, label: "Contact Sniser", icon: <SendIcon className="h-6 w-6" /> },
-  {
-    number: 2,
-    label: "Exclusive Content Agreement",
-    icon: <DocumentIcon className="h-6 w-6" />,
-  },
-  {
-    number: 3,
-    label: "Studio Production & Mixing",
-    icon: <HeadphoneIcon className="h-6 w-6" />,
-  },
-  {
-    number: 4,
-    label: "Exclusive Platform Release",
-    icon: <WaveformIcon className="h-6 w-6" />,
-  },
-  {
-    number: 5,
-    label: "Revenue Generation & Profit Share",
-    icon: <ChartIcon className="h-6 w-6" />,
-  },
-];
-
 export default function StepsOverview() {
+  const { t } = useTranslation();
+
+  const STEPS = [
+    { number: 1, label: t("artist.steps.contact"), icon: <SendIcon className="h-6 w-6" /> },
+    {
+      number: 2,
+      label: t("artist.steps.agreement"),
+      icon: <DocumentIcon className="h-6 w-6" />,
+    },
+    {
+      number: 3,
+      label: t("artist.steps.studio"),
+      icon: <HeadphoneIcon className="h-6 w-6" />,
+    },
+    {
+      number: 4,
+      label: t("artist.steps.release"),
+      icon: <WaveformIcon className="h-6 w-6" />,
+    },
+    {
+      number: 5,
+      label: t("artist.steps.revenue"),
+      icon: <ChartIcon className="h-6 w-6" />,
+    },
+  ];
+
   return (
     <Section
       tone="card"
@@ -95,6 +98,7 @@ function StepNode({
   label: string;
   icon: React.ReactNode;
 }) {
+  const { t } = useTranslation();
   return (
     <div className="group flex flex-col items-center text-center">
       <div className="gradient-border relative grid h-14 w-14 place-items-center rounded-2xl bg-bg text-brand-green shadow-card ring-1 ring-white/10 transition-all duration-300 ease-out-soft group-hover:-translate-y-1 group-hover:shadow-glow group-hover:ring-brand-green/40">
@@ -104,7 +108,7 @@ function StepNode({
         </span>
       </div>
       <p className="mt-4 text-[10px] font-bold uppercase tracking-widestPlus text-white/45">
-        Step {number}
+        {t("artist.steps.step", { number })}
       </p>
       <p className="mt-1 max-w-[11rem] text-sm font-semibold leading-snug text-white/85 text-pretty">
         {label}

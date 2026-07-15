@@ -1,4 +1,5 @@
 import { ComponentType, SVGProps } from "react";
+import { Trans, useTranslation } from "react-i18next";
 import Section from "../layout/Section";
 import SafeLink from "../shared/SafeLink";
 import { SOCIAL_LINKS } from "../shared/socialLinks";
@@ -23,21 +24,24 @@ const SOCIAL_BADGE =
   "grid h-8 w-8 place-items-center rounded-md bg-white/5 text-white/80 hover:text-brand-green hover:bg-white/10 transition-all duration-150 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green focus-visible:ring-offset-2 focus-visible:ring-offset-bg-card aria-disabled:opacity-60 aria-disabled:cursor-not-allowed";
 
 export default function PaymentMethods() {
+  const { t } = useTranslation();
   return (
     <Section tone="card" spacing="sm">
       <StaggerContainer className="flex flex-col items-center gap-6 sm:flex-row sm:justify-between sm:gap-4">
         <StaggerItem>
           <p className="text-sm text-white/60">
-            Powered by <span className="font-semibold text-white">Crossmint</span>
+            <Trans i18nKey="viewer.payment.poweredBy">
+              Powered by <span className="font-semibold text-white">Crossmint</span>
+            </Trans>
           </p>
         </StaggerItem>
 
         <StaggerItem>
           <div className="flex flex-wrap items-center justify-center gap-4">
             <span className="text-xs text-white/40 uppercase tracking-widestPlus">
-              Pay With
+              {t("viewer.payment.payWith")}
             </span>
-            <ul className="flex flex-wrap items-center gap-3" aria-label="Accepted payment methods">
+            <ul className="flex flex-wrap items-center gap-3" aria-label={t("viewer.payment.methodsLabel")}>
               {PAYMENTS.map(({ label, Logo, width }) => (
                 <li
                   key={label}
@@ -54,9 +58,9 @@ export default function PaymentMethods() {
         <StaggerItem>
           <div className="flex items-center gap-2.5">
             <span className="text-xs text-white/40 uppercase tracking-widestPlus">
-              Follow
+              {t("viewer.payment.follow")}
             </span>
-            <ul className="flex items-center gap-2.5" aria-label="Social links">
+            <ul className="flex items-center gap-2.5" aria-label={t("viewer.payment.socialLabel")}>
               {SOCIAL_LINKS.map(({ label, Icon, href }) => (
                 <li key={label}>
                   <SafeLink href={href} aria-label={label} className={SOCIAL_BADGE}>

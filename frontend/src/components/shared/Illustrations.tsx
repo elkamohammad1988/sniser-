@@ -12,6 +12,7 @@
  */
 
 import { SVGProps } from "react";
+import { useTranslation } from "react-i18next";
 
 type Tone = "dark" | "green" | "light";
 
@@ -38,12 +39,13 @@ function surfaceFor(tone: Tone) {
 // ────────────────────────────────────────────────────────────────────────────
 
 export function ViewerHeroIllustration({ tone = "green", ...rest }: BaseProps) {
+  const { t } = useTranslation();
   const accent = tone === "green" ? INK : GREEN;
   return (
     <svg
       viewBox="0 0 480 360"
       role="img"
-      aria-label="Person browsing exclusive Sniser content on a laptop"
+      aria-label={t("illustrations.viewerHero")}
       {...rest}
     >
       <defs>
@@ -95,11 +97,12 @@ export function ViewerHeroIllustration({ tone = "green", ...rest }: BaseProps) {
 }
 
 export function SignInIllustration({ tone = "light", ...rest }: BaseProps) {
+  const { t } = useTranslation();
   return (
     <svg
       viewBox="0 0 360 270"
       role="img"
-      aria-label="Sign in card with Crossmint login providers"
+      aria-label={t("illustrations.signIn")}
       {...rest}
     >
       {/* background */}
@@ -144,11 +147,12 @@ export function SignInIllustration({ tone = "light", ...rest }: BaseProps) {
 }
 
 export function VerifyAccessIllustration({ tone = "dark", ...rest }: BaseProps) {
+  const { t } = useTranslation();
   return (
     <svg
       viewBox="0 0 360 270"
       role="img"
-      aria-label="Phone showing wallet access verified"
+      aria-label={t("illustrations.verifyAccess")}
       {...rest}
     >
       <rect x="0" y="0" width="360" height="270" fill={surfaceFor(tone)} />
@@ -190,12 +194,13 @@ export function VerifyAccessIllustration({ tone = "dark", ...rest }: BaseProps) 
 }
 
 export function ContentUnlocksIllustration({ tone = "green", ...rest }: BaseProps) {
+  const { t } = useTranslation();
   const accent = tone === "green" ? INK : GREEN;
   return (
     <svg
       viewBox="0 0 360 270"
       role="img"
-      aria-label="Exclusive content video playing"
+      aria-label={t("illustrations.contentUnlocks")}
       {...rest}
     >
       <rect x="0" y="0" width="360" height="270" fill={surfaceFor(tone)} />
@@ -235,11 +240,12 @@ export function ContentUnlocksIllustration({ tone = "green", ...rest }: BaseProp
 }
 
 export function MultiDeviceIllustration({ tone = "light", ...rest }: BaseProps) {
+  const { t } = useTranslation();
   return (
     <svg
       viewBox="0 0 360 270"
       role="img"
-      aria-label="Sniser content available on laptop, tablet and phone"
+      aria-label={t("illustrations.multiDevice")}
       {...rest}
     >
       <rect x="0" y="0" width="360" height="270" fill={surfaceFor(tone)} />
@@ -293,11 +299,12 @@ export function MultiDeviceIllustration({ tone = "light", ...rest }: BaseProps) 
 }
 
 export function ResellPhoneIllustration({ tone = "dark", ...rest }: BaseProps) {
+  const { t } = useTranslation();
   return (
     <svg
       viewBox="0 0 360 290"
       role="img"
-      aria-label="Phone showing a resell access listing on Sniser Marketplace"
+      aria-label={t("illustrations.resellPhone")}
       {...rest}
     >
       <rect x="0" y="0" width="360" height="290" fill={surfaceFor(tone)} />
@@ -367,11 +374,12 @@ export function ResellPhoneIllustration({ tone = "dark", ...rest }: BaseProps) {
 // ────────────────────────────────────────────────────────────────────────────
 
 export function ArtistHeroIllustration({ tone: _tone, ...rest }: BaseProps) {
+  const { t } = useTranslation();
   return (
     <svg
       viewBox="0 0 400 480"
       role="img"
-      aria-label="Recording artist with headphones at a studio microphone"
+      aria-label={t("illustrations.artistHero")}
       {...rest}
     >
       {/* circular spotlight */}
@@ -436,8 +444,9 @@ export function ArtistHeroIllustration({ tone: _tone, ...rest }: BaseProps) {
 }
 
 export function ContactSniserIllustration({ tone = "dark", ...rest }: BaseProps) {
+  const { t } = useTranslation();
   return (
-    <svg viewBox="0 0 360 270" role="img" aria-label="Sniser team reviewing artist submissions" {...rest}>
+    <svg viewBox="0 0 360 270" role="img" aria-label={t("illustrations.contactSniser")} {...rest}>
       <rect x="0" y="0" width="360" height="270" fill={surfaceFor(tone)} />
 
       {/* table */}
@@ -483,8 +492,9 @@ export function ContactSniserIllustration({ tone = "dark", ...rest }: BaseProps)
 }
 
 export function AgreementIllustration({ tone = "green", ...rest }: BaseProps) {
+  const { t } = useTranslation();
   return (
-    <svg viewBox="0 0 360 270" role="img" aria-label="Signing an exclusive content agreement" {...rest}>
+    <svg viewBox="0 0 360 270" role="img" aria-label={t("illustrations.agreement")} {...rest}>
       <rect x="0" y="0" width="360" height="270" fill={surfaceFor(tone)} />
 
       {/* paper */}
@@ -538,8 +548,9 @@ export function AgreementIllustration({ tone = "green", ...rest }: BaseProps) {
 }
 
 export function StudioIllustration({ tone = "light", ...rest }: BaseProps) {
+  const { t } = useTranslation();
   return (
-    <svg viewBox="0 0 360 270" role="img" aria-label="Studio production with headphones and music notes" {...rest}>
+    <svg viewBox="0 0 360 270" role="img" aria-label={t("illustrations.studio")} {...rest}>
       <rect x="0" y="0" width="360" height="270" fill={surfaceFor(tone)} />
 
       {/* headphones */}
@@ -590,8 +601,9 @@ export function StudioIllustration({ tone = "light", ...rest }: BaseProps) {
 }
 
 export function ReleaseIllustration({ tone = "dark", ...rest }: BaseProps) {
+  const { t } = useTranslation();
   return (
-    <svg viewBox="0 0 360 270" role="img" aria-label="Exclusive album release going live on the platform" {...rest}>
+    <svg viewBox="0 0 360 270" role="img" aria-label={t("illustrations.release")} {...rest}>
       <rect x="0" y="0" width="360" height="270" fill={surfaceFor(tone)} />
 
       {/* center album disc */}
@@ -642,8 +654,9 @@ export function ReleaseIllustration({ tone = "dark", ...rest }: BaseProps) {
 }
 
 export function RevenueIllustration({ tone = "green", ...rest }: BaseProps) {
+  const { t } = useTranslation();
   return (
-    <svg viewBox="0 0 360 270" role="img" aria-label="Artist reviewing revenue dashboard" {...rest}>
+    <svg viewBox="0 0 360 270" role="img" aria-label={t("illustrations.revenue")} {...rest}>
       <rect x="0" y="0" width="360" height="270" fill={surfaceFor(tone)} />
 
       {/* desk */}
@@ -712,8 +725,9 @@ export function RevenueIllustration({ tone = "green", ...rest }: BaseProps) {
 }
 
 export function NetworkIllustration({ tone = "dark", ...rest }: BaseProps) {
+  const { t } = useTranslation();
   return (
-    <svg viewBox="0 0 320 320" role="img" aria-label="Tap into the Sniser network" {...rest}>
+    <svg viewBox="0 0 320 320" role="img" aria-label={t("illustrations.network")} {...rest}>
       <rect x="0" y="0" width="320" height="320" fill={surfaceFor(tone)} />
 
       {/* phone */}

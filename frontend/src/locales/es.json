@@ -66,5 +66,1126 @@
   "toast": {
     "signedOutTitle": "Sesión cerrada",
     "signedOutBody": "Vuelve pronto."
+  },
+  "about": {
+    "meta": {
+      "title": "Sobre Sniser — Dinero para la música, propiedad para los fans",
+      "description": "Sniser es una plataforma musical donde los artistas conservan la propiedad, los fans poseen pases de acceso transferibles y las regalías se pagan para siempre."
+    },
+    "hero": {
+      "eyebrow": "Sobre nosotros",
+      "heading": "Construimos la plataforma que deseábamos que existiera para la música.",
+      "body": "Sniser nació en 2024 entre Casablanca y Londres con una pregunta simple: ¿y si los fans poseyeran de verdad lo que pagan, y los artistas ganaran con cada reventa, para siempre? Dos años después, organizamos lanzamientos exclusivos con más de 120 artistas de hip-hop, electrónica y afrobeats.",
+      "exploreCatalog": "Explorar el catálogo",
+      "talkToTeam": "Hablar con el equipo"
+    },
+    "stats": {
+      "onboarded": "Artistas incorporados",
+      "paid": "Pagado a creadores en 2025",
+      "satisfaction": "Satisfacción de los titulares"
+    },
+    "values": {
+      "eyebrow": "En qué creemos",
+      "heading": "Tres principios que no se mueven.",
+      "ownership": {
+        "title": "Los artistas conservan la propiedad",
+        "body": "Cada lanzamiento se estructura para que el artista conserve los derechos, las regalías y la dirección. Nunca nos quedamos con los masters."
+      },
+      "access": {
+        "title": "Los fans poseen de verdad el acceso",
+        "body": "El acceso es un activo transferible en la blockchain. Si un fan se va, puede venderlo — y el artista sigue ganando con esa reventa."
+      },
+      "web3": {
+        "title": "La Web3 debería ser invisible",
+        "body": "Crossmint gestiona las billeteras en segundo plano. Inicio de sesión por correo electrónico, pago con tarjeta, sin frases semilla. Cripto solo cuando mejora las cosas."
+      }
+    },
+    "team": {
+      "eyebrow": "Equipo",
+      "heading": "Equipo pequeño, trabajo con criterio.",
+      "roles": {
+        "ceo": "Cofundador y CEO",
+        "ar": "Cofundadora y responsable de A&R",
+        "cto": "CTO",
+        "partnerships": "Responsable de alianzas"
+      }
+    }
+  },
+  "faq": {
+    "meta": {
+      "title": "FAQ — Sniser",
+      "description": "Respuestas sobre cómo funciona Sniser — pases de acceso, regalías, pagos y lo que los fans poseen de verdad."
+    },
+    "hero": {
+      "eyebrow": "Centro de ayuda",
+      "heading": "Preguntas frecuentes",
+      "body": "Todo sobre cómo funciona Sniser — propiedad, pagos, regalías de reventa y primeros pasos."
+    },
+    "items": {
+      "own": {
+        "q": "¿Qué poseo exactamente al comprar el acceso?",
+        "a": "Posees un pase de acceso no fungible que vive en tu billetera. Mientras lo conserves, puedes reproducir el contenido en streaming. Si vendes el pase, el acceso se transfiere limpiamente al nuevo comprador — sin necesidad de retirar la licencia manualmente."
+      },
+      "crypto": {
+        "q": "¿Necesito saber algo sobre cripto?",
+        "a": "No. Inicia sesión con Google o por correo electrónico a través de Crossmint, y se crea una billetera para ti en segundo plano. Más adelante puedes pasar a una billetera de autocustodia si quieres."
+      },
+      "royalty": {
+        "q": "¿Cómo funciona la regalía del artista en la reventa?",
+        "a": "Cada pase de acceso lleva una regalía integrada (normalmente 5–10 %) codificada en su smart contract. Cuando un fan revende en el Mercado Sniser, esa regalía se paga automáticamente al artista en cada transacción — para siempre."
+      },
+      "payments": {
+        "q": "¿Qué métodos de pago aceptan?",
+        "a": "La tarjeta (Visa, Mastercard, Apple Pay, Google Pay) se procesa a través de Crossmint. Si prefieres pagar en stablecoins (USDC), lo admitimos de forma nativa en el pago."
+      },
+      "fee": {
+        "q": "¿Qué se lleva Sniser?",
+        "a": "10 % en el lanzamiento primario y 2,5 % en cada reventa. Los artistas fijan ellos mismos el precio y el reparto de la regalía; nunca tocamos el resto."
+      },
+      "mobile": {
+        "q": "¿Puedo ver en mi teléfono?",
+        "a": "Sí. Tu acceso está vinculado a la billetera, no al dispositivo — inicia sesión en Sniser desde cualquier navegador y tu biblioteca estará ahí. Pronto lanzaremos apps para iOS y Android."
+      },
+      "artist": {
+        "q": "Soy artista. ¿Cómo me uno?",
+        "a": "Usa el botón «Envíanos un mensaje por WhatsApp» en la página del artista. Envía un pitch breve y 1–2 temas inéditos. Nuestro equipo de A&R revisa todo en cinco días hábiles."
+      },
+      "exclusive": {
+        "q": "¿Mi contenido es realmente exclusivo tras el lanzamiento?",
+        "a": "Sí — todos los lanzamientos de Sniser son exclusivos de la plataforma por contrato. El contenido no se publica en servicios de streaming, redes sociales ni tiendas de terceros durante la ventana de exclusividad."
+      }
+    },
+    "cta": {
+      "heading": "¿Todavía tienes preguntas?",
+      "body": "Nuestro equipo responde en un día hábil.",
+      "contact": "Contáctanos",
+      "createAccount": "Crear cuenta"
+    }
+  },
+  "contact": {
+    "meta": {
+      "title": "Contactar con Sniser",
+      "description": "Habla con el equipo de Sniser sobre la incorporación como artista, alianzas, prensa o soporte de cuenta."
+    },
+    "hero": {
+      "eyebrow": "Contacto",
+      "heading": "Ponte en contacto.",
+      "body": "Dinos en qué necesitas ayuda — dirigimos los mensajes automáticamente a la persona adecuada."
+    },
+    "reasons": {
+      "general": {
+        "label": "General",
+        "blurb": "Cualquier cosa no cubierta abajo."
+      },
+      "artist": {
+        "label": "Incorporación de artistas",
+        "blurb": "Haces música y quieres lanzar en Sniser."
+      },
+      "press": {
+        "label": "Prensa y alianzas",
+        "blurb": "Solicitudes de medios, marcas o alianzas."
+      },
+      "support": {
+        "label": "Soporte de cuenta",
+        "blurb": "Problemas de inicio de sesión, pagos o billetera."
+      }
+    },
+    "form": {
+      "reasonLabel": "¿De qué se trata?",
+      "reasonAriaLabel": "Motivo del contacto",
+      "name": "Nombre",
+      "email": "Correo electrónico",
+      "message": "Mensaje",
+      "messagePlaceholder": "Unas frases sobre lo que necesitas…",
+      "messageHint": "Al menos 20 caracteres.",
+      "submit": "Enviar mensaje",
+      "sending": "Enviando…"
+    },
+    "sent": {
+      "heading": "Mensaje recibido",
+      "body": "Gracias — responderemos a <1>{{email}}</1> en un día hábil.",
+      "sendAnother": "Enviar otro mensaje"
+    },
+    "toast": {
+      "sentTitle": "Mensaje enviado",
+      "sentBody": "Responderemos en un día hábil.",
+      "errorTitle": "No se pudo enviar el mensaje",
+      "errorFallback": "Vuelve a intentarlo en un momento."
+    },
+    "panel": {
+      "otherChannels": "Otros canales",
+      "email": "Correo electrónico",
+      "openChat": "Abrir chat →",
+      "office": "Oficina",
+      "remoteNote": "Somos principalmente remotos. La dirección de Londres es el domicilio social y la gestión de correo."
+    }
+  },
+  "notFound": {
+    "meta": {
+      "title": "No encontrado — Sniser",
+      "description": "La página que buscabas no existe o se ha movido."
+    },
+    "eyebrow": "Error 404",
+    "heading": "Esa página se escapó por la billetera.",
+    "body": "Puede que el enlace sea antiguo, o que el lanzamiento que buscas se haya movido. Vuelve al inicio, explora el catálogo o ponte en contacto.",
+    "goHome": "Ir al inicio",
+    "contactSupport": "Contactar con soporte"
+  },
+  "legal": {
+    "shell": {
+      "effective": "En vigor desde el {{date}}",
+      "needDifferentTitle": "¿Necesitas otro documento?",
+      "needDifferentBody": "Para acuerdos de licencia, de confidencialidad (NDA) o de tratamiento de datos, ponte en contacto con el equipo legal.",
+      "contactLegal": "Contactar con el equipo legal",
+      "eyebrow": "Legal"
+    },
+    "terms": {
+      "meta": {
+        "title": "Términos del servicio — Sniser",
+        "description": "Lee los términos que rigen tu uso de Sniser: cuentas, pases de acceso, pagos, regalías y resolución de disputas."
+      },
+      "title": "Términos del servicio",
+      "summary": "Estos son Términos provisionales (a modo de marcador). Antes del lanzamiento público, {{company}} debería sustituirlos por la versión revisada por asesores jurídicos cualificados en cada jurisdicción donde opera Sniser.",
+      "sections": {
+        "agreement": {
+          "title": "1. Acuerdo",
+          "body": "Al crear una cuenta, conectar una billetera o comprar un pase de acceso en Sniser, aceptas estos Términos. Si no estás de acuerdo, no debes usar el servicio."
+        },
+        "accounts": {
+          "title": "2. Cuentas",
+          "body": "Puedes iniciar sesión con una dirección de correo electrónico (a través de Crossmint) o con una billetera de autocustodia. Eres responsable de proteger tus credenciales. Sniser nunca almacena frases semilla (seed phrases) y no puede recuperar una billetera por ti."
+        },
+        "passes": {
+          "title": "3. Pases de acceso",
+          "body": "Un pase de acceso es un activo digital transferible que otorga al titular el derecho a reproducir en streaming el contenido asociado mientras conserve el pase. Vender o transferir el pase transfiere el acceso; Sniser revoca automáticamente la reproducción del titular anterior.",
+          "items": {
+            "notInvestments": "Los pases de acceso no son inversiones. Su valor depende de la demanda y no está garantizado.",
+            "royalties": "Las regalías de reventa están codificadas en cada pase y se pagan al artista en cada transferencia.",
+            "noCustody": "Sniser no custodia los activos: los pases residen en tu billetera conectada."
+          }
+        },
+        "payments": {
+          "title": "4. Pagos y comisiones",
+          "body": "Los pagos con tarjeta los procesa Crossmint; los pagos on-chain se liquidan en USDC. Sniser cobra una comisión de plataforma del 10% en los lanzamientos primarios y una comisión del 2.5% en la reventa. Los artistas fijan sus propios precios y el reparto de sus regalías."
+        },
+        "artistAgreements": {
+          "title": "5. Acuerdos con los artistas",
+          "body": "Los lanzamientos en Sniser son exclusivos de la plataforma durante el período definido en cada acuerdo con el artista. Los artistas conservan la propiedad de sus grabaciones originales (masters). El acuerdo completo con el artista se facilita antes de firmar."
+        },
+        "prohibited": {
+          "title": "6. Uso prohibido",
+          "items": {
+            "circumvent": "Eludir el mecanismo del pase de acceso (grabar, extraer o compartir transmisiones decodificadas).",
+            "reselling": "Revender contenido para el que no tienes un pase válido.",
+            "scraping": "La extracción automatizada de los metadatos del catálogo a un ritmo que afecte a la calidad del servicio."
+          }
+        },
+        "disclaimer": {
+          "title": "7. Descargo de responsabilidad y responsabilidad legal",
+          "body": "El servicio se proporciona «tal cual», sin garantías de ningún tipo. En la máxima medida permitida por la ley, Sniser no se hace responsable de los daños indirectos, incidentales o consecuentes derivados de tu uso del servicio."
+        },
+        "changes": {
+          "title": "8. Cambios",
+          "body": "Podemos actualizar estos Términos. Los cambios importantes se anunciarán por correo electrónico o mediante una notificación en la aplicación al menos 14 días antes de que entren en vigor."
+        },
+        "contact": {
+          "title": "9. Contacto",
+          "body": "Preguntas sobre estos Términos: <mail>{{email}}</mail>."
+        }
+      }
+    },
+    "privacy": {
+      "meta": {
+        "title": "Política de privacidad — Sniser",
+        "description": "Qué recopila Sniser, por qué, con quién lo compartimos y cómo ejercer tus derechos sobre tus datos."
+      },
+      "title": "Política de privacidad",
+      "summary": "Esta es una Política de privacidad provisional (a modo de marcador), destinada a ser sustituida por los asesores jurídicos cualificados de {{company}} antes del lanzamiento. No constituye asesoramiento jurídico.",
+      "sections": {
+        "collect": {
+          "title": "1. Qué recopilamos",
+          "items": {
+            "account": "Datos de la cuenta: correo electrónico, nombre visible y tokens de autenticación.",
+            "wallet": "Datos de la billetera: la(s) dirección(es) pública(s) de la billetera que conectas. Nunca almacenamos claves privadas.",
+            "payment": "Datos de pago: los gestiona Crossmint; recibimos una referencia de la transacción, no los números de tarjeta.",
+            "usage": "Datos de uso: páginas visitadas, lanzamientos vistos, información básica del dispositivo, IP: se utilizan para operar y mejorar el servicio."
+          }
+        },
+        "use": {
+          "title": "2. Cómo lo usamos",
+          "body": "Para prestar y proteger el servicio, completar las compras, pagar las regalías de los artistas, cumplir con las obligaciones legales y mejorar la calidad del producto. No vendemos datos personales."
+        },
+        "cookies": {
+          "title": "3. Cookies y analítica",
+          "body": "Las cookies esenciales te mantienen con la sesión iniciada y mantienen la coherencia de tu carrito. Las cookies de analítica son opcionales y solo se activan después de que las aceptes mediante el banner de cookies. Puedes cambiar tu consentimiento en cualquier momento."
+        },
+        "sharing": {
+          "title": "4. Compartición",
+          "items": {
+            "processor": "Procesador de pagos (Crossmint): para liquidar las compras.",
+            "cloud": "Proveedores de infraestructura en la nube: para alojar el servicio.",
+            "law": "Autoridades policiales: solo cuando lo exija la ley y tras la debida revisión."
+          }
+        },
+        "rights": {
+          "title": "5. Tus derechos",
+          "body": "Con sujeción a la legislación local, puedes solicitar el acceso a tus datos personales, su corrección o su eliminación. Para ejercer estos derechos, escribe a <mail>{{email}}</mail> desde la dirección asociada a la cuenta."
+        },
+        "retention": {
+          "title": "6. Conservación de datos",
+          "body": "Los datos de la cuenta se conservan mientras la cuenta esté activa, más el período necesario para cumplir con las obligaciones fiscales y de auditoría. Las transacciones on-chain son públicas por naturaleza y no se pueden eliminar."
+        },
+        "security": {
+          "title": "7. Seguridad",
+          "body": "Utilizamos cifrado en tránsito (TLS) y en reposo, controles de acceso con alcance limitado y revisiones periódicas. Ningún sistema es totalmente seguro: utiliza una contraseña segura y una billetera independiente, respaldada por hardware, para los activos de alto valor."
+        },
+        "changes": {
+          "title": "8. Cambios",
+          "body": "Anunciaremos cualquier cambio importante de esta Política por correo electrónico o mediante una notificación en la aplicación al menos 14 días antes de que entre en vigor."
+        },
+        "contact": {
+          "title": "9. Contacto",
+          "body": "Preguntas sobre privacidad o solicitudes de datos: <mail>{{email}}</mail>."
+        }
+      }
+    }
+  },
+  "viewer": {
+    "meta": {
+      "title": "Cómo ver contenido en Sniser",
+      "description": "Inicia sesión con Crossmint, verifica tu acceso on-chain y mira contenido exclusivo en cualquier lugar. Revende tu acceso cuando quieras en el Mercado Sniser."
+    },
+    "hero": {
+      "headingLine1": "Cómo ver contenido",
+      "headingLine2": "en Sniser",
+      "body": "Compra acceso para desbloquear contenido exclusivo de Sniser y posee los derechos de forma permanente en tu billetera digital. Negocia en el mercado cuando estés listo para ceder tu lugar: seguro, transparente y creado para los fans a largo plazo.",
+      "cta": "Descubre cómo funciona"
+    },
+    "stepLabel": "Paso {{number}}: ",
+    "steps": {
+      "step1": {
+        "highlight": "Inicia sesión en",
+        "title": "tu cuenta",
+        "description": "Pulsa \"Start Session\" en la plataforma Sniser. No tienes que preocuparte por frases semilla ni configuraciones de cripto complicadas. Solo inicia sesión en tu cuenta de Crossmint con Google o Microsoft para un acceso rápido y seguro.",
+        "callout": "Crossmint conecta tu billetera al instante entre bastidores: cero conocimientos de cripto necesarios."
+      },
+      "step2": {
+        "highlight": "Nosotros",
+        "title": "verificamos tu acceso",
+        "description": "Nosotros nos encargamos de la parte técnica. Sniser comprueba automáticamente que tu billetera de Crossmint conectada posee los derechos de propiedad del contenido que intentas ver. Es una conexión segura y transparente construida por completo en la blockchain. Una vez verificada la propiedad, ya está todo listo.",
+        "bullets": {
+          "walletConnection": "Conexión de la billetera de la cuenta",
+          "ownershipVerified": "Propiedad del acceso verificada",
+          "cleared": "Estás autorizado"
+        }
+      },
+      "step3": {
+        "highlight": "El contenido",
+        "title": "se desbloquea automáticamente",
+        "description": "Sin salas de espera ni enlaces de descarga. Una vez que la red confirma tu acceso, el contenido exclusivo se desbloquea al instante directamente en tu pantalla. Solo pulsa \"Play\" y disfruta de la vista de primera fila.",
+        "bullets": {
+          "accessConfirmed": "Acceso confirmado",
+          "contentUnlocked": "Contenido desbloqueado",
+          "enjoy": "Disfruta de tu contenido"
+        }
+      },
+      "step4": {
+        "highlight": "Disfruta",
+        "title": "cuando quieras, donde quieras",
+        "description": "Tu acceso no está bloqueado a una app o un dispositivo específico: permanece vinculado a tu billetera. Ya sea que inicies sesión en tu teléfono o tu ordenador, tu contenido siempre está disponible dondequiera que inicies sesión.",
+        "pills": {
+          "anywhere": "En cualquier lugar",
+          "anytime": "Cuando quieras",
+          "secure": "Seguro"
+        }
+      },
+      "step5": {
+        "highlight": "Revende",
+        "title": "tu acceso cuando quieras",
+        "description": "¿Terminaste de ver? Publica tus derechos de acceso en el Mercado Sniser y véndelos a otro fan. En el momento en que se vende, la propiedad y el acceso se transfieren sin problemas al nuevo comprador. A ti te pagan, el contrato inteligente del artista gana automáticamente una parte de regalía, y Sniser se lleva una comisión estándar.",
+        "flow": {
+          "yourAccess": "Tu acceso",
+          "entersMarketplace": "Entra al mercado",
+          "buyer": "Comprador",
+          "earn": "¡Gana!"
+        }
+      }
+    },
+    "payment": {
+      "poweredBy": "Con la tecnología de <1>Crossmint</1>",
+      "payWith": "Paga con",
+      "follow": "Síguenos",
+      "methodsLabel": "Métodos de pago aceptados",
+      "socialLabel": "Enlaces sociales"
+    },
+    "features": {
+      "ownership": {
+        "title": "Propiedad real",
+        "description": "Eres dueño del acceso. Eres dueño de los derechos."
+      },
+      "secure": {
+        "title": "Fácil y seguro",
+        "description": "Con la tecnología de Crossmint. Fácil de configurar y seguro por diseño."
+      },
+      "transferable": {
+        "title": "Transferible",
+        "description": "Vende o transfiere el acceso en el Mercado Sniser."
+      },
+      "creators": {
+        "title": "Apoya a los creadores",
+        "description": "Los artistas ganan regalías en cada reventa. A ti te pagan, el artista gana."
+      }
+    },
+    "secure": {
+      "heading": "Seguro",
+      "points": {
+        "secure": "Seguro",
+        "transparent": "Transparente",
+        "blockchain": "Construido en blockchain"
+      }
+    },
+    "flowLabel": "Flujo del proceso"
+  },
+  "artist": {
+    "meta": {
+      "title": "Sniser — Dinero por tu música",
+      "description": "Tú aportas el talento, nosotros las reservas. Sniser se encarga de los lanzamientos, la producción y el contenido propiedad de los fans en la blockchain para que los artistas cobren de forma justa."
+    },
+    "hero": {
+      "badge": "Para artistas",
+      "title": "Dinero por<br/>tu música",
+      "body": "Tú aportas el talento — nosotros las reservas. Sniser invierte capital real en tu sonido para que sigas en la cabina y fuera de números rojos. Tú sigues creando. Nosotros gestionamos el negocio. Crecemos juntos.",
+      "seeHow": "Ver cómo funciona",
+      "imageAlt": "Artista de grabación actuando en el escenario bajo las luces del estudio",
+      "stats": {
+        "onboarded": "Artistas incorporados",
+        "paid": "Pagado a los creadores",
+        "satisfaction": "Satisfacción de los titulares"
+      }
+    },
+    "earn": {
+      "eyebrow": "Solo con Sniser",
+      "highlight": "Gana",
+      "title": "Crea. Graba. Lanza.",
+      "cards": {
+        "noUpfront": {
+          "title": "Sin costes iniciales",
+          "description": "Invertimos en ti. Nos ocupamos de la parte financiera para que no tengas que preocuparte por el presupuesto."
+        },
+        "opportunities": {
+          "title": "Oportunidades exclusivas",
+          "description": "Conecta con tus colegas. Ofrecemos una plataforma creada específicamente para impulsar tu carrera."
+        },
+        "support": {
+          "title": "Soporte integral",
+          "description": "Del estudio a la venta. Estamos contigo en cada etapa del proceso creativo y de lanzamiento."
+        }
+      }
+    },
+    "steps": {
+      "contact": "Contacta con Sniser",
+      "agreement": "Acuerdo de contenido exclusivo",
+      "studio": "Producción y mezcla en estudio",
+      "release": "Lanzamiento exclusivo en la plataforma",
+      "revenue": "Generación de ingresos y reparto de beneficios",
+      "step": "Paso {{number}}"
+    },
+    "process": {
+      "eyebrow": "El proceso",
+      "heading": "Cómo funciona",
+      "intro": "Desde el primer pitch hasta el reparto de beneficios: cinco pasos deliberados, cada uno gestionado por completo por el equipo de Sniser para que puedas centrarte en la música.",
+      "items": {
+        "contact": {
+          "highlight": "CONTACTA CON",
+          "title": "SNISER",
+          "description": "Todo empieza con un pitch. Envíanos tus datos, tus temas inéditos, un resumen de tu estilo y tus aspiraciones. No fichamos a todo el mundo: nuestro equipo revisa tu catálogo para calibrar tu potencial en bruto y averiguar exactamente cómo encaja tu sonido con el público de Sniser.",
+          "imageAlt": "El equipo de A&R de Sniser celebrando la firma de un nuevo artista"
+        },
+        "agreement": {
+          "highlight": "ACUERDO",
+          "title": "DE CONTENIDO EXCLUSIVO",
+          "description": "Si nos encanta la música, cerramos el trato. Nos conectamos por Zoom y redactamos un acuerdo sencillo: trabajamos juntos para crear, grabar y lanzar música exclusiva destinada únicamente a su lanzamiento en la plataforma Sniser.",
+          "imageAlt": "Dos personas dándose la mano para cerrar un acuerdo exclusivo"
+        },
+        "studio": {
+          "highlight": "PRODUCCIÓN",
+          "title": "Y MEZCLA EN ESTUDIO",
+          "description": "Hora de meterse en el estudio. Te conectamos con nuestra red de estudios de grabación asociados. Obtienes un entorno de grabación profesional y trabajas con ingenieros de primer nivel para asegurar que el tema pegue tan fuerte como debe. ¿Lo mejor? Sniser cubre los costes de producción.",
+          "imageAlt": "Micrófono de estudio iluminado bajo las cálidas luces de la sesión"
+        },
+        "release": {
+          "highlight": "LANZAMIENTO",
+          "title": "EXCLUSIVO EN LA PLATAFORMA",
+          "description": "El lanzamiento. Tu álbum se publica en exclusiva en la plataforma Sniser. Mientras la música permanece segura en nuestro sitio, nuestro equipo de marketing se pone manos a la obra: difundiendo teasers promocionales por TikTok, Instagram y YouTube para dirigir todo el tráfico masivo directamente a tu lanzamiento.",
+          "videoLabel": "Multitud con las manos en alto en un show en vivo bajo los láseres del escenario",
+          "badge": "En vivo"
+        },
+        "revenue": {
+          "highlight": "GENERACIÓN DE INGRESOS",
+          "title": "Y REPARTO DE BENEFICIOS",
+          "description": "La atención se convierte en capital. Los fans compran acceso directo a tu contenido exclusivo directamente en Sniser. Los ingresos se reparten entre tú y la plataforma según los porcentajes exactos establecidos en tu acuerdo. Cobras por tu arte.",
+          "imageAlt": "Panel de analíticas que muestra el crecimiento de la audiencia y los ingresos"
+        }
+      }
+    },
+    "stepCounter": "Paso {{number}} / 0{{total}}",
+    "stepSr": "Paso {{number}}:",
+    "network": {
+      "badge": "Acceso privado",
+      "heading": "Conéctate a la red",
+      "body": "No hacemos público cada movimiento. Las ventanas de inscripción abiertas, las novedades de la plataforma y las nuevas oportunidades de inversión van directamente a nuestra lista de confianza. Entra en la sala y mantente al tanto.",
+      "explore": "Explorar contenido",
+      "imageAlt": "Letrero de neón que dice «No Music No Life»"
+    }
+  },
+  "browse": {
+    "meta": {
+      "title": "Explorar — Mercado Sniser",
+      "description": "Descubre vídeos, audio y originales de pieza única exclusivos en Sniser. Compra el acceso, tenlo para siempre y revéndelo cuando quieras."
+    },
+    "eyebrow": "Mercado",
+    "heading": "Explorar el catálogo",
+    "allBlurb": "Explora cada lanzamiento de Sniser en un solo lugar — sets en vivo, temas exclusivos, pases de acceso listados por titulares.",
+    "tablistLabel": "Categorías de contenido",
+    "tabs": {
+      "all": "Todo"
+    },
+    "searchLabel": "Buscar",
+    "searchPlaceholder": "Buscar artista, título o etiqueta",
+    "sortLabel": "Ordenar por",
+    "results": "{{count}} resultados",
+    "pagination": {
+      "label": "Paginación",
+      "previous": "Anterior",
+      "next": "Siguiente",
+      "pageOf": "Página {{page}} de {{totalPages}}"
+    },
+    "error": {
+      "title": "No se pudo cargar el catálogo",
+      "body": "Comprueba tu conexión e inténtalo de nuevo.",
+      "retry": "Reintentar"
+    },
+    "empty": {
+      "title": "Ningún lanzamiento coincide con esos filtros",
+      "body": "Prueba una búsqueda más amplia o borra los filtros para ver todo.",
+      "clear": "Borrar filtros"
+    },
+    "card": {
+      "signInToBuyTitle": "Inicia sesión para comprar",
+      "signInToBuyBody": "Crea una cuenta o inicia sesión para asegurar tu pase de acceso.",
+      "price": "Precio",
+      "playsSr": "Reproducciones",
+      "playsCount": "{{plays}} reproducciones",
+      "durationSr": "Duración",
+      "buyResale": "Comprar pase de reventa",
+      "buyAccess": "Comprar acceso"
+    }
+  },
+  "library": {
+    "meta": {
+      "title": "Mi biblioteca — Sniser",
+      "description": "Tus pases de acceso comprados — reprodúcelos o publícalos para reventa."
+    },
+    "eyebrow": "Biblioteca",
+    "heading": "Tus pases de acceso",
+    "subtitle": "Todo lo que posees en Sniser. Reprodúcelo dondequiera que inicies sesión, o publica un pase para reventa.",
+    "listedPrice": "En venta · ${{price}}",
+    "unlist": "Retirar",
+    "resell": "Revender",
+    "error": {
+      "body": "No se pudo cargar tu biblioteca.",
+      "retry": "Reintentar"
+    },
+    "empty": {
+      "title": "Tu biblioteca está vacía",
+      "body": "Compra tu primer pase de acceso para empezar tu colección."
+    },
+    "listModal": {
+      "title": "Publicar para reventa",
+      "desc": "Establece un precio para «{{title}}». Se aplica una comisión de reventa en la venta.",
+      "priceLabel": "Precio de reventa (USDC)",
+      "cancel": "Cancelar",
+      "submit": "Publicar pase",
+      "submitting": "Publicando…"
+    },
+    "badge": {
+      "listed": "En venta",
+      "resale": "Reventa",
+      "owned": "En propiedad"
+    },
+    "listedAt": "En venta por ${{price}}",
+    "play": "Reproducir",
+    "toast": {
+      "invalidPriceTitle": "Introduce un precio válido",
+      "invalidPriceBody": "Debe ser mayor que cero.",
+      "listedTitle": "Publicado para reventa",
+      "listedBody": "{{title}} ya está en el mercado.",
+      "listErrorTitle": "No se pudo publicar",
+      "cancelledTitle": "Publicación cancelada",
+      "cancelledBody": "{{title}} ha vuelto a tu biblioteca.",
+      "cancelErrorTitle": "No se pudo cancelar",
+      "tryAgain": "Inténtalo de nuevo."
+    }
+  },
+  "wallet": {
+    "meta": {
+      "title": "Billetera — Sniser",
+      "description": "Gestiona el saldo de tu billetera Sniser y consulta tu historial de transacciones."
+    },
+    "eyebrow": "Billetera",
+    "heading": "Tu billetera Sniser",
+    "subtitle": "Un saldo USDC en custodia que usas para comprar pases de acceso. Los ingresos de ventas y reventas también llegan aquí.",
+    "balance": "Saldo",
+    "addFunds": "Añadir fondos",
+    "customAmount": "Cantidad personalizada (USDC)",
+    "adding": "Añadiendo…",
+    "addAmount": "Añadir ${{amount}}",
+    "demoNote": "Fondos de demostración — las recargas son crédito en custodia simulado.",
+    "transactions": "Transacciones",
+    "refresh": "Actualizar",
+    "tx": {
+      "errorBody": "No se pudieron cargar las transacciones.",
+      "retry": "Reintentar",
+      "emptyTitle": "Aún no hay transacciones",
+      "emptyBody": "Recarga tu billetera para empezar.",
+      "balanceAfter": "saldo {{amount}}"
+    },
+    "txType": {
+      "deposit": "Recarga",
+      "sale": "Venta",
+      "refund": "Reembolso",
+      "payout": "Pago",
+      "purchase": "Compra",
+      "fee": "Comisión"
+    },
+    "toast": {
+      "invalidTitle": "Introduce una cantidad válida",
+      "invalidBody": "Entre 1 y 10 000 USDC.",
+      "toppedUpTitle": "Billetera recargada",
+      "addedBody": "{{amount}} USDC añadidos.",
+      "failedTitle": "Error en la recarga",
+      "tryAgain": "Inténtalo de nuevo."
+    }
+  },
+  "catalog": {
+    "category": {
+      "video": "Vídeo",
+      "audio": "Audio",
+      "original": "Original",
+      "resale": "Reventa"
+    },
+    "blurb": {
+      "video": "Sets en vivo, tras las cámaras, sesiones exclusivas.",
+      "audio": "EP, sencillos y lanzamientos sin pérdida que realmente posees.",
+      "original": "Temas inéditos, notas de voz, hojas de letras — piezas únicas.",
+      "resale": "Pases de acceso listados por titulares — compra a otros fans."
+    },
+    "sort": {
+      "newest": "Más reciente",
+      "popular": "Más reproducidos",
+      "priceAsc": "Precio: de menor a mayor",
+      "priceDesc": "Precio: de mayor a menor"
+    }
+  },
+  "purchaseModal": {
+    "title": {
+      "success": "Pase de acceso añadido",
+      "processing": "Procesando el pago",
+      "review": "Confirmar compra"
+    },
+    "desc": {
+      "success": "Está en tu billetera — reprodúcelo dondequiera que inicies sesión.",
+      "processing": "Liquidando la transacción. Solo tomará un momento.",
+      "review": "Revisa los detalles y luego confirma para asegurar tu pase de acceso."
+    },
+    "price": "Precio",
+    "rowItem": "Artículo",
+    "rowFee": "Comisión de red (2,5 %)",
+    "rowTotal": "Total",
+    "signedInAs": "Sesión iniciada como",
+    "walletBalance": "Saldo de la billetera",
+    "balanceTooLow": "Tu saldo es demasiado bajo para esta compra.",
+    "cancel": "Cancelar",
+    "topUp": "Recargar billetera",
+    "confirmTotal": "Confirmar · ${{total}}",
+    "dontClose": "No cierres esta ventana.",
+    "receipt": "Enviamos un recibo a <1>{{email}}</1>.",
+    "keepBrowsing": "Seguir explorando",
+    "goToLibrary": "Ir a la biblioteca",
+    "toast": {
+      "securedTitle": "Pase de acceso asegurado",
+      "securedBody": "{{title}} ya está en tu biblioteca.",
+      "insufficientTitle": "Saldo insuficiente",
+      "insufficientBody": "Recarga tu billetera e inténtalo de nuevo.",
+      "alreadyTitle": "Ya es tuyo",
+      "alreadyBody": "Este pase ya está en tu biblioteca.",
+      "failedTitle": "La compra falló",
+      "tryAgain": "Inténtalo de nuevo."
+    }
+  },
+  "topUpModal": {
+    "title": "Añadir fondos",
+    "desc": "Recarga tu billetera Sniser para comprar pases de acceso al instante.",
+    "currentBalance": "Saldo actual",
+    "customLabel": "O introduce una cantidad personalizada (USDC)",
+    "cancel": "Cancelar",
+    "adding": "Añadiendo…",
+    "addAmount": "Añadir ${{amount}}",
+    "demoNote": "Fondos de demostración — las recargas son crédito en custodia simulado, no un cargo real.",
+    "toast": {
+      "invalidTitle": "Introduce una cantidad válida",
+      "invalidBody": "Entre 1 y 10 000 USDC.",
+      "toppedUpTitle": "Billetera recargada",
+      "addedBody": "{{amount}} USDC añadidos a tu saldo.",
+      "failedTitle": "Error en la recarga",
+      "tryAgain": "Inténtalo de nuevo."
+    }
+  },
+  "studio": {
+    "meta": {
+      "title": "Estudio de artista — Sniser",
+      "description": "Tu estudio de artista en Sniser: sigue las reproducciones y los ingresos, sube nuevos lanzamientos y publícalos en el mercado."
+    },
+    "errFallback": "Vuelve a intentarlo en un momento.",
+    "handle": {
+      "required": "El identificador es obligatorio.",
+      "invalid": "3 a 30 caracteres: letras minúsculas, números, puntos o guiones bajos."
+    },
+    "category": {
+      "audio": "Audio",
+      "video": "Vídeo",
+      "original": "Original"
+    },
+    "categoryOption": {
+      "original": "Original (1 de 1)"
+    },
+    "priceError": "Introduce un precio válido (0 o más).",
+    "eyebrow": "Estudio",
+    "title": "Estudio de artista",
+    "welcomeNamed": "Bienvenido de nuevo, {{name}}: sigue tus cifras, sube nuevos lanzamientos y publica cuando estés listo.",
+    "welcome": "Bienvenido de nuevo: sigue tus cifras, sube nuevos lanzamientos y publica cuando estés listo.",
+    "signIn": {
+      "title": "Inicia sesión para abrir tu estudio",
+      "body": "Inicia sesión o crea una cuenta para postularte como artista y empezar a publicar en Sniser.",
+      "cta": "Iniciar sesión"
+    },
+    "apply": {
+      "heading": "Conviértete en artista de Sniser.",
+      "body": "Reserva tu identificador para desbloquear el estudio: sube lanzamientos, fija el precio de tus pases de acceso y cobra cuando los fans compran o revenden.",
+      "handleLabel": "Identificador de artista",
+      "handleHint": "Tu URL pública: sniser.com/artist/your-handle",
+      "displayNameLabel": "Nombre visible",
+      "locationLabel": "Ubicación",
+      "locationHint": "Opcional: dónde te encuentras.",
+      "bioLabel": "Biografía",
+      "bioHint": "Opcional: cuéntales a los fans qué creas.",
+      "bioPlaceholder": "Unas frases sobre tu sonido…",
+      "submitting": "Enviando…",
+      "submit": "Abrir mi estudio",
+      "whatYouGet": "Lo que obtienes",
+      "benefits": {
+        "publish": "Publica vídeo, audio y originales de pieza única.",
+        "price": "Fija tu propio precio: gana en cada venta primaria.",
+        "resell": "Sigue ganando cuando los fans revenden su acceso.",
+        "dashboard": "Panel en vivo para reproducciones, ventas e ingresos."
+      },
+      "handleRulesTitle": "Reglas del identificador",
+      "handleRulesBody": "3 a 30 caracteres, solo letras minúsculas, números, puntos y guiones bajos. Tu identificador es permanente y se muestra en cada lanzamiento."
+    },
+    "stats": {
+      "releases": "Lanzamientos",
+      "published": "Publicados",
+      "totalPlays": "Reproducciones totales",
+      "sales": "Ventas",
+      "revenue": "Ingresos",
+      "walletBalance": "Saldo de la billetera"
+    },
+    "newRelease": {
+      "title": "Nuevo lanzamiento",
+      "subtitle": "Sube un lanzamiento, fija un precio y publica cuando estés listo."
+    },
+    "form": {
+      "titleLabel": "Título",
+      "categoryLabel": "Categoría",
+      "priceLabel": "Precio",
+      "priceHint": "En la moneda de tu billetera.",
+      "durationLabel": "Duración",
+      "durationHint": "En segundos: opcional.",
+      "supplyLabel": "Cantidad",
+      "supplyHint": "Ediciones: opcional.",
+      "tagsLabel": "Etiquetas",
+      "tagsHint": "Separadas por comas: opcional.",
+      "descriptionLabel": "Descripción",
+      "descriptionPlaceholder": "¿Qué incluye este lanzamiento?",
+      "optional": "Opcional.",
+      "coverLabel": "Imagen de portada",
+      "coverHint": "PNG o JPG: opcional.",
+      "mediaLabel": "Archivo multimedia",
+      "mediaHint": "Audio o vídeo: opcional.",
+      "creating": "Creando…",
+      "submit": "Crear lanzamiento"
+    },
+    "releases": {
+      "title": "Tus lanzamientos",
+      "total": "{{n}} en total"
+    },
+    "status": {
+      "draft": "Borrador",
+      "published": "Publicado",
+      "archived": "Archivado"
+    },
+    "releaseRow": {
+      "price": "Precio",
+      "plays": "Reproducciones",
+      "sales": "Ventas",
+      "playsCount": "{{plays}} reproducciones",
+      "salesCount": "{{sales}} ventas",
+      "publish": "Publicar",
+      "publishing": "Publicando…",
+      "unpublish": "Retirar publicación",
+      "updating": "Actualizando…",
+      "delete": "Eliminar"
+    },
+    "empty": {
+      "title": "Aún no hay lanzamientos",
+      "body": "Crea tu primer lanzamiento con el formulario de arriba."
+    },
+    "error": {
+      "title": "No se pudo cargar tu estudio",
+      "body": "Algo salió mal al cargar tu panel.",
+      "retry": "Reintentar"
+    },
+    "toast": {
+      "appliedTitle": "Ahora eres artista",
+      "appliedBody": "Tu estudio está listo: crea tu primer lanzamiento.",
+      "applyErrorTitle": "No se pudo completar tu solicitud",
+      "releaseCreatedTitle": "Lanzamiento creado",
+      "releaseLive": "Ya está disponible en el mercado.",
+      "releaseDraft": "Guardado como borrador.",
+      "createErrorTitle": "No se pudo crear el lanzamiento",
+      "publishedTitle": "Lanzamiento publicado",
+      "movedToDraft": "Movido a borrador",
+      "updateErrorTitle": "No se pudo actualizar el lanzamiento",
+      "deletedTitle": "Lanzamiento eliminado",
+      "deleteErrorTitle": "No se pudo eliminar el lanzamiento"
+    }
+  },
+  "account": {
+    "meta": {
+      "title": "Cuenta — Sniser",
+      "description": "Gestiona tu perfil, seguridad y notificaciones de Sniser."
+    },
+    "eyebrow": "Cuenta",
+    "title": "Tu cuenta",
+    "subtitle": "Actualiza tu perfil, protege tu cuenta y revisa la actividad reciente.",
+    "profile": {
+      "title": "Perfil",
+      "avatarAlt": "Vista previa del avatar",
+      "changePhoto": "Cambiar foto",
+      "uploadPhoto": "Subir foto",
+      "remove": "Quitar",
+      "fullName": "Nombre completo",
+      "email": "Correo electrónico",
+      "verified": "Verificado",
+      "unverified": "Sin verificar",
+      "sending": "Enviando…",
+      "resendVerification": "Reenviar correo de verificación",
+      "saving": "Guardando…",
+      "saveChanges": "Guardar cambios"
+    },
+    "security": {
+      "title": "Seguridad",
+      "note": "Cambiar tu contraseña cierra la sesión en otros dispositivos.",
+      "currentPassword": "Contraseña actual",
+      "newPassword": "Nueva contraseña",
+      "passwordHint": "Al menos 8 caracteres, una mayúscula y un número.",
+      "updating": "Actualizando…",
+      "updatePassword": "Actualizar contraseña"
+    },
+    "notifications": {
+      "title": "Notificaciones",
+      "markAllRead": "Marcar todo como leído",
+      "empty": "Estás al día."
+    },
+    "toast": {
+      "nameShortTitle": "Nombre demasiado corto",
+      "nameShortBody": "Introduce al menos 2 caracteres.",
+      "profileUpdated": "Perfil actualizado",
+      "saveErrorTitle": "No se pudo guardar",
+      "tryAgain": "Vuelve a intentarlo.",
+      "verificationSentTitle": "Verificación enviada",
+      "verificationSentBody": "Revisa tu bandeja de entrada para encontrar el enlace de confirmación.",
+      "sendErrorTitle": "No se pudo enviar",
+      "passwordChangedTitle": "Contraseña cambiada",
+      "passwordChangedBody": "Usa tu nueva contraseña la próxima vez que inicies sesión.",
+      "passwordErrorTitle": "No se pudo cambiar la contraseña"
+    }
+  },
+  "admin": {
+    "meta": {
+      "title": "Administración — Sniser",
+      "description": "Administración de la plataforma."
+    },
+    "eyebrow": "Plataforma",
+    "title": "Panel de administración",
+    "subtitle": "Supervisa el estado de la plataforma, gestiona a los miembros y atiende las solicitudes de soporte de un vistazo.",
+    "tabsAriaLabel": "Secciones de administración",
+    "errFallback": "Algo salió mal. Vuelve a intentarlo.",
+    "loadingLabel": "Cargando",
+    "role": {
+      "viewer": "Espectador",
+      "artist": "Artista",
+      "admin": "Administrador"
+    },
+    "roleFilter": {
+      "all": "Todos los roles"
+    },
+    "statusFilter": {
+      "all": "Todos los estados",
+      "active": "Activo",
+      "suspended": "Suspendido"
+    },
+    "ticketStatus": {
+      "open": "Abierto",
+      "inProgress": "En curso",
+      "closed": "Cerrado"
+    },
+    "ticketFilter": {
+      "all": "Todos los tickets"
+    },
+    "tabs": {
+      "users": "Usuarios",
+      "tickets": "Tickets",
+      "audit": "Auditoría"
+    },
+    "stats": {
+      "loadError": "No se pudieron cargar las estadísticas",
+      "totalUsers": "Usuarios totales",
+      "artists": "Artistas",
+      "publishedContent": "Contenido publicado",
+      "salesCount": "Número de ventas",
+      "grossVolume": "Volumen bruto",
+      "openTickets": "Tickets abiertos",
+      "activeResale": "Reventa activa"
+    },
+    "users": {
+      "loadError": "No se pudieron cargar los usuarios",
+      "roleUpdatedTitle": "Rol actualizado",
+      "roleUpdatedBody": "{{email}} ahora es {{role}}.",
+      "roleErrorTitle": "No se pudo actualizar el rol",
+      "suspendedTitle": "Usuario suspendido",
+      "activatedTitle": "Usuario activado",
+      "statusErrorTitle": "No se pudo actualizar el estado",
+      "searchLabel": "Buscar",
+      "searchPlaceholder": "Buscar nombre o correo electrónico",
+      "roleFilterLabel": "Rol",
+      "statusFilterLabel": "Estado",
+      "emptyTitle": "Ningún usuario coincide",
+      "emptyHint": "Prueba una búsqueda más amplia o borra los filtros.",
+      "th": {
+        "user": "Usuario",
+        "role": "Rol",
+        "status": "Estado",
+        "purchases": "Compras",
+        "joined": "Registro",
+        "actions": "Acciones"
+      },
+      "unverified": "Sin verificar",
+      "changeRoleFor": "Cambiar el rol de {{email}}",
+      "suspend": "Suspender",
+      "activate": "Activar"
+    },
+    "tickets": {
+      "loadError": "No se pudieron cargar los tickets",
+      "updatedTitle": "Ticket actualizado",
+      "updatedBody": "{{ref}} → {{label}}",
+      "updateErrorTitle": "No se pudo actualizar el ticket",
+      "statusFilterLabel": "Estado",
+      "empty": "Sin tickets",
+      "showLess": "Ver menos",
+      "showMore": "Ver más",
+      "setStatusFor": "Establecer el estado de {{ref}}"
+    },
+    "audit": {
+      "loadError": "No se pudo cargar el registro de auditoría",
+      "empty": "Aún no hay actividad",
+      "system": "sistema"
+    },
+    "pagination": {
+      "ariaLabel": "Paginación",
+      "previous": "Anterior",
+      "next": "Siguiente",
+      "pageOf": "Página {{page}} de {{totalPages}}"
+    },
+    "errorBlock": {
+      "title": "Algo salió mal",
+      "body": "Comprueba tu conexión e inténtalo de nuevo.",
+      "retry": "Reintentar"
+    }
+  },
+  "verifyEmail": {
+    "meta": {
+      "title": "Verificar correo electrónico — Sniser"
+    },
+    "linkInvalid": "Este enlace no es válido o ha caducado.",
+    "verifying": "Confirmando tu correo electrónico…",
+    "successTitle": "Correo electrónico verificado",
+    "successBody": "Tu cuenta está completamente desbloqueada.",
+    "goToAccount": "Ir a la cuenta",
+    "missingTitle": "Sin token de verificación",
+    "errorTitle": "La verificación falló",
+    "missingBody": "Abre el enlace de tu correo de verificación para confirmar tu dirección.",
+    "requestFresh": "Puedes solicitar un enlace nuevo desde la página de tu cuenta después de iniciar sesión.",
+    "home": "Inicio"
+  },
+  "resetPassword": {
+    "meta": {
+      "title": "Restablecer contraseña — Sniser"
+    },
+    "passwordsMismatch": "Las contraseñas no coinciden.",
+    "toast": {
+      "successTitle": "Contraseña restablecida",
+      "successBody": "Ahora puedes iniciar sesión con tu nueva contraseña.",
+      "errorTitle": "No se pudo restablecer la contraseña",
+      "errorFallback": "Es posible que el enlace haya caducado."
+    },
+    "invalidTitle": "Enlace de restablecimiento no válido",
+    "invalidBody": "Esta página necesita un token de restablecimiento válido. Solicita un nuevo enlace desde la pantalla de inicio de sesión.",
+    "backHome": "Volver al inicio",
+    "doneTitle": "Contraseña actualizada",
+    "doneBody": "Inicia sesión con tu nueva contraseña para continuar.",
+    "signIn": "Iniciar sesión",
+    "chooseTitle": "Elige una nueva contraseña",
+    "chooseBody": "Que tenga al menos 8 caracteres con una letra mayúscula y un número.",
+    "newPassword": "Nueva contraseña",
+    "confirmPassword": "Confirmar contraseña",
+    "saving": "Guardando…",
+    "submit": "Restablecer contraseña"
+  },
+  "authModal": {
+    "nameFallback": "Amigo",
+    "title": {
+      "login": "Bienvenido de nuevo",
+      "signup": "Crea tu cuenta"
+    },
+    "description": "Tu billetera de Sniser se crea automáticamente — sin frases de recuperación, sin extensiones del navegador.",
+    "tablistLabel": "Modo de autenticación",
+    "fullName": "Nombre completo",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "passwordHint": "Al menos 8 caracteres, una mayúscula y un número.",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "creatingAccount": "Creando cuenta…",
+    "signingIn": "Iniciando sesión…",
+    "createAccount": "Crear cuenta",
+    "signIn": "Iniciar sesión",
+    "legal": "Al continuar, aceptas nuestros <terms>Términos</terms> y nuestra <privacy>Política de privacidad</privacy>.",
+    "toast": {
+      "welcomeTitle": "¡Bienvenido, {{name}}!",
+      "verifyBody": "Revisa tu bandeja de entrada para verificar tu correo electrónico.",
+      "welcomeBackTitle": "¡Bienvenido de nuevo, {{name}}!",
+      "signedInBody": "Has iniciado sesión.",
+      "genericError": "Algo salió mal. Inténtalo de nuevo.",
+      "createFailedTitle": "No se pudo crear la cuenta",
+      "signInFailedTitle": "No se pudo iniciar sesión",
+      "enterEmailTitle": "Primero ingresa tu correo electrónico",
+      "enterEmailBody": "Enviaremos el enlace de restablecimiento a esa dirección.",
+      "resetSentTitle": "Enlace de restablecimiento enviado",
+      "resetSentBody": "Si {{email}} tiene una cuenta, un enlace de restablecimiento está en camino."
+    }
+  },
+  "advertiseModal": {
+    "budgets": {
+      "under5k": "Menos de $5k",
+      "5to20k": "$5k – $20k",
+      "20to50k": "$20k – $50k",
+      "50kPlus": "$50k+"
+    },
+    "budgetRequired": "Elige un rango de presupuesto.",
+    "title": "Anúnciate en Sniser",
+    "description": "Cuéntanos sobre tu marca. Te responderemos con opciones para llegar a nuestra audiencia musical.",
+    "brandLabel": "Marca o empresa",
+    "emailLabel": "Correo electrónico de trabajo",
+    "budgetRange": "Rango de presupuesto",
+    "campaignLabel": "Cuéntanos sobre tu campaña",
+    "campaignPlaceholder": "Audiencia, objetivos, plazos, cualquier cosa que nos ayude a preparar una propuesta…",
+    "campaignHint": "Al menos 20 caracteres.",
+    "sendRequest": "Enviar solicitud",
+    "sending": "Enviando…",
+    "toast": {
+      "sentTitle": "Solicitud enviada",
+      "sentBody": "Nuestro equipo de alianzas responderá en un plazo de dos días hábiles."
+    }
+  },
+  "cookieBanner": {
+    "regionLabel": "Consentimiento de cookies",
+    "title": "Usamos cookies",
+    "body": "Las cookies esenciales mantienen Sniser en funcionamiento. Las analíticas opcionales nos ayudan a mejorar. Puedes cambiar esto en cualquier momento.",
+    "acceptAll": "Aceptar todo",
+    "essentialOnly": "Solo esenciales"
+  },
+  "mediaPlayer": {
+    "tryAgainError": "Inténtalo de nuevo.",
+    "errorTitle": "No se pudo abrir este lanzamiento",
+    "retry": "Reintentar",
+    "mediaLabel": "{{title}} de {{artist}}",
+    "closePlayer": "Cerrar el reproductor",
+    "noPreviewTitle": "Vista previa próximamente",
+    "noPreviewBody": "El artista aún no ha adjuntado un archivo multimedia a este lanzamiento. Tu pase de acceso está a salvo en tu biblioteca.",
+    "coverAlt": "Portada de {{title}}",
+    "downloadTitle": "Archivo original",
+    "downloadBody": "Este lanzamiento exclusivo se entrega como un archivo original descargable.",
+    "download": "Descargar"
+  },
+  "whatsapp": {
+    "label": "Escríbenos por WhatsApp",
+    "subLabel": "para más información",
+    "ariaLabel": "{{label}} — abre WhatsApp en una pestaña nueva"
+  },
+  "walletPill": {
+    "balanceLabel": "Saldo de la billetera {{balance}} {{currency}}",
+    "openWallet": "Abrir la billetera"
+  },
+  "requireAuth": {
+    "title": "Inicia sesión para continuar",
+    "body": "Necesitas una cuenta para acceder a esta página."
+  },
+  "errorBoundary": {
+    "eyebrow": "Algo salió mal",
+    "title": "Se produjo un error inesperado.",
+    "body": "No se pudo mostrar la página. Inténtalo de nuevo o vuelve al inicio — si sigue ocurriendo, avísanos.",
+    "tryAgain": "Reintentar",
+    "goHome": "Ir al inicio"
+  },
+  "toastRegion": {
+    "notifications": "Notificaciones",
+    "dismiss": "Descartar la notificación"
+  },
+  "modal": {
+    "close": "Cerrar"
+  },
+  "spinner": {
+    "loading": "Cargando"
+  },
+  "pageFallback": {
+    "loadingPage": "Cargando la página"
+  },
+  "illustrations": {
+    "viewerHero": "Una persona explorando contenido exclusivo de Sniser en una laptop",
+    "signIn": "Tarjeta de inicio de sesión con los proveedores de acceso de Crossmint",
+    "verifyAccess": "Teléfono que muestra el acceso a la billetera verificado",
+    "contentUnlocks": "Vídeo de contenido exclusivo en reproducción",
+    "multiDevice": "Contenido de Sniser disponible en laptop, tableta y teléfono",
+    "resellPhone": "Teléfono que muestra un anuncio de reventa de acceso en Mercado Sniser",
+    "artistHero": "Artista grabando con auriculares ante un micrófono de estudio",
+    "contactSniser": "El equipo de Sniser revisando las postulaciones de artistas",
+    "agreement": "Firma de un acuerdo de contenido exclusivo",
+    "studio": "Producción en estudio con auriculares y notas musicales",
+    "release": "Lanzamiento de un álbum exclusivo publicándose en la plataforma",
+    "revenue": "Artista revisando un panel de ingresos",
+    "network": "Aprovecha la red de Sniser"
+  },
+  "siteMeta": {
+    "defaultDescription": "Sniser es la plataforma que paga a los artistas por su música. Lanzamientos exclusivos, producción integral y contenido propiedad de los fans en la blockchain."
   }
 }

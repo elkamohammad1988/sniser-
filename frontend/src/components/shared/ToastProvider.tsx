@@ -1,4 +1,5 @@
 import { createContext, ReactNode, useCallback, useContext, useMemo, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { AnimatePresence, m } from "framer-motion";
 import { EASE_SOFT } from "../../lib/motion/variants";
 import { cn } from "../../utils/cn";
@@ -46,11 +47,12 @@ const ICON_TONE: Record<ToastTone, string> = {
  * after 4 seconds. Keyboard-dismissible via the close button.
  */
 export function ToastProvider({ children }: { children: ReactNode }) {
+  const { t } = useTranslation();
   const [toasts, setToasts] = useState<Toast[]>([]);
   const counter = useRef(0);
 
   const dismiss = useCallback((id: number) => {
-    setToasts((prev) => prev.filter((t) => t.id !== id));
+    setToasts((prev) => prev.filter((item) => item.id !== id));
   }, []);
 
   const show = useCallback<ToastContextValue["show"]>((tone, title, message) => {
@@ -75,13 +77,13 @@ export function ToastProvider({ children }: { children: ReactNode }) {
       {children}
       <div
         role="region"
-        aria-label="Notifications"
+        aria-label={t("toastRegion.notifications")}
         className="pointer-events-none fixed right-3 top-20 sm:right-4 sm:top-4 z-[110] flex w-[min(92vw,22rem)] flex-col gap-2"
       >
         <AnimatePresence initial={false}>
-          {toasts.map((t) => (
+          {toasts.map((item) => (
             <m.div
-              key={t.id}
+              key={item.id}
               layout
               initial={{ opacity: 0, x: 24, scale: 0.96 }}
               animate={{ opacity: 1, x: 0, scale: 1 }}
@@ -91,18 +93,18 @@ export function ToastProvider({ children }: { children: ReactNode }) {
               aria-live="polite"
               className={cn(
                 "pointer-events-auto flex items-start gap-3 rounded-xl p-4 shadow-card",
-                TONE_CLASS[t.tone]
+                TONE_CLASS[item.tone]
               )}
             >
-              <span className={cn("mt-0.5 shrink-0", ICON_TONE[t.tone])}>{ICONS[t.tone]}</span>
+              <span className={cn("mt-0.5 shrink-0", ICON_TONE[item.tone])}>{ICONS[item.tone]}</span>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold">{t.title}</p>
-                {t.message && <p className="mt-0.5 text-xs text-white/65 text-pretty">{t.message}</p>}
+                <p className="text-sm font-semibold">{item.title}</p>
+                {item.message && <p className="mt-0.5 text-xs text-white/65 text-pretty">{item.message}</p>}
               </div>
               <button
                 type="button"
-                aria-label="Dismiss notification"
-                onClick={() => dismiss(t.id)}
+                aria-label={t("toastRegion.dismiss")}
+                onClick={() => dismiss(item.id)}
                 className="shrink-0 rounded-md p-1 text-white/50 hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green"
               >
                 <CloseIcon className="h-3.5 w-3.5" strokeWidth={2.5} />

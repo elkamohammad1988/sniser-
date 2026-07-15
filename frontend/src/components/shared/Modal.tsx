@@ -1,4 +1,5 @@
 import { ReactNode, useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { AnimatePresence, m } from "framer-motion";
 import { useLockBodyScroll } from "../../hooks/useLockBodyScroll";
 import { EASE_SOFT } from "../../lib/motion/variants";
@@ -49,6 +50,7 @@ export default function Modal({
   padded = true,
   children,
 }: Props) {
+  const { t } = useTranslation();
   useLockBodyScroll(open);
   const panelRef = useRef<HTMLDivElement>(null);
   const previouslyFocused = useRef<HTMLElement | null>(null);
@@ -143,7 +145,7 @@ export default function Modal({
           >
             {!hideClose && (
               <IconButton
-                label="Close"
+                label={t("modal.close")}
                 onClick={onClose}
                 className="absolute right-3 top-3 h-9 w-9 bg-transparent border-0 text-white/70 hover:bg-white/10 hover:text-white"
               >

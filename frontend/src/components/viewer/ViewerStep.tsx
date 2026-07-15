@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { useTranslation } from "react-i18next";
 import { cn } from "../../utils/cn";
 import type { SectionVariant } from "../../types";
 import { CheckIcon } from "../shared/Icons";
@@ -45,6 +46,7 @@ export default function ViewerStep({
   flow,
   sideCard,
 }: Props) {
+  const { t } = useTranslation();
   const isGreen = variant === "green";
   const onAccent = isGreen || variant === "light";
 
@@ -88,7 +90,7 @@ export default function ViewerStep({
               titleClasses
             )}
           >
-            <span className="sr-only">Step {number}: </span>
+            <span className="sr-only">{t("viewer.stepLabel", { number })}</span>
             {highlight ? (
               <>
                 <span className={highlightClasses}>{highlight}</span>{" "}

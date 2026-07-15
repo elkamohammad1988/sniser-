@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import { Navigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import Section from "../layout/Section";
 import Button from "./Button";
 import Spinner from "./Spinner";
@@ -18,6 +19,7 @@ interface Props {
  * is always the real authority — this only shapes the UX.
  */
 export default function RequireAuth({ children, role }: Props) {
+  const { t } = useTranslation();
   const { status, user } = useSession();
   const modal = useModal();
 
@@ -41,16 +43,16 @@ export default function RequireAuth({ children, role }: Props) {
               <path d="M8 11V7a4 4 0 0 1 8 0v4" />
             </svg>
           </div>
-          <h1 className="text-lg font-bold text-white">Sign in to continue</h1>
+          <h1 className="text-lg font-bold text-white">{t("requireAuth.title")}</h1>
           <p className="mt-1.5 text-sm text-white/60">
-            You need an account to access this page.
+            {t("requireAuth.body")}
           </p>
           <div className="mt-6 flex justify-center gap-2">
             <Button variant="primary" size="md" onClick={() => modal.openAuth({ mode: "login" })}>
-              Log in
+              {t("common.logIn")}
             </Button>
             <Button variant="outline" size="md" onClick={() => modal.openAuth({ mode: "signup" })}>
-              Sign up
+              {t("common.signUp")}
             </Button>
           </div>
         </div>

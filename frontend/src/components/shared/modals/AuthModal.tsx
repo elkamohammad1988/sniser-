@@ -1,5 +1,6 @@
 import { FormEvent, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { Trans, useTranslation } from "react-i18next";
 import Modal from "../Modal";
 import Button from "../Button";
 import { TextField } from "../Field";
@@ -9,6 +10,7 @@ import { endpoints } from "../../../lib/api/endpoints";
 import { ApiClientError } from "../../../lib/api/client";
 import { validateEmail, validatePassword, validateRequired } from "../../../utils/validation";
 import { cn } from "../../../utils/cn";
+import i18n from "../../../i18n";
 
 export type AuthMode = "login" | "signup";
 
@@ -24,9 +26,9 @@ interface Errors {
   password?: string | null;
 }
 
-const TABS: { value: AuthMode; label: string }[] = [
-  { value: "login", label: "Log in" },
-  { value: "signup", label: "Sign up" },
+const TABS: { value: AuthMode; labelKey: string }[] = [
+  { value: "login", labelKey: "common.logIn" },
+  { value: "signup", labelKey: "common.signUp" },
 ];
 
 /** Derive a display name from an email for users who log in without providing one. */
@@ -35,10 +37,11 @@ function nameFromEmail(email: string): string {
   return local
     .replace(/[._-]+/g, " ")
     .replace(/\b\w/g, (c) => c.toUpperCase())
-    .trim() || "Friend";
+    .trim() || i18n.t("authModal.nameFallback");
 }
 
 export default function AuthModal({ open, onClose, initialMode = "login" }: Props) {
+  const { t } = useTranslation();
   const toast = useToast();
   const session = useSession();
   const [mode, setMode] = useState<AuthMode>(initialMode);
@@ -86,22 +89,31 @@ export default function AuthModal({ open, onClose, initialMode = "login" }: Prop
       if (mode === "signup") {
         await session.signup(name.trim(), email.trim(), password);
         onClose();
-        toast.success(`Welcome, ${name.trim().split(" ")[0]}!`, "Check your inbox to verify your email.");
+        toast.success(
+          t("authModal.toast.welcomeTitle", { name: name.trim().split(" ")[0] }),
+          t("authModal.toast.verifyBody")
+        );
       } else {
         const user = await session.login(email.trim(), password);
         onClose();
         const displayName = user.name || nameFromEmail(email);
-        toast.success(`Welcome back, ${displayName.split(" ")[0]}!`, "You're signed in.");
+        toast.success(
+          t("authModal.toast.welcomeBackTitle", { name: displayName.split(" ")[0] }),
+          t("authModal.toast.signedInBody")
+        );
       }
     } catch (err) {
       const apiErr = err instanceof ApiClientError ? err : null;
-      const message = apiErr?.message ?? "Something went wrong. Please try again.";
+      const message = apiErr?.message ?? t("authModal.toast.genericError");
       if (apiErr?.status === 409) {
         setErrors((p) => ({ ...p, email: message }));
       } else if (apiErr?.status === 401) {
         setErrors((p) => ({ ...p, password: message }));
       } else {
-        toast.error(mode === "signup" ? "Couldn't create account" : "Couldn't sign in", message);
+        toast.error(
+          mode === "signup" ? t("authModal.toast.createFailedTitle") : t("authModal.toast.signInFailedTitle"),
+          message
+        );
       }
     } finally {
       setSubmitting(false);
@@ -112,7 +124,7 @@ export default function AuthModal({ open, onClose, initialMode = "login" }: Prop
     const err = validateEmail(email);
     if (err) {
       setErrors((p) => ({ ...p, email: err }));
-      toast.info("Enter your email first", "We'll send the reset link to that address.");
+      toast.info(t("authModal.toast.enterEmailTitle"), t("authModal.toast.enterEmailBody"));
       return;
     }
     try {
@@ -120,18 +132,18 @@ export default function AuthModal({ open, onClose, initialMode = "login" }: Prop
     } catch {
       /* endpoint always 200s; ignore transport hiccups */
     }
-    toast.success("Reset link sent", `If ${email} has an account, a reset link is on its way.`);
+    toast.success(t("authModal.toast.resetSentTitle"), t("authModal.toast.resetSentBody", { email }));
   };
 
   return (
     <Modal
       open={open}
       onClose={onClose}
-      title={mode === "login" ? "Welcome back" : "Create your account"}
-      description="Your Sniser wallet is created automatically — no seed phrases, no browser extensions."
+      title={mode === "login" ? t("authModal.title.login") : t("authModal.title.signup")}
+      description={t("authModal.description")}
       size="md"
     >
-      <div role="tablist" aria-label="Authentication mode" className="mb-5 inline-flex rounded-full bg-bg-soft/60 p-1 ring-1 ring-white/10">
+      <div role="tablist" aria-label={t("authModal.tablistLabel")} className="mb-5 inline-flex rounded-full bg-bg-soft/60 p-1 ring-1 ring-white/10">
         {TABS.map((tab) => {
           const active = tab.value === mode;
           return (
@@ -149,7 +161,7 @@ export default function AuthModal({ open, onClose, initialMode = "login" }: Prop
                 active ? "bg-brand-green text-bg" : "text-white/70 hover:text-white"
               )}
             >
-              {tab.label}
+              {t(tab.labelKey)}
             </button>
           );
         })}
@@ -158,7 +170,7 @@ export default function AuthModal({ open, onClose, initialMode = "login" }: Prop
       <form noValidate onSubmit={onSubmit} className="space-y-4">
         {mode === "signup" && (
           <TextField
-            label="Full name"
+            label={t("authModal.fullName")}
             type="text"
             autoComplete="name"
             placeholder="Alex Carter"
@@ -170,7 +182,7 @@ export default function AuthModal({ open, onClose, initialMode = "login" }: Prop
           />
         )}
         <TextField
-          label="Email"
+          label={t("authModal.email")}
           type="email"
           autoComplete="email"
           inputMode="email"
@@ -184,7 +196,7 @@ export default function AuthModal({ open, onClose, initialMode = "login" }: Prop
 
         <div>
           <TextField
-            label="Password"
+            label={t("authModal.password")}
             type="password"
             autoComplete={mode === "signup" ? "new-password" : "current-password"}
             placeholder="••••••••"
@@ -192,7 +204,7 @@ export default function AuthModal({ open, onClose, initialMode = "login" }: Prop
             onChange={(e) => setPassword(e.target.value)}
             onBlur={() => setErrors((p) => ({ ...p, password: checkPassword(password) }))}
             error={errors.password}
-            hint={mode === "signup" ? "At least 8 chars, one uppercase, one number." : undefined}
+            hint={mode === "signup" ? t("authModal.passwordHint") : undefined}
             required
           />
           {mode === "login" && (
@@ -202,7 +214,7 @@ export default function AuthModal({ open, onClose, initialMode = "login" }: Prop
                 onClick={onForgotPassword}
                 className="text-[11px] font-semibold text-white/55 underline-offset-2 hover:text-brand-green hover:underline focus-visible:outline-none focus-visible:text-brand-green"
               >
-                Forgot password?
+                {t("authModal.forgotPassword")}
               </button>
             </div>
           )}
@@ -214,20 +226,23 @@ export default function AuthModal({ open, onClose, initialMode = "login" }: Prop
           size="md"
           fullWidth
           isLoading={submitting}
-          loadingText={mode === "signup" ? "Creating account…" : "Signing in…"}
+          loadingText={mode === "signup" ? t("authModal.creatingAccount") : t("authModal.signingIn")}
         >
-          {mode === "signup" ? "Create account" : "Sign in"}
+          {mode === "signup" ? t("authModal.createAccount") : t("authModal.signIn")}
         </Button>
 
         <p className="pt-1 text-center text-[11px] text-white/45">
-          By continuing you agree to our{" "}
-          <Link to="/terms" onClick={onClose} className="underline underline-offset-2 hover:text-white/70">
-            Terms
-          </Link>{" "}
-          and{" "}
-          <Link to="/privacy" onClick={onClose} className="underline underline-offset-2 hover:text-white/70">
-            Privacy Policy
-          </Link>.
+          <Trans
+            i18nKey="authModal.legal"
+            components={{
+              terms: (
+                <Link to="/terms" onClick={onClose} className="underline underline-offset-2 hover:text-white/70" />
+              ),
+              privacy: (
+                <Link to="/privacy" onClick={onClose} className="underline underline-offset-2 hover:text-white/70" />
+              ),
+            }}
+          />
         </p>
       </form>
     </Modal>

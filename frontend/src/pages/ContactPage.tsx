@@ -1,4 +1,5 @@
 import { FormEvent, useState } from "react";
+import { Trans, useTranslation } from "react-i18next";
 import Section from "../components/layout/Section";
 import SectionHeading from "../components/shared/SectionHeading";
 import Button from "../components/shared/Button";
@@ -14,11 +15,11 @@ import { validateEmail, validateMin, validateRequired } from "../utils/validatio
 
 type Reason = "general" | "artist" | "press" | "support";
 
-const REASONS: { value: Reason; label: string; blurb: string }[] = [
-  { value: "general", label: "General", blurb: "Anything not covered below." },
-  { value: "artist", label: "Artist onboarding", blurb: "You make music and want to release on Sniser." },
-  { value: "press", label: "Press & partnerships", blurb: "Media, brands, or partnership requests." },
-  { value: "support", label: "Account support", blurb: "Login, payments, wallet issues." },
+const REASONS: { value: Reason; labelKey: string; blurbKey: string }[] = [
+  { value: "general", labelKey: "contact.reasons.general.label", blurbKey: "contact.reasons.general.blurb" },
+  { value: "artist", labelKey: "contact.reasons.artist.label", blurbKey: "contact.reasons.artist.blurb" },
+  { value: "press", labelKey: "contact.reasons.press.label", blurbKey: "contact.reasons.press.blurb" },
+  { value: "support", labelKey: "contact.reasons.support.label", blurbKey: "contact.reasons.support.blurb" },
 ];
 
 /** Map the friendly UI reasons onto the backend's routing topics. */
@@ -36,10 +37,10 @@ interface Errors {
 }
 
 export default function ContactPage() {
+  const { t } = useTranslation();
   usePageMeta({
-    title: "Contact Sniser",
-    description:
-      "Talk to the Sniser team about onboarding as an artist, partnerships, press, or account support.",
+    title: t("contact.meta.title"),
+    description: t("contact.meta.description"),
     canonicalPath: "/contact",
   });
 
@@ -76,10 +77,10 @@ export default function ContactPage() {
         website,
       });
       setSent(true);
-      toast.success("Message sent", "We'll reply within one business day.");
+      toast.success(t("contact.toast.sentTitle"), t("contact.toast.sentBody"));
     } catch (err) {
-      const msg = err instanceof ApiClientError ? err.message : "Please try again in a moment.";
-      toast.error("Couldn't send message", msg);
+      const msg = err instanceof ApiClientError ? err.message : t("contact.toast.errorFallback");
+      toast.error(t("contact.toast.errorTitle"), msg);
     } finally {
       setSubmitting(false);
     }
@@ -97,11 +98,11 @@ export default function ContactPage() {
   return (
     <>
       <Section tone="dark" spacing="md">
-        <SectionHeading eyebrow="Contact" align="left" className="max-w-2xl">
-          Get in touch.
+        <SectionHeading eyebrow={t("contact.hero.eyebrow")} align="left" className="max-w-2xl">
+          {t("contact.hero.heading")}
         </SectionHeading>
         <p className="mt-3 max-w-2xl text-sm sm:text-base text-white/65 text-pretty">
-          Tell us what you need help with — we route messages to the right person automatically.
+          {t("contact.hero.body")}
         </p>
       </Section>
 
@@ -116,19 +117,21 @@ export default function ContactPage() {
                     <path d="m5 13 4 4L20 6" />
                   </svg>
                 </div>
-                <h3 className="text-lg font-bold text-white">Message received</h3>
+                <h3 className="text-lg font-bold text-white">{t("contact.sent.heading")}</h3>
                 <p className="mt-1.5 text-sm text-white/60 text-pretty">
-                  Thanks — we'll reply to <span className="text-white">{email}</span> within one business day.
+                  <Trans i18nKey="contact.sent.body" values={{ email }}>
+                    Thanks — we'll reply to <span className="text-white">{"{{email}}"}</span> within one business day.
+                  </Trans>
                 </p>
                 <div className="mt-6">
-                  <Button variant="outline" size="sm" onClick={reset}>Send another message</Button>
+                  <Button variant="outline" size="sm" onClick={reset}>{t("contact.sent.sendAnother")}</Button>
                 </div>
               </div>
             ) : (
               <form noValidate onSubmit={onSubmit} className="space-y-4">
                 <div>
-                  <label className="mb-1.5 block text-xs font-semibold text-white/75">What's this about?</label>
-                  <div className="grid grid-cols-2 gap-2" role="radiogroup" aria-label="Contact reason">
+                  <label className="mb-1.5 block text-xs font-semibold text-white/75">{t("contact.form.reasonLabel")}</label>
+                  <div className="grid grid-cols-2 gap-2" role="radiogroup" aria-label={t("contact.form.reasonAriaLabel")}>
                     {REASONS.map((r) => {
                       const active = reason === r.value;
                       return (
@@ -145,8 +148,8 @@ export default function ContactPage() {
                               : "bg-bg-soft/60 ring-1 ring-white/10 text-white/70 hover:ring-white/25 hover:text-white")
                           }
                         >
-                          <span className="block font-bold">{r.label}</span>
-                          <span className="block mt-0.5 text-[11px] text-white/55">{r.blurb}</span>
+                          <span className="block font-bold">{t(r.labelKey)}</span>
+                          <span className="block mt-0.5 text-[11px] text-white/55">{t(r.blurbKey)}</span>
                         </button>
                       );
                     })}
@@ -154,7 +157,7 @@ export default function ContactPage() {
                 </div>
 
                 <TextField
-                  label="Name"
+                  label={t("contact.form.name")}
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   onBlur={() => setErrors((p) => ({ ...p, name: validateRequired(name, "Name") }))}
@@ -164,7 +167,7 @@ export default function ContactPage() {
                   required
                 />
                 <TextField
-                  label="Email"
+                  label={t("contact.form.email")}
                   type="email"
                   inputMode="email"
                   autoComplete="email"
@@ -176,13 +179,13 @@ export default function ContactPage() {
                   required
                 />
                 <TextArea
-                  label="Message"
+                  label={t("contact.form.message")}
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                   onBlur={() => setErrors((p) => ({ ...p, message: validateMin(message, 20, "Message") }))}
                   error={errors.message}
-                  placeholder="A few sentences about what you need…"
-                  hint="At least 20 characters."
+                  placeholder={t("contact.form.messagePlaceholder")}
+                  hint={t("contact.form.messageHint")}
                   rows={5}
                   required
                 />
@@ -199,8 +202,8 @@ export default function ContactPage() {
                   />
                 </div>
 
-                <Button type="submit" variant="primary" size="md" fullWidth isLoading={submitting} loadingText="Sending…">
-                  Send message
+                <Button type="submit" variant="primary" size="md" fullWidth isLoading={submitting} loadingText={t("contact.form.sending")}>
+                  {t("contact.form.submit")}
                 </Button>
               </form>
             )}
@@ -209,7 +212,7 @@ export default function ContactPage() {
           {/* Side panel */}
           <aside className="space-y-4">
             <div className="rounded-2xl bg-bg-card p-6 ring-1 ring-white/5">
-              <h3 className="text-sm font-bold tracking-widestPlus uppercase text-white">Other channels</h3>
+              <h3 className="text-sm font-bold tracking-widestPlus uppercase text-white">{t("contact.panel.otherChannels")}</h3>
               <ul className="mt-4 space-y-3 text-sm">
                 <li className="flex items-start gap-3">
                   <span className="mt-0.5 grid h-8 w-8 place-items-center rounded-lg bg-brand-green/15 text-brand-green">
@@ -218,7 +221,7 @@ export default function ContactPage() {
                     </svg>
                   </span>
                   <div>
-                    <p className="font-semibold text-white">Email</p>
+                    <p className="font-semibold text-white">{t("contact.panel.email")}</p>
                     <a href={`mailto:${SUPPORT_EMAIL}`} className="text-white/65 hover:text-brand-green transition-colors">
                       {SUPPORT_EMAIL}
                     </a>
@@ -233,7 +236,7 @@ export default function ContactPage() {
                   <div>
                     <p className="font-semibold text-white">WhatsApp</p>
                     <a href={env.whatsappUrl} target="_blank" rel="noopener noreferrer" className="text-white/65 hover:text-brand-green transition-colors">
-                      Open chat →
+                      {t("contact.panel.openChat")}
                     </a>
                   </div>
                 </li>
@@ -241,14 +244,14 @@ export default function ContactPage() {
             </div>
 
             <div className="rounded-2xl bg-bg-card p-6 ring-1 ring-white/5">
-              <h3 className="text-sm font-bold tracking-widestPlus uppercase text-white">Office</h3>
+              <h3 className="text-sm font-bold tracking-widestPlus uppercase text-white">{t("contact.panel.office")}</h3>
               <p className="mt-3 text-sm text-white/65 leading-relaxed">
                 Sniser Ltd<br />
                 3rd Floor, 86–90 Paul Street<br />
                 London EC2A 4NE, UK
               </p>
               <p className="mt-3 text-xs text-white/45">
-                We're remote-first. The London address is registered office and mail handling.
+                {t("contact.panel.remoteNote")}
               </p>
             </div>
           </aside>

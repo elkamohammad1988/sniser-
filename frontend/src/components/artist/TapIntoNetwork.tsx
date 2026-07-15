@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import Section from "../layout/Section";
 import WhatsAppButton from "../shared/WhatsAppButton";
 import AnimateIn from "../shared/AnimateIn";
@@ -9,6 +10,7 @@ import Media from "../shared/Media";
 import { slideInLeft, slideInRight } from "../../lib/motion/variants";
 
 export default function TapIntoNetwork() {
+  const { t } = useTranslation();
   return (
     <Section
       tone="dark"
@@ -39,15 +41,13 @@ export default function TapIntoNetwork() {
           <div className="relative grid items-center gap-10 lg:grid-cols-2">
             <AnimateIn variants={slideInLeft}>
               <span className="inline-flex items-center gap-2 rounded-full bg-white/5 px-3 py-1 text-[11px] font-semibold uppercase tracking-widestPlus text-brand-green ring-1 ring-white/10">
-                Private Access
+                {t("artist.network.badge")}
               </span>
               <h3 className="mt-5 text-3xl font-extrabold leading-tight text-balance text-fade-white sm:text-4xl">
-                Tap Into The Network
+                {t("artist.network.heading")}
               </h3>
               <p className="mt-4 max-w-md text-sm leading-relaxed text-white/60 text-pretty">
-                We don't broadcast every move publicly. Open submission windows,
-                platform updates, and new investment calls go straight to our
-                trusted list. Get inside the room and stay locked in.
+                {t("artist.network.body")}
               </p>
               <div className="mt-8 flex flex-wrap items-center gap-4">
                 <WhatsAppButton />
@@ -55,7 +55,7 @@ export default function TapIntoNetwork() {
                   to="/browse"
                   className={buttonStyles("outline", "lg")}
                 >
-                  Explore content
+                  {t("artist.network.explore")}
                   <ArrowRight aria-hidden="true" className="h-4 w-4" />
                 </Link>
               </div>
@@ -73,7 +73,7 @@ export default function TapIntoNetwork() {
                 <div className="gradient-border relative rounded-[1.75rem] bg-white/[0.03] p-3 ring-1 ring-white/10 shadow-card transition-transform duration-500 ease-out-soft group-hover:-translate-y-1.5">
                   <Media
                     src="/media/cta-network.jpg"
-                    alt="Neon sign reading No Music No Life"
+                    alt={t("artist.network.imageAlt")}
                     aspect="5 / 4"
                     focus="center"
                     className="rounded-[1.4rem]"

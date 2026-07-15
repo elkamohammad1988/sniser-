@@ -4,12 +4,13 @@ import StepsOverview from "../components/artist/StepsOverview";
 import HowItWorksList from "../components/artist/HowItWorksList";
 import TapIntoNetwork from "../components/artist/TapIntoNetwork";
 import { usePageMeta } from "../hooks/usePageMeta";
+import { useTranslation } from "react-i18next";
 
 export default function ArtistPage() {
+  const { t } = useTranslation();
   usePageMeta({
-    title: "Sniser — Money For Your Music",
-    description:
-      "Bring the talent, we bring the booking. Sniser handles releases, production, and fan-owned content on the blockchain so artists get paid fairly.",
+    title: t("artist.meta.title"),
+    description: t("artist.meta.description"),
     canonicalPath: "/",
   });
 

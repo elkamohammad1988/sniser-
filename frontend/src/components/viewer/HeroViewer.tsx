@@ -1,4 +1,5 @@
 import { m } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import Button from "../shared/Button";
 import Container from "../layout/Container";
 import { ArrowDown } from "../shared/Icons";
@@ -6,6 +7,7 @@ import { ViewerHeroIllustration } from "../shared/Illustrations";
 import { EASE_SOFT } from "../../lib/motion/variants";
 
 export default function HeroViewer() {
+  const { t } = useTranslation();
   const scrollToSteps = () => {
     document.getElementById("viewer-steps")?.scrollIntoView({ behavior: "smooth" });
   };
@@ -21,12 +23,12 @@ export default function HeroViewer() {
               transition={{ duration: 0.7, ease: EASE_SOFT }}
             >
               <h1 className="text-hero font-extrabold text-bg text-balance">
-                How to View Content
+                {t("viewer.hero.headingLine1")}
                 <br />
-                on Sniser
+                {t("viewer.hero.headingLine2")}
               </h1>
               <p className="mt-5 max-w-md text-bg/80 leading-relaxed text-sm sm:text-base text-pretty">
-                Buy access to unlock exclusive Sniser content and own the rights permanently in your digital wallet. Trade on the marketplace whenever you're ready to flip your seat — secure, transparent, and built for fans for the long haul.
+                {t("viewer.hero.body")}
               </p>
               <m.div
                 initial={{ opacity: 0, y: 16 }}
@@ -40,7 +42,7 @@ export default function HeroViewer() {
                   rightIcon={<ArrowDown className="h-4 w-4" />}
                   onClick={scrollToSteps}
                 >
-                  See How It Works
+                  {t("viewer.hero.cta")}
                 </Button>
               </m.div>
             </m.div>

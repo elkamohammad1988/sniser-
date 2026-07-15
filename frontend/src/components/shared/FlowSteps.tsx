@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { useTranslation } from "react-i18next";
 import { cn } from "../../utils/cn";
 import { ArrowRight } from "./Icons";
 
@@ -20,6 +21,7 @@ interface Props {
  * screens so 4–5 steps fit comfortably without horizontal scroll.
  */
 export default function FlowSteps({ steps, variant = "onDark", className }: Props) {
+  const { t } = useTranslation();
   const onAccent = variant === "onAccent";
 
   const badge = onAccent
@@ -34,7 +36,7 @@ export default function FlowSteps({ steps, variant = "onDark", className }: Prop
         "flex items-start justify-between sm:justify-start gap-1 sm:gap-3",
         className
       )}
-      aria-label="Process flow"
+      aria-label={t("viewer.flowLabel")}
     >
       {steps.map((step, i) => {
         const last = i === steps.length - 1;

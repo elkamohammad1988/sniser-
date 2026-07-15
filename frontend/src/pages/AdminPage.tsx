@@ -1,4 +1,6 @@
 import { ReactNode, useEffect, useId, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
+import i18n from "../i18n";
 import Section from "../components/layout/Section";
 import SectionHeading from "../components/shared/SectionHeading";
 import Button from "../components/shared/Button";
@@ -25,44 +27,44 @@ type LoadStatus = "loading" | "success" | "error";
 
 interface SelectOption {
   value: string;
-  label: string;
+  labelKey: string;
 }
 
 const ROLE_OPTIONS: SelectOption[] = [
-  { value: "viewer", label: "Viewer" },
-  { value: "artist", label: "Artist" },
-  { value: "admin", label: "Admin" },
+  { value: "viewer", labelKey: "admin.role.viewer" },
+  { value: "artist", labelKey: "admin.role.artist" },
+  { value: "admin", labelKey: "admin.role.admin" },
 ];
 
-const ROLE_FILTER_OPTIONS: SelectOption[] = [{ value: "all", label: "All roles" }, ...ROLE_OPTIONS];
+const ROLE_FILTER_OPTIONS: SelectOption[] = [{ value: "all", labelKey: "admin.roleFilter.all" }, ...ROLE_OPTIONS];
 
 const STATUS_FILTER_OPTIONS: SelectOption[] = [
-  { value: "all", label: "All statuses" },
-  { value: "active", label: "Active" },
-  { value: "suspended", label: "Suspended" },
+  { value: "all", labelKey: "admin.statusFilter.all" },
+  { value: "active", labelKey: "admin.statusFilter.active" },
+  { value: "suspended", labelKey: "admin.statusFilter.suspended" },
 ];
 
 const TICKET_STATUS_OPTIONS: SelectOption[] = [
-  { value: "open", label: "Open" },
-  { value: "in_progress", label: "In progress" },
-  { value: "closed", label: "Closed" },
+  { value: "open", labelKey: "admin.ticketStatus.open" },
+  { value: "in_progress", labelKey: "admin.ticketStatus.inProgress" },
+  { value: "closed", labelKey: "admin.ticketStatus.closed" },
 ];
 
 const TICKET_FILTER_OPTIONS: SelectOption[] = [
-  { value: "all", label: "All tickets" },
+  { value: "all", labelKey: "admin.ticketFilter.all" },
   ...TICKET_STATUS_OPTIONS,
 ];
 
 const TABS: SelectOption[] = [
-  { value: "users", label: "Users" },
-  { value: "tickets", label: "Tickets" },
-  { value: "audit", label: "Audit" },
+  { value: "users", labelKey: "admin.tabs.users" },
+  { value: "tickets", labelKey: "admin.tabs.tickets" },
+  { value: "audit", labelKey: "admin.tabs.audit" },
 ];
 
 type AdminTab = "users" | "tickets" | "audit";
 
 function errMessage(err: unknown): string {
-  return err instanceof ApiClientError ? err.message : "Something went wrong. Please try again.";
+  return err instanceof ApiClientError ? err.message : i18n.t("admin.errFallback");
 }
 
 function formatDate(iso: string): string {
@@ -72,7 +74,7 @@ function formatDate(iso: string): string {
 
 function ticketLabel(status: string): string {
   const found = TICKET_STATUS_OPTIONS.find((o) => o.value === status);
-  return found ? found.label : status;
+  return found ? i18n.t(found.labelKey) : status;
 }
 
 type BadgeTone = "green" | "red" | "amber" | "sky" | "neutral";
@@ -98,9 +100,10 @@ function ticketTone(status: string): BadgeTone {
 // ---------------------------------------------------------------------------
 
 export default function AdminPage() {
+  const { t } = useTranslation();
   usePageMeta({
-    title: "Admin — Sniser",
-    description: "Platform administration.",
+    title: t("admin.meta.title"),
+    description: t("admin.meta.description"),
     canonicalPath: "/admin",
   });
 
@@ -109,27 +112,27 @@ export default function AdminPage() {
   return (
     <>
       <Section tone="dark" spacing="md">
-        <SectionHeading eyebrow="Platform" align="left" className="max-w-2xl">
-          Admin dashboard
+        <SectionHeading eyebrow={t("admin.eyebrow")} align="left" className="max-w-2xl">
+          {t("admin.title")}
         </SectionHeading>
         <p className="mt-3 max-w-2xl text-sm sm:text-base text-white/65 text-pretty">
-          Monitor platform health, manage members, and work through support requests at a glance.
+          {t("admin.subtitle")}
         </p>
 
         <div className="mt-8">
           <StatsOverview />
         </div>
 
-        <div role="tablist" aria-label="Admin sections" className="mt-10 flex flex-wrap gap-2">
-          {TABS.map((t) => {
-            const active = tab === t.value;
+        <div role="tablist" aria-label={t("admin.tabsAriaLabel")} className="mt-10 flex flex-wrap gap-2">
+          {TABS.map((tabOption) => {
+            const active = tab === tabOption.value;
             return (
               <button
-                key={t.value}
+                key={tabOption.value}
                 type="button"
                 role="tab"
                 aria-selected={active}
-                onClick={() => setTab(t.value as AdminTab)}
+                onClick={() => setTab(tabOption.value as AdminTab)}
                 className={cn(
                   "rounded-full px-4 py-2 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green focus-visible:ring-offset-2 focus-visible:ring-offset-bg",
                   active
@@ -137,7 +140,7 @@ export default function AdminPage() {
                     : "bg-bg-card text-white/75 ring-1 ring-white/10 hover:text-white hover:ring-white/25"
                 )}
               >
-                {t.label}
+                {t(tabOption.labelKey)}
               </button>
             );
           })}
@@ -158,6 +161,7 @@ export default function AdminPage() {
 // ---------------------------------------------------------------------------
 
 function StatsOverview() {
+  const { t } = useTranslation();
   const toast = useToast();
   const [stats, setStats] = useState<AdminStats | null>(null);
   const [status, setStatus] = useState<LoadStatus>("loading");
@@ -176,12 +180,12 @@ function StatsOverview() {
       .catch((err: unknown) => {
         if (cancelled) return;
         setStatus("error");
-        toast.error("Couldn't load stats", errMessage(err));
+        toast.error(t("admin.stats.loadError"), errMessage(err));
       });
     return () => {
       cancelled = true;
     };
-  }, [reloadKey, toast]);
+  }, [reloadKey, toast, t]);
 
   if (status === "loading") {
     return <LoadingBlock rows={4} />;
@@ -192,16 +196,16 @@ function StatsOverview() {
   }
 
   const cards: { label: string; value: string }[] = [
-    { label: "Total users", value: stats.users.total.toLocaleString() },
-    { label: "Artists", value: stats.users.artists.toLocaleString() },
-    { label: "Published content", value: stats.content.published.toLocaleString() },
-    { label: "Sales count", value: stats.sales.count.toLocaleString() },
+    { label: t("admin.stats.totalUsers"), value: stats.users.total.toLocaleString() },
+    { label: t("admin.stats.artists"), value: stats.users.artists.toLocaleString() },
+    { label: t("admin.stats.publishedContent"), value: stats.content.published.toLocaleString() },
+    { label: t("admin.stats.salesCount"), value: stats.sales.count.toLocaleString() },
     {
-      label: "Gross volume",
+      label: t("admin.stats.grossVolume"),
       value: `${stats.sales.grossVolume.toFixed(2)} ${stats.sales.currency}`,
     },
-    { label: "Open tickets", value: stats.tickets.open.toLocaleString() },
-    { label: "Active resale", value: stats.resale.active.toLocaleString() },
+    { label: t("admin.stats.openTickets"), value: stats.tickets.open.toLocaleString() },
+    { label: t("admin.stats.activeResale"), value: stats.resale.active.toLocaleString() },
   ];
 
   return (
@@ -227,6 +231,7 @@ function StatCard({ label, value }: { label: string; value: string }) {
 // ---------------------------------------------------------------------------
 
 function UsersPanel() {
+  const { t } = useTranslation();
   const toast = useToast();
   const [searchInput, setSearchInput] = useState("");
   const [q, setQ] = useState("");
@@ -269,12 +274,12 @@ function UsersPanel() {
       .catch((err: unknown) => {
         if (cancelled) return;
         setStatus("error");
-        toast.error("Couldn't load users", errMessage(err));
+        toast.error(t("admin.users.loadError"), errMessage(err));
       });
     return () => {
       cancelled = true;
     };
-  }, [role, statusFilter, q, page, reloadKey, toast]);
+  }, [role, statusFilter, q, page, reloadKey, toast, t]);
 
   const changeRole = async (user: AdminUser, nextRole: string) => {
     if (nextRole === user.role) return;
@@ -283,9 +288,9 @@ function UsersPanel() {
       const res = await endpoints.admin.updateUser(user.id, { role: nextRole });
       const applied = res.user.role as AdminUser["role"];
       setUsers((prev) => prev.map((u) => (u.id === user.id ? { ...u, role: applied } : u)));
-      toast.success("Role updated", `${user.email} is now ${applied}.`);
+      toast.success(t("admin.users.roleUpdatedTitle"), t("admin.users.roleUpdatedBody", { email: user.email, role: applied }));
     } catch (err) {
-      toast.error("Couldn't update role", errMessage(err));
+      toast.error(t("admin.users.roleErrorTitle"), errMessage(err));
     } finally {
       setBusyId(null);
     }
@@ -299,11 +304,11 @@ function UsersPanel() {
       const applied = res.user.status as AdminUser["status"];
       setUsers((prev) => prev.map((u) => (u.id === user.id ? { ...u, status: applied } : u)));
       toast.success(
-        applied === "suspended" ? "User suspended" : "User activated",
+        applied === "suspended" ? t("admin.users.suspendedTitle") : t("admin.users.activatedTitle"),
         user.email
       );
     } catch (err) {
-      toast.error("Couldn't update status", errMessage(err));
+      toast.error(t("admin.users.statusErrorTitle"), errMessage(err));
     } finally {
       setBusyId(null);
     }
@@ -313,8 +318,8 @@ function UsersPanel() {
     <div>
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-[1fr_auto_auto] lg:items-end">
         <TextField
-          label="Search"
-          placeholder="Search name or email"
+          label={t("admin.users.searchLabel")}
+          placeholder={t("admin.users.searchPlaceholder")}
           value={searchInput}
           onChange={(e) => onSearchChange(e.target.value)}
           leftIcon={
@@ -333,7 +338,7 @@ function UsersPanel() {
           }
         />
         <Select
-          label="Role"
+          label={t("admin.users.roleFilterLabel")}
           value={role}
           options={ROLE_FILTER_OPTIONS}
           onChange={(v) => {
@@ -343,7 +348,7 @@ function UsersPanel() {
           className="lg:w-44"
         />
         <Select
-          label="Status"
+          label={t("admin.users.statusFilterLabel")}
           value={statusFilter}
           options={STATUS_FILTER_OPTIONS}
           onChange={(v) => {
@@ -360,7 +365,7 @@ function UsersPanel() {
         {status === "error" && <ErrorBlock onRetry={() => setReloadKey((k) => k + 1)} />}
 
         {status === "success" && users.length === 0 && (
-          <EmptyBlock title="No users match" hint="Try a broader search or clear the filters." />
+          <EmptyBlock title={t("admin.users.emptyTitle")} hint={t("admin.users.emptyHint")} />
         )}
 
         {status === "success" && users.length > 0 && (
@@ -368,12 +373,12 @@ function UsersPanel() {
             <table className="w-full min-w-[820px] border-collapse text-sm">
               <thead>
                 <tr className="border-b border-white/5 bg-bg-card/70 text-left">
-                  <Th>User</Th>
-                  <Th>Role</Th>
-                  <Th>Status</Th>
-                  <Th className="text-right">Purchases</Th>
-                  <Th>Joined</Th>
-                  <Th className="text-right">Actions</Th>
+                  <Th>{t("admin.users.th.user")}</Th>
+                  <Th>{t("admin.users.th.role")}</Th>
+                  <Th>{t("admin.users.th.status")}</Th>
+                  <Th className="text-right">{t("admin.users.th.purchases")}</Th>
+                  <Th>{t("admin.users.th.joined")}</Th>
+                  <Th className="text-right">{t("admin.users.th.actions")}</Th>
                 </tr>
               </thead>
               <tbody>
@@ -389,7 +394,7 @@ function UsersPanel() {
                         <p className="mt-0.5 text-xs text-white/55">{u.email}</p>
                         {!u.emailVerified && (
                           <span className="mt-1 inline-flex text-[10px] font-semibold uppercase tracking-wide text-amber-300/80">
-                            Unverified
+                            {t("admin.users.unverified")}
                           </span>
                         )}
                       </td>
@@ -408,7 +413,7 @@ function UsersPanel() {
                       <td className="px-4 py-3 align-middle">
                         <div className="flex items-center justify-end gap-2">
                           <Select
-                            label={`Change role for ${u.email}`}
+                            label={t("admin.users.changeRoleFor", { email: u.email })}
                             hideLabel
                             compact
                             disabled={busy}
@@ -423,7 +428,7 @@ function UsersPanel() {
                             isLoading={busy}
                             onClick={() => void toggleStatus(u)}
                           >
-                            {u.status === "active" ? "Suspend" : "Activate"}
+                            {u.status === "active" ? t("admin.users.suspend") : t("admin.users.activate")}
                           </Button>
                         </div>
                       </td>
@@ -448,6 +453,7 @@ function UsersPanel() {
 // ---------------------------------------------------------------------------
 
 function TicketsPanel() {
+  const { t } = useTranslation();
   const toast = useToast();
   const [statusFilter, setStatusFilter] = useState("all");
   const [page, setPage] = useState(1);
@@ -472,12 +478,12 @@ function TicketsPanel() {
       .catch((err: unknown) => {
         if (cancelled) return;
         setStatus("error");
-        toast.error("Couldn't load tickets", errMessage(err));
+        toast.error(t("admin.tickets.loadError"), errMessage(err));
       });
     return () => {
       cancelled = true;
     };
-  }, [statusFilter, page, reloadKey, toast]);
+  }, [statusFilter, page, reloadKey, toast, t]);
 
   const changeStatus = async (ticket: AdminTicket, next: string) => {
     if (next === ticket.status) return;
@@ -485,10 +491,10 @@ function TicketsPanel() {
     try {
       const res = await endpoints.admin.updateTicket(ticket.id, next);
       const applied = res.ticket.status;
-      setTickets((prev) => prev.map((t) => (t.id === ticket.id ? { ...t, status: applied } : t)));
-      toast.success("Ticket updated", `${ticket.reference} → ${ticketLabel(applied)}`);
+      setTickets((prev) => prev.map((item) => (item.id === ticket.id ? { ...item, status: applied } : item)));
+      toast.success(t("admin.tickets.updatedTitle"), t("admin.tickets.updatedBody", { ref: ticket.reference, label: ticketLabel(applied) }));
     } catch (err) {
-      toast.error("Couldn't update ticket", errMessage(err));
+      toast.error(t("admin.tickets.updateErrorTitle"), errMessage(err));
     } finally {
       setBusyId(null);
     }
@@ -498,7 +504,7 @@ function TicketsPanel() {
     <div>
       <div className="grid gap-3 sm:grid-cols-[auto] sm:justify-start">
         <Select
-          label="Status"
+          label={t("admin.tickets.statusFilterLabel")}
           value={statusFilter}
           options={TICKET_FILTER_OPTIONS}
           onChange={(v) => {
@@ -514,16 +520,16 @@ function TicketsPanel() {
 
         {status === "error" && <ErrorBlock onRetry={() => setReloadKey((k) => k + 1)} />}
 
-        {status === "success" && tickets.length === 0 && <EmptyBlock title="No tickets" />}
+        {status === "success" && tickets.length === 0 && <EmptyBlock title={t("admin.tickets.empty")} />}
 
         {status === "success" && tickets.length > 0 && (
           <ul className="grid gap-4">
-            {tickets.map((t) => (
+            {tickets.map((ticket) => (
               <TicketCard
-                key={t.id}
-                ticket={t}
-                busy={busyId === t.id}
-                onChangeStatus={(next) => void changeStatus(t, next)}
+                key={ticket.id}
+                ticket={ticket}
+                busy={busyId === ticket.id}
+                onChangeStatus={(next) => void changeStatus(ticket, next)}
               />
             ))}
           </ul>
@@ -546,6 +552,7 @@ function TicketCard({
   busy: boolean;
   onChangeStatus: (next: string) => void;
 }) {
+  const { t } = useTranslation();
   const [expanded, setExpanded] = useState(false);
   const longMessage = ticket.message.length > 160;
 
@@ -583,13 +590,13 @@ function TicketCard({
           onClick={() => setExpanded((v) => !v)}
           className="mt-1.5 text-xs font-semibold text-brand-green hover:text-brand-greenDark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green rounded"
         >
-          {expanded ? "Show less" : "Show more"}
+          {expanded ? t("admin.tickets.showLess") : t("admin.tickets.showMore")}
         </button>
       )}
 
       <div className="mt-4 flex items-center gap-2 border-t border-white/5 pt-4">
         <Select
-          label={`Set status for ${ticket.reference}`}
+          label={t("admin.tickets.setStatusFor", { ref: ticket.reference })}
           hideLabel
           compact
           disabled={busy}
@@ -609,6 +616,7 @@ function TicketCard({
 // ---------------------------------------------------------------------------
 
 function AuditPanel() {
+  const { t } = useTranslation();
   const toast = useToast();
   const [page, setPage] = useState(1);
   const [entries, setEntries] = useState<AuditEntry[]>([]);
@@ -630,16 +638,16 @@ function AuditPanel() {
       .catch((err: unknown) => {
         if (cancelled) return;
         setStatus("error");
-        toast.error("Couldn't load audit log", errMessage(err));
+        toast.error(t("admin.audit.loadError"), errMessage(err));
       });
     return () => {
       cancelled = true;
     };
-  }, [page, reloadKey, toast]);
+  }, [page, reloadKey, toast, t]);
 
   if (status === "loading") return <LoadingBlock rows={5} />;
   if (status === "error") return <ErrorBlock onRetry={() => setReloadKey((k) => k + 1)} />;
-  if (entries.length === 0) return <EmptyBlock title="No activity yet" />;
+  if (entries.length === 0) return <EmptyBlock title={t("admin.audit.empty")} />;
 
   return (
     <div>
@@ -653,7 +661,7 @@ function AuditPanel() {
               <span className="whitespace-nowrap text-xs text-white/45">{formatDate(e.createdAt)}</span>
             </div>
             <p className="mt-2 text-xs text-white/60">
-              <span className="text-white/75">{e.actorEmail ?? "system"}</span>
+              <span className="text-white/75">{e.actorEmail ?? t("admin.audit.system")}</span>
               {(e.targetType || e.targetId) && (
                 <>
                   {" · "}
@@ -745,6 +753,7 @@ function Select({
   disabled,
   className,
 }: SelectProps) {
+  const { t } = useTranslation();
   const autoId = useId();
   const id = `sel-${autoId}`;
   return (
@@ -770,7 +779,7 @@ function Select({
       >
         {options.map((o) => (
           <option key={o.value} value={o.value} className="bg-bg-card">
-            {o.label}
+            {t(o.labelKey)}
           </option>
         ))}
       </select>
@@ -779,13 +788,14 @@ function Select({
 }
 
 function Pagination({ meta, onPage }: { meta: PaginationMeta; onPage: (p: number) => void }) {
+  const { t } = useTranslation();
   return (
-    <nav className="mt-8 flex items-center justify-center gap-3" aria-label="Pagination">
+    <nav className="mt-8 flex items-center justify-center gap-3" aria-label={t("admin.pagination.ariaLabel")}>
       <Button variant="dark" size="sm" onClick={() => onPage(meta.page - 1)} disabled={meta.page <= 1}>
-        Previous
+        {t("admin.pagination.previous")}
       </Button>
       <span className="text-sm text-white/60 tabular-nums">
-        Page {meta.page} of {meta.totalPages}
+        {t("admin.pagination.pageOf", { page: meta.page, totalPages: meta.totalPages })}
       </span>
       <Button
         variant="dark"
@@ -793,13 +803,14 @@ function Pagination({ meta, onPage }: { meta: PaginationMeta; onPage: (p: number
         onClick={() => onPage(meta.page + 1)}
         disabled={meta.page >= meta.totalPages}
       >
-        Next
+        {t("admin.pagination.next")}
       </Button>
     </nav>
   );
 }
 
 function LoadingBlock({ rows }: { rows: number }) {
+  const { t } = useTranslation();
   return (
     <div className="grid gap-3" aria-busy="true">
       {Array.from({ length: rows }).map((_, i) => (
@@ -809,13 +820,14 @@ function LoadingBlock({ rows }: { rows: number }) {
         />
       ))}
       <span className="sr-only">
-        <Spinner size="sm" /> Loading
+        <Spinner size="sm" /> {t("admin.loadingLabel")}
       </span>
     </div>
   );
 }
 
 function ErrorBlock({ onRetry }: { onRetry: () => void }) {
+  const { t } = useTranslation();
   return (
     <div className="mx-auto max-w-md rounded-2xl bg-bg-card p-10 text-center ring-1 ring-white/5">
       <div className="mx-auto mb-5 grid h-14 w-14 place-items-center rounded-2xl bg-red-500/15 text-red-400">
@@ -832,11 +844,11 @@ function ErrorBlock({ onRetry }: { onRetry: () => void }) {
           <circle cx="12" cy="12" r="9" />
         </svg>
       </div>
-      <h3 className="text-lg font-bold text-white">Something went wrong</h3>
-      <p className="mt-1.5 text-sm text-white/60">Check your connection and try again.</p>
+      <h3 className="text-lg font-bold text-white">{t("admin.errorBlock.title")}</h3>
+      <p className="mt-1.5 text-sm text-white/60">{t("admin.errorBlock.body")}</p>
       <div className="mt-5">
         <Button variant="outline" size="sm" onClick={onRetry}>
-          Retry
+          {t("admin.errorBlock.retry")}
         </Button>
       </div>
     </div>

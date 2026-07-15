@@ -1,4 +1,5 @@
 import { Component, ErrorInfo, ReactNode } from "react";
+import i18n from "../../i18n";
 
 interface Props {
   children: ReactNode;
@@ -49,14 +50,13 @@ export default class ErrorBoundary extends Component<Props, State> {
       >
         <div className="max-w-md">
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-green">
-            Something went wrong
+            {i18n.t("errorBoundary.eyebrow")}
           </p>
           <h1 className="mt-3 text-3xl font-extrabold tracking-tight text-white">
-            We hit an unexpected error.
+            {i18n.t("errorBoundary.title")}
           </h1>
           <p className="mt-3 text-sm text-white/70">
-            The page failed to render. Try again, or head back home — if it
-            keeps happening, please let us know.
+            {i18n.t("errorBoundary.body")}
           </p>
           <div className="mt-6 flex items-center justify-center gap-3">
             <button
@@ -64,13 +64,13 @@ export default class ErrorBoundary extends Component<Props, State> {
               onClick={this.handleReset}
               className="rounded-full border border-white/15 px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
             >
-              Try again
+              {i18n.t("errorBoundary.tryAgain")}
             </button>
             <a
               href="/"
               className="rounded-full bg-brand-green px-5 py-2 text-sm font-semibold text-bg transition-colors hover:bg-brand-greenDark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
             >
-              Go home
+              {i18n.t("errorBoundary.goHome")}
             </a>
           </div>
         </div>

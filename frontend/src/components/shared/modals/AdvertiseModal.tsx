@@ -1,4 +1,5 @@
 import { FormEvent, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import Modal from "../Modal";
 import Button from "../Button";
 import { TextArea, TextField } from "../Field";
@@ -18,13 +19,14 @@ interface Errors {
 }
 
 const BUDGETS = [
-  "Under $5k",
-  "$5k – $20k",
-  "$20k – $50k",
-  "$50k+",
+  "advertiseModal.budgets.under5k",
+  "advertiseModal.budgets.5to20k",
+  "advertiseModal.budgets.20to50k",
+  "advertiseModal.budgets.50kPlus",
 ] as const;
 
 export default function AdvertiseModal({ open, onClose }: Props) {
+  const { t } = useTranslation();
   const toast = useToast();
   const [brand, setBrand] = useState("");
   const [email, setEmail] = useState("");
@@ -48,7 +50,7 @@ export default function AdvertiseModal({ open, onClose }: Props) {
     const next: Errors = {
       brand: validateRequired(brand, "Brand"),
       email: validateEmail(email),
-      budget: budget ? null : "Pick a budget range.",
+      budget: budget ? null : t("advertiseModal.budgetRequired"),
       message: validateMin(message, 20, "Message"),
     };
     setErrors(next);
@@ -63,8 +65,8 @@ export default function AdvertiseModal({ open, onClose }: Props) {
       setSubmitting(false);
       onClose();
       toast.success(
-        "Request sent",
-        "Our partnerships team will reply within two business days."
+        t("advertiseModal.toast.sentTitle"),
+        t("advertiseModal.toast.sentBody")
       );
     }, 700);
   };
@@ -73,13 +75,13 @@ export default function AdvertiseModal({ open, onClose }: Props) {
     <Modal
       open={open}
       onClose={onClose}
-      title="Advertise on Sniser"
-      description="Tell us about your brand. We'll get back with options to reach our music audience."
+      title={t("advertiseModal.title")}
+      description={t("advertiseModal.description")}
       size="md"
     >
       <form noValidate onSubmit={onSubmit} className="space-y-4">
         <TextField
-          label="Brand or company"
+          label={t("advertiseModal.brandLabel")}
           value={brand}
           onChange={(e) => setBrand(e.target.value)}
           onBlur={() => setErrors((p) => ({ ...p, brand: validateRequired(brand, "Brand") }))}
@@ -88,7 +90,7 @@ export default function AdvertiseModal({ open, onClose }: Props) {
           required
         />
         <TextField
-          label="Work email"
+          label={t("advertiseModal.emailLabel")}
           type="email"
           inputMode="email"
           autoComplete="email"
@@ -100,8 +102,8 @@ export default function AdvertiseModal({ open, onClose }: Props) {
           required
         />
         <div>
-          <label className="mb-1.5 block text-xs font-semibold text-white/75">Budget range</label>
-          <div className="grid grid-cols-2 gap-2 sm:grid-cols-4" role="radiogroup" aria-label="Budget range">
+          <label className="mb-1.5 block text-xs font-semibold text-white/75">{t("advertiseModal.budgetRange")}</label>
+          <div className="grid grid-cols-2 gap-2 sm:grid-cols-4" role="radiogroup" aria-label={t("advertiseModal.budgetRange")}>
             {BUDGETS.map((b) => {
               const active = budget === b;
               return (
@@ -121,7 +123,7 @@ export default function AdvertiseModal({ open, onClose }: Props) {
                       : "bg-bg-soft/60 text-white/75 ring-1 ring-white/10 hover:ring-white/25")
                   }
                 >
-                  {b}
+                  {t(b)}
                 </button>
               );
             })}
@@ -131,18 +133,18 @@ export default function AdvertiseModal({ open, onClose }: Props) {
           )}
         </div>
         <TextArea
-          label="Tell us about your campaign"
+          label={t("advertiseModal.campaignLabel")}
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           onBlur={() => setErrors((p) => ({ ...p, message: validateMin(message, 20, "Message") }))}
           error={errors.message}
-          placeholder="Audience, goals, timing, anything that helps us prepare a proposal…"
-          hint="At least 20 characters."
+          placeholder={t("advertiseModal.campaignPlaceholder")}
+          hint={t("advertiseModal.campaignHint")}
           rows={4}
           required
         />
-        <Button type="submit" variant="primary" size="md" fullWidth isLoading={submitting} loadingText="Sending…">
-          Send request
+        <Button type="submit" variant="primary" size="md" fullWidth isLoading={submitting} loadingText={t("advertiseModal.sending")}>
+          {t("advertiseModal.sendRequest")}
         </Button>
       </form>
     </Modal>

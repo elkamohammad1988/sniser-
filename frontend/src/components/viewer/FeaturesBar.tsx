@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { useTranslation } from "react-i18next";
 import Section from "../layout/Section";
 import { ShieldIcon, LockIcon, SwapIcon, UsersIcon } from "../shared/Icons";
 import { StaggerContainer, StaggerItem } from "../shared/Stagger";
@@ -9,31 +10,30 @@ interface Feature {
   description: string;
 }
 
-const FEATURES: Feature[] = [
-  {
-    icon: <ShieldIcon className="h-5 w-5" />,
-    title: "True Ownership",
-    description: "You own the access. You own the rights.",
-  },
-  {
-    icon: <LockIcon className="h-5 w-5" />,
-    title: "Easy & Secure",
-    description: "Powered by Crossmint. Simple to set up, secure by design.",
-  },
-  {
-    icon: <SwapIcon className="h-5 w-5" />,
-    title: "Transferable",
-    description: "Sell or transfer access on the Sniser Marketplace.",
-  },
-  {
-    icon: <UsersIcon className="h-5 w-5" />,
-    title: "Support Creators",
-    description:
-      "Artists earn royalties on every single resale. You get paid, artist earns.",
-  },
-];
-
 export default function FeaturesBar() {
+  const { t } = useTranslation();
+  const FEATURES: Feature[] = [
+    {
+      icon: <ShieldIcon className="h-5 w-5" />,
+      title: t("viewer.features.ownership.title"),
+      description: t("viewer.features.ownership.description"),
+    },
+    {
+      icon: <LockIcon className="h-5 w-5" />,
+      title: t("viewer.features.secure.title"),
+      description: t("viewer.features.secure.description"),
+    },
+    {
+      icon: <SwapIcon className="h-5 w-5" />,
+      title: t("viewer.features.transferable.title"),
+      description: t("viewer.features.transferable.description"),
+    },
+    {
+      icon: <UsersIcon className="h-5 w-5" />,
+      title: t("viewer.features.creators.title"),
+      description: t("viewer.features.creators.description"),
+    },
+  ];
   return (
     <Section tone="green" spacing="sm">
       <StaggerContainer className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">

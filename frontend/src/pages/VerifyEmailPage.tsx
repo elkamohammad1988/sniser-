@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Link, useSearchParams } from "react-router-dom";
 import Section from "../components/layout/Section";
 import Button from "../components/shared/Button";
@@ -11,7 +12,8 @@ import { ApiClientError } from "../lib/api/client";
 type Status = "verifying" | "success" | "error" | "missing";
 
 export default function VerifyEmailPage() {
-  usePageMeta({ title: "Verify email — Sniser", canonicalPath: "/verify-email" });
+  const { t } = useTranslation();
+  usePageMeta({ title: t("verifyEmail.meta.title"), canonicalPath: "/verify-email" });
 
   const [params] = useSearchParams();
   const token = params.get("token");
@@ -30,10 +32,10 @@ export default function VerifyEmailPage() {
         setStatus("success");
       })
       .catch((err) => {
-        setMessage(err instanceof ApiClientError ? err.message : "This link is invalid or expired.");
+        setMessage(err instanceof ApiClientError ? err.message : t("verifyEmail.linkInvalid"));
         setStatus("error");
       });
-  }, [token, applyUser]);
+  }, [token, applyUser, t]);
 
   return (
     <Section tone="dark" spacing="lg">
@@ -41,7 +43,7 @@ export default function VerifyEmailPage() {
         {status === "verifying" && (
           <>
             <Spinner size="lg" className="mx-auto text-brand-green" />
-            <p className="mt-5 text-sm text-white/60">Confirming your email…</p>
+            <p className="mt-5 text-sm text-white/60">{t("verifyEmail.verifying")}</p>
           </>
         )}
 
@@ -52,11 +54,11 @@ export default function VerifyEmailPage() {
                 <path d="m5 13 4 4L20 6" />
               </svg>
             </div>
-            <h1 className="text-lg font-bold text-white">Email verified</h1>
-            <p className="mt-1.5 text-sm text-white/60">Your account is fully unlocked.</p>
+            <h1 className="text-lg font-bold text-white">{t("verifyEmail.successTitle")}</h1>
+            <p className="mt-1.5 text-sm text-white/60">{t("verifyEmail.successBody")}</p>
             <div className="mt-6 flex justify-center gap-2">
-              <Link to="/browse"><Button variant="primary" size="md">Browse the catalog</Button></Link>
-              <Link to="/account"><Button variant="outline" size="md">Go to account</Button></Link>
+              <Link to="/browse"><Button variant="primary" size="md">{t("common.browseCatalog")}</Button></Link>
+              <Link to="/account"><Button variant="outline" size="md">{t("verifyEmail.goToAccount")}</Button></Link>
             </div>
           </>
         )}
@@ -70,19 +72,19 @@ export default function VerifyEmailPage() {
               </svg>
             </div>
             <h1 className="text-lg font-bold text-white">
-              {status === "missing" ? "No verification token" : "Verification failed"}
+              {status === "missing" ? t("verifyEmail.missingTitle") : t("verifyEmail.errorTitle")}
             </h1>
             <p className="mt-1.5 text-sm text-white/60">
               {status === "missing"
-                ? "Open the link from your verification email to confirm your address."
+                ? t("verifyEmail.missingBody")
                 : message}
             </p>
             <p className="mt-3 text-xs text-white/45">
-              You can request a fresh link from your account page after signing in.
+              {t("verifyEmail.requestFresh")}
             </p>
             <div className="mt-6 flex justify-center gap-2">
-              <Link to="/account"><Button variant="primary" size="md">Go to account</Button></Link>
-              <Link to="/"><Button variant="outline" size="md">Home</Button></Link>
+              <Link to="/account"><Button variant="primary" size="md">{t("verifyEmail.goToAccount")}</Button></Link>
+              <Link to="/"><Button variant="outline" size="md">{t("verifyEmail.home")}</Button></Link>
             </div>
           </>
         )}

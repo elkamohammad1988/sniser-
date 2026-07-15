@@ -1,4 +1,5 @@
 import { FormEvent, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import Modal from "../Modal";
 import Button from "../Button";
 import { useToast } from "../ToastProvider";
@@ -19,6 +20,7 @@ const PRESETS = [25, 50, 100, 250];
  * wallet API, then refreshes the session balance so every surface updates.
  */
 export default function TopUpModal({ open, onClose }: Props) {
+  const { t } = useTranslation();
   const toast = useToast();
   const { wallet, refreshWallet } = useSession();
   const [amount, setAmount] = useState<number>(50);
@@ -39,18 +41,18 @@ export default function TopUpModal({ open, onClose }: Props) {
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!valid) {
-      toast.error("Enter a valid amount", "Between 1 and 10,000 USDC.");
+      toast.error(t("topUpModal.toast.invalidTitle"), t("topUpModal.toast.invalidBody"));
       return;
     }
     setSubmitting(true);
     try {
       await endpoints.wallet.deposit(effective);
       await refreshWallet();
-      toast.success("Wallet topped up", `${effective.toFixed(2)} USDC added to your balance.`);
+      toast.success(t("topUpModal.toast.toppedUpTitle"), t("topUpModal.toast.addedBody", { amount: effective.toFixed(2) }));
       onClose();
     } catch (err) {
-      const message = err instanceof ApiClientError ? err.message : "Please try again.";
-      toast.error("Top-up failed", message);
+      const message = err instanceof ApiClientError ? err.message : t("topUpModal.toast.tryAgain");
+      toast.error(t("topUpModal.toast.failedTitle"), message);
     } finally {
       setSubmitting(false);
     }
@@ -60,12 +62,12 @@ export default function TopUpModal({ open, onClose }: Props) {
     <Modal
       open={open}
       onClose={onClose}
-      title="Add funds"
-      description="Top up your Sniser wallet to buy access passes instantly."
+      title={t("topUpModal.title")}
+      description={t("topUpModal.desc")}
       size="md"
     >
       <div className="mb-5 flex items-center justify-between rounded-xl bg-bg-soft/60 p-3 ring-1 ring-white/10">
-        <span className="text-xs text-white/55">Current balance</span>
+        <span className="text-xs text-white/55">{t("topUpModal.currentBalance")}</span>
         <span className="text-sm font-bold text-white tabular-nums">
           {wallet ? `${wallet.balance.toFixed(2)} ${wallet.currency}` : "—"}
         </span>
@@ -98,7 +100,7 @@ export default function TopUpModal({ open, onClose }: Props) {
 
         <div>
           <label htmlFor="topup-custom" className="mb-1.5 block text-xs font-semibold text-white/75">
-            Or enter a custom amount (USDC)
+            {t("topUpModal.customLabel")}
           </label>
           <input
             id="topup-custom"
@@ -116,16 +118,16 @@ export default function TopUpModal({ open, onClose }: Props) {
 
         <div className="flex gap-2 pt-1">
           <Button type="button" variant="dark" size="md" fullWidth onClick={onClose}>
-            Cancel
+            {t("topUpModal.cancel")}
           </Button>
-          <Button type="submit" variant="primary" size="md" fullWidth isLoading={submitting} loadingText="Adding…">
-            Add ${valid ? effective.toFixed(2) : "0.00"}
+          <Button type="submit" variant="primary" size="md" fullWidth isLoading={submitting} loadingText={t("topUpModal.adding")}>
+            {t("topUpModal.addAmount", { amount: valid ? effective.toFixed(2) : "0.00" })}
           </Button>
         </div>
       </form>
 
       <p className="mt-4 text-center text-[11px] text-white/40">
-        Demo funds — top-ups are simulated custodial credit, not a real charge.
+        {t("topUpModal.demoNote")}
       </p>
     </Modal>
   );

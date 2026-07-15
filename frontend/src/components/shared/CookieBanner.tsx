@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { AnimatePresence, m } from "framer-motion";
 import Button from "./Button";
 import { EASE_SOFT } from "../../lib/motion/variants";
@@ -30,6 +31,7 @@ function writeConsent(value: Exclude<Consent, null>): void {
  * dismissed across sessions. Wire any real analytics behind `consent === "accepted"`.
  */
 export default function CookieBanner() {
+  const { t } = useTranslation();
   const [consent, setConsent] = useState<Consent>(null);
   const [mounted, setMounted] = useState(false);
 
@@ -52,7 +54,7 @@ export default function CookieBanner() {
       {visible && (
         <m.div
           role="region"
-          aria-label="Cookie consent"
+          aria-label={t("cookieBanner.regionLabel")}
           initial={{ y: 80, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 80, opacity: 0 }}
@@ -60,16 +62,16 @@ export default function CookieBanner() {
           className="fixed inset-x-3 bottom-3 z-[90] sm:inset-x-auto sm:right-6 sm:bottom-6 sm:max-w-md"
         >
           <div className="rounded-2xl bg-bg-card/95 backdrop-blur-md ring-1 ring-white/10 p-5 shadow-card">
-            <p className="text-sm font-semibold text-white">We use cookies</p>
+            <p className="text-sm font-semibold text-white">{t("cookieBanner.title")}</p>
             <p className="mt-1.5 text-xs text-white/65 leading-relaxed text-pretty">
-              Essential cookies keep Sniser working. Optional analytics help us improve. You can change this anytime.
+              {t("cookieBanner.body")}
             </p>
             <div className="mt-4 flex flex-wrap gap-2">
               <Button variant="primary" size="sm" onClick={() => choose("accepted")}>
-                Accept all
+                {t("cookieBanner.acceptAll")}
               </Button>
               <Button variant="dark" size="sm" onClick={() => choose("essential")}>
-                Essential only
+                {t("cookieBanner.essentialOnly")}
               </Button>
             </div>
           </div>

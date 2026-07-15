@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { m } from "framer-motion";
 import Section from "../components/layout/Section";
 import SectionHeading from "../components/shared/SectionHeading";
@@ -33,8 +34,9 @@ import {
 
 type Tab = ContentCategory | "all";
 
+// `label` holds an i18n key string — resolve with `t(...)` at the render site.
 const TABS: { value: Tab; label: string }[] = [
-  { value: "all", label: "All" },
+  { value: "all", label: "browse.tabs.all" },
   { value: "video", label: CATEGORY_LABEL.video },
   { value: "audio", label: CATEGORY_LABEL.audio },
   { value: "original", label: CATEGORY_LABEL.original },
@@ -42,9 +44,6 @@ const TABS: { value: Tab; label: string }[] = [
 ];
 
 const SORTS: SortKey[] = ["newest", "popular", "price-asc", "price-desc"];
-
-const ALL_BLURB =
-  "Browse every Sniser drop in one place — live sets, exclusive cuts, holder-listed access passes.";
 
 function isCategory(value: string | null): value is ContentCategory {
   return value === "video" || value === "audio" || value === "original" || value === "resale";
@@ -72,10 +71,10 @@ function formatDuration(seconds: number): string {
 }
 
 export default function BrowsePage() {
+  const { t } = useTranslation();
   usePageMeta({
-    title: "Browse — Sniser Marketplace",
-    description:
-      "Discover exclusive videos, audio, and one-of-one originals on Sniser. Buy access, own it forever, resell when you're done.",
+    title: t("browse.meta.title"),
+    description: t("browse.meta.description"),
     canonicalPath: "/browse",
   });
 
@@ -168,23 +167,23 @@ export default function BrowsePage() {
   return (
     <>
       <Section tone="dark" spacing="md">
-        <SectionHeading eyebrow="Marketplace" align="left" className="max-w-2xl">
-          Browse the catalog
+        <SectionHeading eyebrow={t("browse.eyebrow")} align="left" className="max-w-2xl">
+          {t("browse.heading")}
         </SectionHeading>
         <p className="mt-3 max-w-2xl text-sm sm:text-base text-white/65 text-pretty">
-          {tab === "all" ? ALL_BLURB : CATEGORY_BLURB[tab]}
+          {tab === "all" ? t("browse.allBlurb") : t(CATEGORY_BLURB[tab])}
         </p>
 
-        <div role="tablist" aria-label="Content categories" className="mt-8 flex flex-wrap gap-2">
-          {TABS.map((t) => {
-            const active = tab === t.value;
+        <div role="tablist" aria-label={t("browse.tablistLabel")} className="mt-8 flex flex-wrap gap-2">
+          {TABS.map((opt) => {
+            const active = tab === opt.value;
             return (
               <button
-                key={t.value}
+                key={opt.value}
                 type="button"
                 role="tab"
                 aria-selected={active}
-                onClick={() => setTab(t.value)}
+                onClick={() => setTab(opt.value)}
                 className={cn(
                   "rounded-full px-4 py-2 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green focus-visible:ring-offset-2 focus-visible:ring-offset-bg",
                   active
@@ -192,7 +191,7 @@ export default function BrowsePage() {
                     : "bg-bg-card text-white/75 ring-1 ring-white/10 hover:text-white hover:ring-white/25"
                 )}
               >
-                {t.label}
+                {t(opt.label)}
               </button>
             );
           })}
@@ -200,15 +199,15 @@ export default function BrowsePage() {
 
         <div className="mt-6 grid gap-3 sm:grid-cols-[1fr_auto] sm:items-end">
           <TextField
-            label="Search"
-            placeholder="Search artist, title, or tag"
+            label={t("browse.searchLabel")}
+            placeholder={t("browse.searchPlaceholder")}
             value={search}
             onChange={(e) => onSearchChange(e.target.value)}
             leftIcon={<SearchIcon className="h-4 w-4" />}
           />
           <div>
             <label htmlFor="browse-sort" className="mb-1.5 block text-xs font-semibold text-white/75">
-              Sort by
+              {t("browse.sortLabel")}
             </label>
             <select
               id="browse-sort"
@@ -218,7 +217,7 @@ export default function BrowsePage() {
             >
               {SORTS.map((s) => (
                 <option key={s} value={s} className="bg-bg-card">
-                  {SORT_LABEL[s]}
+                  {t(SORT_LABEL[s])}
                 </option>
               ))}
             </select>
@@ -228,7 +227,7 @@ export default function BrowsePage() {
 
       <Section tone="dark" spacing="sm" id="browse-results">
         <p aria-live="polite" className="sr-only">
-          {pagination?.total ?? 0} results
+          {t("browse.results", { count: pagination?.total ?? 0 })}
         </p>
 
         {status === "loading" && <SkeletonGrid />}
@@ -262,16 +261,17 @@ export default function BrowsePage() {
 }
 
 function Pagination({ page, totalPages, onPage }: { page: number; totalPages: number; onPage: (p: number) => void }) {
+  const { t } = useTranslation();
   return (
-    <nav className="mt-10 flex items-center justify-center gap-3" aria-label="Pagination">
+    <nav className="mt-10 flex items-center justify-center gap-3" aria-label={t("browse.pagination.label")}>
       <Button variant="dark" size="sm" onClick={() => onPage(page - 1)} disabled={page <= 1}>
-        Previous
+        {t("browse.pagination.previous")}
       </Button>
       <span className="text-sm text-white/60 tabular-nums">
-        Page {page} of {totalPages}
+        {t("browse.pagination.pageOf", { page, totalPages })}
       </span>
       <Button variant="dark" size="sm" onClick={() => onPage(page + 1)} disabled={page >= totalPages}>
-        Next
+        {t("browse.pagination.next")}
       </Button>
     </nav>
   );
@@ -296,16 +296,17 @@ function SkeletonGrid() {
 }
 
 function ErrorState({ onRetry }: { onRetry: () => void }) {
+  const { t } = useTranslation();
   return (
     <div className="mx-auto max-w-md rounded-2xl bg-bg-card p-10 text-center ring-1 ring-white/5">
       <div className="mx-auto mb-5 grid h-14 w-14 place-items-center rounded-2xl bg-red-500/15 text-red-400">
         <AlertCircleIcon className="h-6 w-6" />
       </div>
-      <h3 className="text-lg font-bold text-white">Couldn't load the catalog</h3>
-      <p className="mt-1.5 text-sm text-white/60">Check your connection and try again.</p>
+      <h3 className="text-lg font-bold text-white">{t("browse.error.title")}</h3>
+      <p className="mt-1.5 text-sm text-white/60">{t("browse.error.body")}</p>
       <div className="mt-5">
         <Button variant="outline" size="sm" onClick={onRetry}>
-          Retry
+          {t("browse.error.retry")}
         </Button>
       </div>
     </div>
@@ -313,6 +314,7 @@ function ErrorState({ onRetry }: { onRetry: () => void }) {
 }
 
 function EmptyState({ onReset }: { onReset: () => void }) {
+  const { t } = useTranslation();
   return (
     <m.div
       initial={{ opacity: 0, y: 12 }}
@@ -323,13 +325,13 @@ function EmptyState({ onReset }: { onReset: () => void }) {
       <div className="mx-auto mb-5 grid h-14 w-14 place-items-center rounded-2xl bg-brand-green/15 text-brand-green">
         <SearchIcon className="h-6 w-6" />
       </div>
-      <h3 className="text-lg font-bold text-white">No drops match those filters</h3>
+      <h3 className="text-lg font-bold text-white">{t("browse.empty.title")}</h3>
       <p className="mt-1.5 text-sm text-white/60">
-        Try a broader search, or clear the filters to see everything.
+        {t("browse.empty.body")}
       </p>
       <div className="mt-5">
         <Button variant="outline" size="sm" onClick={onReset}>
-          Clear filters
+          {t("browse.empty.clear")}
         </Button>
       </div>
     </m.div>
@@ -337,6 +339,7 @@ function EmptyState({ onReset }: { onReset: () => void }) {
 }
 
 function CatalogCard({ item }: { item: CatalogItem }) {
+  const { t } = useTranslation();
   const modal = useModal();
   const toast = useToast();
   const { user } = useSession();
@@ -345,7 +348,7 @@ function CatalogCard({ item }: { item: CatalogItem }) {
   const onBuy = () => {
     if (!user) {
       modal.openAuth({ mode: "login" });
-      toast.info("Sign in to buy", "Create an account or log in to secure your access pass.");
+      toast.info(t("browse.card.signInToBuyTitle"), t("browse.card.signInToBuyBody"));
       return;
     }
     modal.openPurchase(item);
@@ -359,7 +362,7 @@ function CatalogCard({ item }: { item: CatalogItem }) {
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
             <p className="text-[10px] font-bold uppercase tracking-widestPlus text-brand-green">
-              {CATEGORY_LABEL[item.category]}
+              {t(CATEGORY_LABEL[item.category])}
             </p>
             <h3 className="mt-1 truncate text-base font-bold text-white" title={item.title}>
               {item.title}
@@ -367,16 +370,16 @@ function CatalogCard({ item }: { item: CatalogItem }) {
             <p className="mt-0.5 truncate text-xs text-white/55">{item.artist}</p>
           </div>
           <div className="shrink-0 text-right">
-            <p className="text-[10px] uppercase tracking-widestPlus text-white/40">Price</p>
+            <p className="text-[10px] uppercase tracking-widestPlus text-white/40">{t("browse.card.price")}</p>
             <p className="text-sm font-bold text-white">${item.price.toFixed(2)}</p>
           </div>
         </div>
 
         {item.tags.length > 0 && (
           <div className="mt-3 flex flex-wrap gap-1.5">
-            {item.tags.map((t) => (
-              <span key={t} className="rounded-full bg-white/5 px-2 py-0.5 text-[10px] font-semibold text-white/70 ring-1 ring-white/10">
-                {t}
+            {item.tags.map((tag) => (
+              <span key={tag} className="rounded-full bg-white/5 px-2 py-0.5 text-[10px] font-semibold text-white/70 ring-1 ring-white/10">
+                {tag}
               </span>
             ))}
           </div>
@@ -385,13 +388,13 @@ function CatalogCard({ item }: { item: CatalogItem }) {
         <dl className="mt-4 flex items-center gap-4 text-[11px] text-white/45">
           {item.plays > 0 && (
             <div>
-              <dt className="sr-only">Plays</dt>
-              <dd>{formatPlays(item.plays)} plays</dd>
+              <dt className="sr-only">{t("browse.card.playsSr")}</dt>
+              <dd>{t("browse.card.playsCount", { plays: formatPlays(item.plays) })}</dd>
             </div>
           )}
           {item.durationSec > 0 && (
             <div>
-              <dt className="sr-only">Duration</dt>
+              <dt className="sr-only">{t("browse.card.durationSr")}</dt>
               <dd>{formatDuration(item.durationSec)}</dd>
             </div>
           )}
@@ -399,7 +402,7 @@ function CatalogCard({ item }: { item: CatalogItem }) {
 
         <div className="mt-5">
           <Button variant="primary" size="sm" fullWidth onClick={onBuy}>
-            {item.kind === "resale" ? "Buy resale pass" : "Buy access"}
+            {item.kind === "resale" ? t("browse.card.buyResale") : t("browse.card.buyAccess")}
           </Button>
         </div>
       </div>

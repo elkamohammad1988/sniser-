@@ -1,4 +1,5 @@
 import { FormEvent, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import Section from "../components/layout/Section";
 import Button from "../components/shared/Button";
@@ -11,7 +12,8 @@ import { ApiClientError } from "../lib/api/client";
 import { validatePassword } from "../utils/validation";
 
 export default function ResetPasswordPage() {
-  usePageMeta({ title: "Reset password — Sniser", canonicalPath: "/reset-password" });
+  const { t } = useTranslation();
+  usePageMeta({ title: t("resetPassword.meta.title"), canonicalPath: "/reset-password" });
 
   const [params] = useSearchParams();
   const token = params.get("token");
@@ -34,7 +36,7 @@ export default function ResetPasswordPage() {
       return;
     }
     if (password !== confirm) {
-      setError("Passwords don't match.");
+      setError(t("resetPassword.passwordsMismatch"));
       return;
     }
     setError(null);
@@ -42,9 +44,9 @@ export default function ResetPasswordPage() {
     try {
       await endpoints.auth.resetPassword(token, password);
       setDone(true);
-      toast.success("Password reset", "You can now sign in with your new password.");
+      toast.success(t("resetPassword.toast.successTitle"), t("resetPassword.toast.successBody"));
     } catch (err) {
-      toast.error("Couldn't reset password", err instanceof ApiClientError ? err.message : "The link may have expired.");
+      toast.error(t("resetPassword.toast.errorTitle"), err instanceof ApiClientError ? err.message : t("resetPassword.toast.errorFallback"));
     } finally {
       setSubmitting(false);
     }
@@ -55,12 +57,12 @@ export default function ResetPasswordPage() {
       <div className="mx-auto max-w-md rounded-2xl bg-bg-card p-8 ring-1 ring-white/5">
         {!token ? (
           <div className="text-center">
-            <h1 className="text-lg font-bold text-white">Invalid reset link</h1>
+            <h1 className="text-lg font-bold text-white">{t("resetPassword.invalidTitle")}</h1>
             <p className="mt-1.5 text-sm text-white/60">
-              This page needs a valid reset token. Request a new link from the login screen.
+              {t("resetPassword.invalidBody")}
             </p>
             <div className="mt-6">
-              <Link to="/"><Button variant="primary" size="md">Back home</Button></Link>
+              <Link to="/"><Button variant="primary" size="md">{t("resetPassword.backHome")}</Button></Link>
             </div>
           </div>
         ) : done ? (
@@ -70,8 +72,8 @@ export default function ResetPasswordPage() {
                 <path d="m5 13 4 4L20 6" />
               </svg>
             </div>
-            <h1 className="text-lg font-bold text-white">Password updated</h1>
-            <p className="mt-1.5 text-sm text-white/60">Sign in with your new password to continue.</p>
+            <h1 className="text-lg font-bold text-white">{t("resetPassword.doneTitle")}</h1>
+            <p className="mt-1.5 text-sm text-white/60">{t("resetPassword.doneBody")}</p>
             <div className="mt-6">
               <Button
                 variant="primary"
@@ -81,17 +83,17 @@ export default function ResetPasswordPage() {
                   modal.openAuth({ mode: "login" });
                 }}
               >
-                Sign in
+                {t("resetPassword.signIn")}
               </Button>
             </div>
           </div>
         ) : (
           <>
-            <h1 className="text-lg font-bold text-white">Choose a new password</h1>
-            <p className="mt-1.5 text-sm text-white/60">Make it at least 8 characters with an uppercase letter and a number.</p>
+            <h1 className="text-lg font-bold text-white">{t("resetPassword.chooseTitle")}</h1>
+            <p className="mt-1.5 text-sm text-white/60">{t("resetPassword.chooseBody")}</p>
             <form onSubmit={onSubmit} className="mt-6 space-y-4">
               <TextField
-                label="New password"
+                label={t("resetPassword.newPassword")}
                 type="password"
                 autoComplete="new-password"
                 value={password}
@@ -100,15 +102,15 @@ export default function ResetPasswordPage() {
                 required
               />
               <TextField
-                label="Confirm password"
+                label={t("resetPassword.confirmPassword")}
                 type="password"
                 autoComplete="new-password"
                 value={confirm}
                 onChange={(e) => setConfirm(e.target.value)}
                 required
               />
-              <Button type="submit" variant="primary" size="md" fullWidth isLoading={submitting} loadingText="Saving…">
-                Reset password
+              <Button type="submit" variant="primary" size="md" fullWidth isLoading={submitting} loadingText={t("resetPassword.saving")}>
+                {t("resetPassword.submit")}
               </Button>
             </form>
           </>

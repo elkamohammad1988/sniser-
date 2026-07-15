@@ -1,4 +1,5 @@
 import { FormEvent, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import Section from "../components/layout/Section";
 import SectionHeading from "../components/shared/SectionHeading";
 import Button from "../components/shared/Button";
@@ -13,19 +14,21 @@ import { cn } from "../utils/cn";
 
 const PRESETS = [25, 50, 100, 250];
 
+// `label` holds an i18n key string — resolve with `t(...)` at the render site.
 const TX_META: Record<WalletTx["type"], { label: string; positive: boolean }> = {
-  deposit: { label: "Top-up", positive: true },
-  sale: { label: "Sale", positive: true },
-  refund: { label: "Refund", positive: true },
-  payout: { label: "Payout", positive: false },
-  purchase: { label: "Purchase", positive: false },
-  fee: { label: "Fee", positive: false },
+  deposit: { label: "wallet.txType.deposit", positive: true },
+  sale: { label: "wallet.txType.sale", positive: true },
+  refund: { label: "wallet.txType.refund", positive: true },
+  payout: { label: "wallet.txType.payout", positive: false },
+  purchase: { label: "wallet.txType.purchase", positive: false },
+  fee: { label: "wallet.txType.fee", positive: false },
 };
 
 export default function WalletPage() {
+  const { t } = useTranslation();
   usePageMeta({
-    title: "Wallet — Sniser",
-    description: "Manage your Sniser wallet balance and view your transaction history.",
+    title: t("wallet.meta.title"),
+    description: t("wallet.meta.description"),
     canonicalPath: "/wallet",
   });
 
@@ -72,7 +75,7 @@ export default function WalletPage() {
   const onDeposit = async (e: FormEvent) => {
     e.preventDefault();
     if (!valid) {
-      toast.error("Enter a valid amount", "Between 1 and 10,000 USDC.");
+      toast.error(t("wallet.toast.invalidTitle"), t("wallet.toast.invalidBody"));
       return;
     }
     setDepositing(true);
@@ -81,9 +84,9 @@ export default function WalletPage() {
       await refreshWallet();
       loadTx();
       setCustom("");
-      toast.success("Wallet topped up", `${effective.toFixed(2)} USDC added.`);
+      toast.success(t("wallet.toast.toppedUpTitle"), t("wallet.toast.addedBody", { amount: effective.toFixed(2) }));
     } catch (err) {
-      toast.error("Top-up failed", err instanceof ApiClientError ? err.message : "Please try again.");
+      toast.error(t("wallet.toast.failedTitle"), err instanceof ApiClientError ? err.message : t("wallet.toast.tryAgain"));
     } finally {
       setDepositing(false);
     }
@@ -92,11 +95,11 @@ export default function WalletPage() {
   return (
     <>
       <Section tone="dark" spacing="md">
-        <SectionHeading eyebrow="Wallet" align="left" className="max-w-2xl">
-          Your Sniser wallet
+        <SectionHeading eyebrow={t("wallet.eyebrow")} align="left" className="max-w-2xl">
+          {t("wallet.heading")}
         </SectionHeading>
         <p className="mt-3 max-w-2xl text-sm sm:text-base text-white/65 text-pretty">
-          A custodial USDC balance you use to buy access passes. Sales and resale proceeds land here too.
+          {t("wallet.subtitle")}
         </p>
       </Section>
 
@@ -105,7 +108,7 @@ export default function WalletPage() {
           {/* Balance + top-up */}
           <div className="space-y-5">
             <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-brand-green/20 via-bg-card to-bg-card p-6 ring-1 ring-white/10">
-              <p className="text-[11px] font-semibold uppercase tracking-widestPlus text-white/50">Balance</p>
+              <p className="text-[11px] font-semibold uppercase tracking-widestPlus text-white/50">{t("wallet.balance")}</p>
               <p className="mt-2 text-4xl font-extrabold text-white tabular-nums">
                 {wallet ? wallet.balance.toFixed(2) : "—"}
                 <span className="ml-2 text-base font-bold text-white/50">{wallet?.currency ?? "USDC"}</span>
@@ -118,7 +121,7 @@ export default function WalletPage() {
             </div>
 
             <form onSubmit={onDeposit} className="rounded-2xl bg-bg-card p-6 ring-1 ring-white/5">
-              <h2 className="text-sm font-bold uppercase tracking-widestPlus text-white">Add funds</h2>
+              <h2 className="text-sm font-bold uppercase tracking-widestPlus text-white">{t("wallet.addFunds")}</h2>
               <div className="mt-4 grid grid-cols-4 gap-2">
                 {PRESETS.map((p) => {
                   const active = !custom && amount === p;
@@ -144,7 +147,7 @@ export default function WalletPage() {
               </div>
               <div className="mt-3">
                 <label htmlFor="wallet-custom" className="mb-1.5 block text-xs font-semibold text-white/75">
-                  Custom amount (USDC)
+                  {t("wallet.customAmount")}
                 </label>
                 <input
                   id="wallet-custom"
@@ -160,12 +163,12 @@ export default function WalletPage() {
                 />
               </div>
               <div className="mt-4">
-                <Button type="submit" variant="primary" size="md" fullWidth isLoading={depositing} loadingText="Adding…">
-                  Add ${valid ? effective.toFixed(2) : "0.00"}
+                <Button type="submit" variant="primary" size="md" fullWidth isLoading={depositing} loadingText={t("wallet.adding")}>
+                  {t("wallet.addAmount", { amount: valid ? effective.toFixed(2) : "0.00" })}
                 </Button>
               </div>
               <p className="mt-3 text-center text-[11px] text-white/40">
-                Demo funds — top-ups are simulated custodial credit.
+                {t("wallet.demoNote")}
               </p>
             </form>
           </div>
@@ -173,13 +176,13 @@ export default function WalletPage() {
           {/* Transactions */}
           <div className="rounded-2xl bg-bg-card p-6 ring-1 ring-white/5">
             <div className="flex items-center justify-between">
-              <h2 className="text-sm font-bold uppercase tracking-widestPlus text-white">Transactions</h2>
+              <h2 className="text-sm font-bold uppercase tracking-widestPlus text-white">{t("wallet.transactions")}</h2>
               <button
                 type="button"
                 onClick={loadTx}
                 className="text-xs font-semibold text-white/55 hover:text-brand-green focus-visible:outline-none focus-visible:text-brand-green"
               >
-                Refresh
+                {t("wallet.refresh")}
               </button>
             </div>
 
@@ -192,17 +195,17 @@ export default function WalletPage() {
 
               {status === "error" && (
                 <div className="py-10 text-center">
-                  <p className="text-sm text-white/60">Couldn't load transactions.</p>
+                  <p className="text-sm text-white/60">{t("wallet.tx.errorBody")}</p>
                   <div className="mt-3">
-                    <Button variant="outline" size="sm" onClick={loadTx}>Retry</Button>
+                    <Button variant="outline" size="sm" onClick={loadTx}>{t("wallet.tx.retry")}</Button>
                   </div>
                 </div>
               )}
 
               {status === "success" && txns.length === 0 && (
                 <div className="py-12 text-center">
-                  <p className="text-sm font-semibold text-white">No transactions yet</p>
-                  <p className="mt-1 text-xs text-white/55">Top up your wallet to get started.</p>
+                  <p className="text-sm font-semibold text-white">{t("wallet.tx.emptyTitle")}</p>
+                  <p className="mt-1 text-xs text-white/55">{t("wallet.tx.emptyBody")}</p>
                 </div>
               )}
 
@@ -216,7 +219,7 @@ export default function WalletPage() {
                         <div className="min-w-0">
                           <p className="truncate text-sm font-semibold text-white">{tx.description}</p>
                           <p className="mt-0.5 text-[11px] text-white/45">
-                            {meta.label} · {new Date(tx.createdAt).toLocaleString()}
+                            {t(meta.label)} · {new Date(tx.createdAt).toLocaleString()}
                           </p>
                         </div>
                         <div className="shrink-0 text-right">
@@ -224,7 +227,7 @@ export default function WalletPage() {
                             {positive ? "+" : ""}
                             {tx.amount.toFixed(2)}
                           </p>
-                          <p className="text-[11px] text-white/40 tabular-nums">bal {tx.balanceAfter.toFixed(2)}</p>
+                          <p className="text-[11px] text-white/40 tabular-nums">{t("wallet.tx.balanceAfter", { amount: tx.balanceAfter.toFixed(2) })}</p>
                         </div>
                       </li>
                     );

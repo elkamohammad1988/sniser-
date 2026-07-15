@@ -27,7 +27,8 @@ export function usePageMeta({ title, description, canonicalPath }: PageMeta) {
   useEffect(() => {
     document.title = title;
 
-    const desc = description ?? DEFAULT_DESCRIPTION;
+    const desc =
+      description ?? i18n.t("siteMeta.defaultDescription", { defaultValue: DEFAULT_DESCRIPTION });
     upsertMeta("name", "description", desc);
     upsertMeta("property", "og:title", title);
     upsertMeta("property", "og:description", desc);

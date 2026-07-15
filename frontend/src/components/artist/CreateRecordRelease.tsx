@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { useTranslation } from "react-i18next";
 import Section from "../layout/Section";
 import SectionHeading from "../shared/SectionHeading";
 import SpotlightCard from "../shared/SpotlightCard";
@@ -78,29 +79,28 @@ function FeatureCard({ icon, title, description, highlighted }: FeatureCardProps
   );
 }
 
-const CARDS: FeatureCardProps[] = [
-  {
-    icon: <ShieldIcon className="h-5 w-5" />,
-    title: "No Upfront Costs",
-    description:
-      "We invest in you. We cover the financial side so you don't have to stress about the budget.",
-  },
-  {
-    icon: <SparkIcon className="h-5 w-5" />,
-    title: "Exclusive Opportunities",
-    description:
-      "Connect with your peers. We provide a platform built specifically to elevate your career.",
-    highlighted: true,
-  },
-  {
-    icon: <SupportIcon className="h-5 w-5" />,
-    title: "Full-Service Support",
-    description:
-      "From studio to sale. We are with you at every stage of the creative and release process.",
-  },
-];
-
 export default function CreateRecordRelease() {
+  const { t } = useTranslation();
+
+  const CARDS: FeatureCardProps[] = [
+    {
+      icon: <ShieldIcon className="h-5 w-5" />,
+      title: t("artist.earn.cards.noUpfront.title"),
+      description: t("artist.earn.cards.noUpfront.description"),
+    },
+    {
+      icon: <SparkIcon className="h-5 w-5" />,
+      title: t("artist.earn.cards.opportunities.title"),
+      description: t("artist.earn.cards.opportunities.description"),
+      highlighted: true,
+    },
+    {
+      icon: <SupportIcon className="h-5 w-5" />,
+      title: t("artist.earn.cards.support.title"),
+      description: t("artist.earn.cards.support.description"),
+    },
+  ];
+
   return (
     <Section
       tone="dark"
@@ -116,8 +116,8 @@ export default function CreateRecordRelease() {
         </>
       }
     >
-      <SectionHeading eyebrow="Only With Sniser" highlight="Earn">
-        Create. Record. Release.
+      <SectionHeading eyebrow={t("artist.earn.eyebrow")} highlight={t("artist.earn.highlight")}>
+        {t("artist.earn.title")}
       </SectionHeading>
 
       <StaggerContainer className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">

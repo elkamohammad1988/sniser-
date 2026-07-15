@@ -1,4 +1,5 @@
 import { MouseEvent, ReactNode, useCallback, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import Modal from "./Modal";
 import Spinner from "./Spinner";
 import Button, { LinkButton } from "./Button";
@@ -51,6 +52,7 @@ export default function MediaPlayer({
   category,
   actions,
 }: Props) {
+  const { t } = useTranslation();
   const [status, setStatus] = useState<Status>("loading");
   const [access, setAccess] = useState<Access | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -73,10 +75,10 @@ export default function MediaPlayer({
       })
       .catch((err) => {
         if (reqId.current !== id) return;
-        setErrorMsg(err instanceof ApiClientError ? err.message : "Please try again.");
+        setErrorMsg(err instanceof ApiClientError ? err.message : t("mediaPlayer.tryAgainError"));
         setStatus("error");
       });
-  }, [contentId]);
+  }, [contentId, t]);
 
   useEffect(() => {
     if (open) load();
@@ -104,11 +106,11 @@ export default function MediaPlayer({
         {status === "error" && (
           <div className="grid aspect-video w-full place-items-center px-6 text-center">
             <div>
-              <p className="text-sm font-semibold text-white">Couldn't open this drop</p>
+              <p className="text-sm font-semibold text-white">{t("mediaPlayer.errorTitle")}</p>
               {errorMsg && <p className="mt-1 text-xs text-white/50">{errorMsg}</p>}
               <div className="mt-4">
                 <Button variant="outline" size="sm" onClick={load}>
-                  Retry
+                  {t("mediaPlayer.retry")}
                 </Button>
               </div>
             </div>
@@ -129,7 +131,7 @@ export default function MediaPlayer({
             controlsList="nodownload noremoteplayback"
             disablePictureInPicture
             onContextMenu={blockContextMenu}
-            aria-label={`${title} by ${artist}`}
+            aria-label={t("mediaPlayer.mediaLabel", { title, artist })}
           >
             <source src={media} />
           </video>
@@ -147,7 +149,7 @@ export default function MediaPlayer({
         <button
           type="button"
           onClick={onClose}
-          aria-label="Close player"
+          aria-label={t("mediaPlayer.closePlayer")}
           className="absolute right-3 top-3 z-10 grid h-9 w-9 place-items-center rounded-full bg-black/55 text-white/85 backdrop-blur-sm ring-1 ring-white/15 transition-colors hover:bg-black/75 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-green"
         >
           <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" aria-hidden="true">
@@ -171,6 +173,7 @@ export default function MediaPlayer({
 }
 
 function NoPreviewStage({ cover }: { cover: string | null }) {
+  const { t } = useTranslation();
   return (
     <div className="relative grid aspect-video w-full place-items-center overflow-hidden">
       {cover ? (
@@ -185,9 +188,9 @@ function NoPreviewStage({ cover }: { cover: string | null }) {
             <circle cx="12" cy="12" r="9" />
           </svg>
         </div>
-        <p className="text-sm font-semibold text-white">Preview coming soon</p>
+        <p className="text-sm font-semibold text-white">{t("mediaPlayer.noPreviewTitle")}</p>
         <p className="mx-auto mt-1 max-w-xs text-xs text-white/55">
-          The artist hasn't attached a media file to this drop yet. Your access pass is safely in your library.
+          {t("mediaPlayer.noPreviewBody")}
         </p>
       </div>
     </div>
@@ -205,6 +208,7 @@ function AudioStage({
   title: string;
   artist: string;
 }) {
+  const { t } = useTranslation();
   return (
     <div className="relative flex aspect-video w-full flex-col items-center justify-center gap-5 overflow-hidden bg-gradient-to-b from-bg-soft/40 to-black px-6 py-6">
       <div
@@ -213,7 +217,7 @@ function AudioStage({
       />
       <div className="relative h-28 w-28 shrink-0 overflow-hidden rounded-2xl shadow-card ring-1 ring-white/10 sm:h-36 sm:w-36">
         {cover ? (
-          <img src={cover} alt={`${title} cover art`} className="h-full w-full object-cover" />
+          <img src={cover} alt={t("mediaPlayer.coverAlt", { title })} className="h-full w-full object-cover" />
         ) : (
           <div className="grid h-full w-full place-items-center bg-gradient-to-br from-brand-green/25 to-bg-card text-brand-green">
             <svg viewBox="0 0 24 24" className="h-10 w-10" fill="currentColor" aria-hidden="true">
@@ -236,7 +240,7 @@ function AudioStage({
           controlsList="nodownload noremoteplayback"
           onContextMenu={blockContextMenu}
           className="mt-3 w-full"
-          aria-label={`${title} by ${artist}`}
+          aria-label={t("mediaPlayer.mediaLabel", { title, artist })}
         />
       </div>
     </div>
@@ -264,6 +268,7 @@ function Equalizer() {
 }
 
 function DownloadStage({ src, cover }: { src: string; cover: string | null }) {
+  const { t } = useTranslation();
   return (
     <div className="relative grid aspect-video w-full place-items-center overflow-hidden">
       {cover ? (
@@ -277,12 +282,12 @@ function DownloadStage({ src, cover }: { src: string; cover: string | null }) {
             <path d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14" />
           </svg>
         </div>
-        <p className="text-sm font-semibold text-white">Original file</p>
+        <p className="text-sm font-semibold text-white">{t("mediaPlayer.downloadTitle")}</p>
         <p className="mx-auto mt-1 mb-4 max-w-xs text-xs text-white/55">
-          This exclusive drop is delivered as a downloadable original.
+          {t("mediaPlayer.downloadBody")}
         </p>
         <LinkButton variant="primary" size="sm" href={src} download rel="noopener">
-          Download
+          {t("mediaPlayer.download")}
         </LinkButton>
       </div>
     </div>

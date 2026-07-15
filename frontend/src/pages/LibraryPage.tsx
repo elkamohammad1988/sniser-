@@ -1,5 +1,6 @@
 import { FormEvent, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import Section from "../components/layout/Section";
 import SectionHeading from "../components/shared/SectionHeading";
 import Button from "../components/shared/Button";
@@ -15,9 +16,10 @@ import type { PurchaseItem } from "../lib/api/types";
 import { cn } from "../utils/cn";
 
 export default function LibraryPage() {
+  const { t } = useTranslation();
   usePageMeta({
-    title: "My Library — Sniser",
-    description: "Your purchased access passes — stream them, or list them for resale.",
+    title: t("library.meta.title"),
+    description: t("library.meta.description"),
     canonicalPath: "/library",
   });
 
@@ -62,17 +64,17 @@ export default function LibraryPage() {
     if (!listing) return;
     const value = Number(price);
     if (!Number.isFinite(value) || value <= 0) {
-      toast.error("Enter a valid price", "Must be greater than zero.");
+      toast.error(t("library.toast.invalidPriceTitle"), t("library.toast.invalidPriceBody"));
       return;
     }
     setBusy(listing.id);
     try {
       await endpoints.resale.create(listing.id, value);
-      toast.success("Listed for resale", `${listing.title} is now on the marketplace.`);
+      toast.success(t("library.toast.listedTitle"), t("library.toast.listedBody", { title: listing.title }));
       setListing(null);
       load();
     } catch (err) {
-      toast.error("Couldn't list", err instanceof ApiClientError ? err.message : "Please try again.");
+      toast.error(t("library.toast.listErrorTitle"), err instanceof ApiClientError ? err.message : t("library.toast.tryAgain"));
     } finally {
       setBusy(null);
     }
@@ -83,10 +85,10 @@ export default function LibraryPage() {
     setBusy(item.id);
     try {
       await endpoints.resale.cancel(item.listing.id);
-      toast.info("Listing cancelled", `${item.title} is back in your library.`);
+      toast.info(t("library.toast.cancelledTitle"), t("library.toast.cancelledBody", { title: item.title }));
       load();
     } catch (err) {
-      toast.error("Couldn't cancel", err instanceof ApiClientError ? err.message : "Please try again.");
+      toast.error(t("library.toast.cancelErrorTitle"), err instanceof ApiClientError ? err.message : t("library.toast.tryAgain"));
     } finally {
       setBusy(null);
     }
@@ -100,7 +102,7 @@ export default function LibraryPage() {
       ? (
           <>
             <span className="text-xs font-medium text-amber-300">
-              Listed · ${livePlaying.listing.price.toFixed(2)}
+              {t("library.listedPrice", { price: livePlaying.listing.price.toFixed(2) })}
             </span>
             <Button
               variant="outline"
@@ -108,7 +110,7 @@ export default function LibraryPage() {
               disabled={busy === livePlaying.id}
               onClick={() => cancelListing(livePlaying)}
             >
-              Unlist
+              {t("library.unlist")}
             </Button>
           </>
         )
@@ -121,7 +123,7 @@ export default function LibraryPage() {
               openList(livePlaying);
             }}
           >
-            Resell
+            {t("library.resell")}
           </Button>
         )
     : null;
@@ -129,11 +131,11 @@ export default function LibraryPage() {
   return (
     <>
       <Section tone="dark" spacing="md">
-        <SectionHeading eyebrow="Library" align="left" className="max-w-2xl">
-          Your access passes
+        <SectionHeading eyebrow={t("library.eyebrow")} align="left" className="max-w-2xl">
+          {t("library.heading")}
         </SectionHeading>
         <p className="mt-3 max-w-2xl text-sm sm:text-base text-white/65 text-pretty">
-          Everything you own on Sniser. Stream it anywhere you sign in, or list a pass for resale.
+          {t("library.subtitle")}
         </p>
       </Section>
 
@@ -146,9 +148,9 @@ export default function LibraryPage() {
 
         {status === "error" && (
           <div className="mx-auto max-w-md rounded-2xl bg-bg-card p-10 text-center ring-1 ring-white/5">
-            <p className="text-sm text-white/60">Couldn't load your library.</p>
+            <p className="text-sm text-white/60">{t("library.error.body")}</p>
             <div className="mt-4">
-              <Button variant="outline" size="sm" onClick={load}>Retry</Button>
+              <Button variant="outline" size="sm" onClick={load}>{t("library.error.retry")}</Button>
             </div>
           </div>
         )}
@@ -160,11 +162,11 @@ export default function LibraryPage() {
                 <path d="M4 4h6v16H4zM14 4h6v10h-6zM14 16h6v4h-6z" />
               </svg>
             </div>
-            <h3 className="text-lg font-bold text-white">Your library is empty</h3>
-            <p className="mt-1.5 text-sm text-white/60">Buy your first access pass to start your collection.</p>
+            <h3 className="text-lg font-bold text-white">{t("library.empty.title")}</h3>
+            <p className="mt-1.5 text-sm text-white/60">{t("library.empty.body")}</p>
             <div className="mt-5">
               <Link to="/browse">
-                <Button variant="primary" size="sm">Browse the catalog</Button>
+                <Button variant="primary" size="sm">{t("common.browseCatalog")}</Button>
               </Link>
             </div>
           </div>
@@ -189,14 +191,14 @@ export default function LibraryPage() {
       <Modal
         open={!!listing}
         onClose={() => setListing(null)}
-        title="List for resale"
-        description={listing ? `Set a price for “${listing.title}”. A resale fee applies on sale.` : undefined}
+        title={t("library.listModal.title")}
+        description={listing ? t("library.listModal.desc", { title: listing.title }) : undefined}
         size="sm"
       >
         <form onSubmit={submitListing} className="space-y-4">
           <div>
             <label htmlFor="resale-price" className="mb-1.5 block text-xs font-semibold text-white/75">
-              Resale price (USDC)
+              {t("library.listModal.priceLabel")}
             </label>
             <input
               id="resale-price"
@@ -213,10 +215,10 @@ export default function LibraryPage() {
           </div>
           <div className="flex gap-2">
             <Button type="button" variant="dark" size="md" fullWidth onClick={() => setListing(null)}>
-              Cancel
+              {t("library.listModal.cancel")}
             </Button>
-            <Button type="submit" variant="primary" size="md" fullWidth isLoading={busy === listing?.id} loadingText="Listing…">
-              List pass
+            <Button type="submit" variant="primary" size="md" fullWidth isLoading={busy === listing?.id} loadingText={t("library.listModal.submitting")}>
+              {t("library.listModal.submit")}
             </Button>
           </div>
         </form>
@@ -245,6 +247,7 @@ interface CardProps {
 }
 
 function LibraryCard({ item, busy, onPlay, onList, onCancel }: CardProps) {
+  const { t } = useTranslation();
   const cover = assetUrl(item.coverUrl);
   const isListed = item.status === "listed" && item.listing;
 
@@ -264,7 +267,7 @@ function LibraryCard({ item, busy, onPlay, onList, onCancel }: CardProps) {
           "absolute left-3 top-3 rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider",
           isListed ? "bg-amber-400/20 text-amber-300" : "bg-brand-green/20 text-brand-green"
         )}>
-          {isListed ? "Listed" : item.acquiredVia === "resale" ? "Resale" : "Owned"}
+          {isListed ? t("library.badge.listed") : item.acquiredVia === "resale" ? t("library.badge.resale") : t("library.badge.owned")}
         </span>
       </div>
 
@@ -273,7 +276,7 @@ function LibraryCard({ item, busy, onPlay, onList, onCancel }: CardProps) {
         <p className="mt-0.5 truncate text-xs text-white/55">{item.artist}</p>
 
         {isListed && item.listing && (
-          <p className="mt-2 text-xs text-amber-300">Listed at ${item.listing.price.toFixed(2)}</p>
+          <p className="mt-2 text-xs text-amber-300">{t("library.listedAt", { price: item.listing.price.toFixed(2) })}</p>
         )}
 
         <div className="mt-4 flex gap-2">
@@ -288,15 +291,15 @@ function LibraryCard({ item, busy, onPlay, onList, onCancel }: CardProps) {
               </svg>
             }
           >
-            Play
+            {t("library.play")}
           </Button>
           {isListed ? (
             <Button variant="outline" size="sm" onClick={onCancel} disabled={busy}>
-              Unlist
+              {t("library.unlist")}
             </Button>
           ) : (
             <Button variant="dark" size="sm" onClick={onList} disabled={busy}>
-              Resell
+              {t("library.resell")}
             </Button>
           )}
         </div>

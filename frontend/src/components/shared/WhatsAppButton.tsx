@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { ArrowUpRight, WhatsAppIcon } from "./Icons";
 import { cn } from "../../utils/cn";
 import { env } from "../../config/env";
@@ -6,16 +7,16 @@ interface Props {
   className?: string;
 }
 
-const LABEL = "Message us on WhatsApp";
-const SUB_LABEL = "for more information";
-
 export default function WhatsAppButton({ className }: Props) {
+  const { t } = useTranslation();
+  const label = t("whatsapp.label");
+  const subLabel = t("whatsapp.subLabel");
   return (
     <a
       href={env.whatsappUrl}
       target="_blank"
       rel="noreferrer noopener"
-      aria-label={`${LABEL} — opens WhatsApp in a new tab`}
+      aria-label={t("whatsapp.ariaLabel", { label })}
       className={cn(
         "group inline-flex items-center gap-3 rounded-full pl-1 pr-5 py-1.5",
         "bg-bg-card/80 ring-1 ring-white/10 text-white",
@@ -32,8 +33,8 @@ export default function WhatsAppButton({ className }: Props) {
         <WhatsAppIcon className="h-5 w-5" />
       </span>
       <span className="flex flex-col text-left leading-tight">
-        <span className="text-sm font-semibold">{LABEL}</span>
-        <span className="text-[11px] opacity-60">{SUB_LABEL}</span>
+        <span className="text-sm font-semibold">{label}</span>
+        <span className="text-[11px] opacity-60">{subLabel}</span>
       </span>
       <ArrowUpRight
         aria-hidden="true"

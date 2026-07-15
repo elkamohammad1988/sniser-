@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { useTranslation } from "react-i18next";
 import { cn } from "../../utils/cn";
 import type { SectionVariant } from "../../types";
 import Section from "../layout/Section";
@@ -48,6 +49,7 @@ export default function HowItWorksSection({
   variant,
   imageLeft = false,
 }: Props) {
+  const { t } = useTranslation();
   const isGreen = variant === "green";
   const onAccent = isGreen || variant === "light";
 
@@ -104,7 +106,7 @@ export default function HowItWorksSection({
                 kickerClasses
               )}
             >
-              Step {number} / 0{TOTAL}
+              {t("artist.stepCounter", { number, total: TOTAL })}
             </span>
           </div>
 
@@ -114,7 +116,7 @@ export default function HowItWorksSection({
               titleClasses
             )}
           >
-            <span className="sr-only">Step {number}: </span>
+            <span className="sr-only">{t("artist.stepSr", { number })} </span>
             {highlight ? (
               <>
                 <span className={highlightClasses}>{highlight}</span>{" "}

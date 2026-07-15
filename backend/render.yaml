@@ -38,9 +38,11 @@ services:
         generateValue: true
       - key: JWT_ACCESS_TTL
         value: 15m
-      # Do NOT auto-seed demo accounts (public passwords) in production.
+      # Portfolio DEMO deployment: seed reference data + demo accounts so the
+      # public URL is never empty. NOTE: demo accounts use publicly-known
+      # passwords by design — never store real/sensitive data on this instance.
       - key: DB_AUTO_SEED
-        value: false
+        value: true
       - key: CORS_ORIGIN
         sync: false # set per-environment (e.g. https://your-app.vercel.app)
       - key: APP_URL

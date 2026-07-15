@@ -184,7 +184,7 @@ export default function StudioPage() {
     e.preventDefault();
     const nextErrors = {
       handle: validateHandle(handle),
-      displayName: validateRequired(displayName, "Display name"),
+      displayName: validateRequired(displayName, t("fields.displayName")),
     };
     setApplyErrors(nextErrors);
     if (nextErrors.handle || nextErrors.displayName) return;
@@ -213,7 +213,7 @@ export default function StudioPage() {
     e.preventDefault();
     const priceNum = Number(price);
     const nextErrors = {
-      title: validateMin(title, 2, "Title"),
+      title: validateMin(title, 2, t("fields.title")),
       price:
         price.trim() === "" || Number.isNaN(priceNum) || priceNum < 0
           ? t("studio.priceError")
@@ -360,7 +360,7 @@ export default function StudioPage() {
                   onBlur={() =>
                     setApplyErrors((p) => ({
                       ...p,
-                      displayName: validateRequired(displayName, "Display name"),
+                      displayName: validateRequired(displayName, t("fields.displayName")),
                     }))
                   }
                   error={applyErrors.displayName}
@@ -527,7 +527,7 @@ export default function StudioPage() {
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     onBlur={() =>
-                      setReleaseErrors((p) => ({ ...p, title: validateMin(title, 2, "Title") }))
+                      setReleaseErrors((p) => ({ ...p, title: validateMin(title, 2, t("fields.title")) }))
                     }
                     error={releaseErrors.title}
                     placeholder="Midnight Sessions Vol. 1"

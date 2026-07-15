@@ -7,10 +7,10 @@
     "node": ">=20.0.0"
   },
   "scripts": {
-    "dev": "tsx watch src/server.ts",
-    "build": "tsc -p tsconfig.json",
-    "start": "node dist/server.js",
-    "start:prod": "node dist/server.js",
+    "dev": "node init && tsx watch src/server.ts",
+    "build": "node init && tsc -p tsconfig.json",
+    "start": "node init && node dist/server.js",
+    "start:prod": "node init && node dist/server.js",
     "migrate": "node dist/db/migrateCli.js",
     "migrate:dev": "tsx src/db/migrateCli.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit",

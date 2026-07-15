@@ -73,24 +73,28 @@ at boot by `src/config/env.ts` (fails fast on invalid config).
 ### 3a. API on Render
 
 The blueprint lives at **`backend/render.yaml`** (service `sniser-api`, port
-`10000`, health check `/healthz`). It generates `JWT_*` secrets and a random
-`ADMIN_PASSWORD` automatically; `CORS_ORIGIN`, `APP_URL`, and `ADMIN_EMAIL` are
-marked `sync: false` and prompted at create time.
+`10000`, health check `/healthz`). It auto-generates the `JWT_*` secrets and a
+random `ADMIN_PASSWORD`; `CORS_ORIGIN`, `APP_URL`, and `ADMIN_EMAIL` are marked
+`sync: false` and prompted when the Blueprint is created.
 
-```bash
-render login                       # or: export RENDER_API_KEY=...
-render blueprint launch backend/render.yaml
-```
+**Dashboard (most reliable):** New + → **Blueprint** → connect the repo → set the
+Blueprint file path to **`backend/render.yaml`** (it is *not* at the repo root) →
+enter the prompted vars → **Apply**. Set a **temporary** `CORS_ORIGIN=*` and a
+placeholder `APP_URL`; you lock them down in step 3c.
 
-When prompted, set a **temporary** `CORS_ORIGIN=*` and a placeholder
-`APP_URL` — you'll lock them down in step 3c. Wait for the deploy, then confirm:
+**CLI:** authenticate with `RENDER_API_KEY`, then drive services with the Render
+CLI — env vars via `--env-var KEY=VALUE` / `--env-file`, JSON via `--output json`.
+Exact subcommands change over time: see the
+[CLI reference](https://render.com/docs/cli-reference).
+
+When it's live, confirm health:
 
 ```bash
 curl https://sniser-api.onrender.com/healthz     # → {"status":"ok"}
 ```
 
 Note the API URL. (Free plan cold-starts after ~15 min idle — the first request
-after that takes 30–50 s.)
+then takes 30–50 s.)
 
 ### 3b. Web on Vercel
 
@@ -105,17 +109,17 @@ Note the assigned Vercel URL (e.g. `https://sniser.vercel.app`).
 
 ### 3c. Lock the wiring
 
-Point the API's CORS at the real web origin and redeploy:
+In the `sniser-api` service → **Environment**, set the real web origin (no
+trailing slash) and trigger a redeploy:
 
-```bash
-render env set --service sniser-api \
-  CORS_ORIGIN=https://sniser.vercel.app \
-  APP_URL=https://sniser.vercel.app
-render deploys create --service sniser-api --wait
+```
+CORS_ORIGIN=https://sniser.vercel.app
+APP_URL=https://sniser.vercel.app
 ```
 
-No trailing slashes. Also update the placeholder domain in
-`frontend/index.html` (canonical / OG tags) to the real URL and redeploy the web.
+(Or set them via the CLI's `--env-var` flags and a manual deploy — see the CLI
+reference.) Also update the placeholder domain in `frontend/index.html`
+(canonical / OG tags) to the real URL and redeploy the web.
 
 ---
 

@@ -2,6 +2,7 @@ import { createContext, ReactNode, useCallback, useContext, useMemo, useRef, use
 import { AnimatePresence, m } from "framer-motion";
 import { EASE_SOFT } from "../../lib/motion/variants";
 import { cn } from "../../utils/cn";
+import { CheckLineIcon, AlertCircleIcon, InfoIcon, CloseIcon } from "./Icons";
 
 export type ToastTone = "success" | "error" | "info";
 
@@ -22,23 +23,9 @@ interface ToastContextValue {
 const ToastContext = createContext<ToastContextValue | null>(null);
 
 const ICONS: Record<ToastTone, ReactNode> = {
-  success: (
-    <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="m5 13 4 4L20 6" />
-    </svg>
-  ),
-  error: (
-    <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M12 8v5m0 3.5v.01" />
-      <circle cx="12" cy="12" r="9" />
-    </svg>
-  ),
-  info: (
-    <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <circle cx="12" cy="12" r="9" />
-      <path d="M12 8v.01M11 12h1v5h1" />
-    </svg>
-  ),
+  success: <CheckLineIcon className="h-5 w-5" strokeWidth={2.5} />,
+  error: <AlertCircleIcon className="h-5 w-5" strokeWidth={2.5} />,
+  info: <InfoIcon className="h-5 w-5" strokeWidth={2.5} />,
 };
 
 const TONE_CLASS: Record<ToastTone, string> = {
@@ -118,9 +105,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
                 onClick={() => dismiss(t.id)}
                 className="shrink-0 rounded-md p-1 text-white/50 hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green"
               >
-                <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" aria-hidden="true">
-                  <path d="M6 6l12 12M18 6 6 18" />
-                </svg>
+                <CloseIcon className="h-3.5 w-3.5" strokeWidth={2.5} />
               </button>
             </m.div>
           ))}

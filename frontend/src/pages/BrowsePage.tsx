@@ -12,6 +12,14 @@ import { usePageMeta } from "../hooks/usePageMeta";
 import { StaggerContainer, StaggerItem } from "../components/shared/Stagger";
 import { cn } from "../utils/cn";
 import { assetUrl } from "../lib/assets";
+import {
+  PlayIcon,
+  WaveformIcon,
+  SparkIcon,
+  SwapIcon,
+  SearchIcon,
+  AlertCircleIcon,
+} from "../components/shared/Icons";
 import { endpoints } from "../lib/api/endpoints";
 import type { PaginationMeta } from "../lib/api/types";
 import {
@@ -196,12 +204,7 @@ export default function BrowsePage() {
             placeholder="Search artist, title, or tag"
             value={search}
             onChange={(e) => onSearchChange(e.target.value)}
-            leftIcon={
-              <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" aria-hidden="true">
-                <circle cx="11" cy="11" r="7" />
-                <path d="m20 20-3.5-3.5" />
-              </svg>
-            }
+            leftIcon={<SearchIcon className="h-4 w-4" />}
           />
           <div>
             <label htmlFor="browse-sort" className="mb-1.5 block text-xs font-semibold text-white/75">
@@ -296,10 +299,7 @@ function ErrorState({ onRetry }: { onRetry: () => void }) {
   return (
     <div className="mx-auto max-w-md rounded-2xl bg-bg-card p-10 text-center ring-1 ring-white/5">
       <div className="mx-auto mb-5 grid h-14 w-14 place-items-center rounded-2xl bg-red-500/15 text-red-400">
-        <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" aria-hidden="true">
-          <path d="M12 8v5m0 3.5v.01" />
-          <circle cx="12" cy="12" r="9" />
-        </svg>
+        <AlertCircleIcon className="h-6 w-6" />
       </div>
       <h3 className="text-lg font-bold text-white">Couldn't load the catalog</h3>
       <p className="mt-1.5 text-sm text-white/60">Check your connection and try again.</p>
@@ -321,10 +321,7 @@ function EmptyState({ onReset }: { onReset: () => void }) {
       className="mx-auto max-w-md rounded-2xl bg-bg-card p-10 text-center ring-1 ring-white/5"
     >
       <div className="mx-auto mb-5 grid h-14 w-14 place-items-center rounded-2xl bg-brand-green/15 text-brand-green">
-        <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" aria-hidden="true">
-          <circle cx="11" cy="11" r="7" />
-          <path d="m20 20-3.5-3.5" />
-        </svg>
+        <SearchIcon className="h-6 w-6" />
       </div>
       <h3 className="text-lg font-bold text-white">No drops match those filters</h3>
       <p className="mt-1.5 text-sm text-white/60">
@@ -418,29 +415,10 @@ function CardArt({ category, cover, title }: { category: ContentCategory; cover:
     resale: "from-fuchsia-400/25 via-violet-500/10 to-bg-card",
   };
   const glyph: Record<ContentCategory, JSX.Element> = {
-    video: (
-      <svg viewBox="0 0 24 24" className="h-10 w-10" fill="currentColor" aria-hidden="true">
-        <path d="M8 5v14l11-7z" />
-      </svg>
-    ),
-    audio: (
-      <svg viewBox="0 0 24 24" className="h-10 w-10" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" aria-hidden="true">
-        <path d="M3 12h2M7 8v8M11 4v16M15 8v8M19 12h2" />
-      </svg>
-    ),
-    original: (
-      <svg viewBox="0 0 24 24" className="h-10 w-10" fill="currentColor" aria-hidden="true">
-        <path d="M12 2 14 9l7 2-7 2-2 9-2-9-7-2 7-2 2-9z" />
-      </svg>
-    ),
-    resale: (
-      <svg viewBox="0 0 24 24" className="h-10 w-10" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-        <path d="M7 3 3 7l4 4" />
-        <path d="M3 7h13" />
-        <path d="m17 21 4-4-4-4" />
-        <path d="M21 17H8" />
-      </svg>
-    ),
+    video: <PlayIcon className="h-10 w-10" />,
+    audio: <WaveformIcon className="h-10 w-10" />,
+    original: <SparkIcon className="h-10 w-10" />,
+    resale: <SwapIcon className="h-10 w-10" />,
   };
 
   if (cover) {

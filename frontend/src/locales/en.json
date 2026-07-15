@@ -1185,6 +1185,25 @@
     "revenue": "Artist reviewing revenue dashboard",
     "network": "Tap into the Sniser network"
   },
+  "validation": {
+    "emailRequired": "Email is required.",
+    "emailInvalid": "Enter a valid email address.",
+    "required": "{{field}} is required.",
+    "minLength": "{{field}} must be at least {{min}} characters.",
+    "passwordRequired": "Password is required.",
+    "passwordMinLength": "Password must be at least {{min}} characters.",
+    "passwordUppercase": "Password must include an uppercase letter.",
+    "passwordNumber": "Password must include a number."
+  },
+  "fields": {
+    "thisField": "This field",
+    "name": "Name",
+    "password": "Password",
+    "message": "Message",
+    "displayName": "Display name",
+    "title": "Title",
+    "brand": "Brand"
+  },
   "siteMeta": {
     "defaultDescription": "Sniser is the platform that pays artists for their music. Exclusive releases, full-service production, and fan-owned content on the blockchain."
   }

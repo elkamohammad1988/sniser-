@@ -1185,6 +1185,25 @@
     "revenue": "Artiste consultant un tableau de bord des revenus",
     "network": "Accédez au réseau Sniser"
   },
+  "validation": {
+    "emailRequired": "L'e-mail est requis.",
+    "emailInvalid": "Saisissez une adresse e-mail valide.",
+    "required": "Le champ {{field}} est obligatoire.",
+    "minLength": "Le champ {{field}} doit comporter au moins {{min}} caractères.",
+    "passwordRequired": "Le mot de passe est requis.",
+    "passwordMinLength": "Le mot de passe doit comporter au moins {{min}} caractères.",
+    "passwordUppercase": "Le mot de passe doit contenir une lettre majuscule.",
+    "passwordNumber": "Le mot de passe doit contenir un chiffre."
+  },
+  "fields": {
+    "thisField": "ce champ",
+    "name": "nom",
+    "password": "mot de passe",
+    "message": "message",
+    "displayName": "nom affiché",
+    "title": "titre",
+    "brand": "marque"
+  },
   "siteMeta": {
     "defaultDescription": "Sniser est la plateforme qui rémunère les artistes pour leur musique. Sorties exclusives, production clé en main et contenu détenu par les fans sur la blockchain."
   }
